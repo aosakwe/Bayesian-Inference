@@ -1,0 +1,42 @@
+---
+title: "Posterior Approximation - Incomplete"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+Previously we have looked at Bayesian models with closed form solutions for the marginal likelihood and posterior. However, in cases where more complex models are required, the marginal likelihood is often not closed form making it impossible to solve the posterior analytically.
+
+In this cases, we are required to **approximate** the posterior from which we can then compute thestatistics of interest which we saw in the previous section.
+
+There are two key ways to approximate the posterior:
+
+1.  Sampling/Simulationg: we can generate random samples from the posterior distribution to then use the empirical results as an estimate of the posterior.
+2.  Variational Inference: we can approximate the posterior by using a closed-form surrogate distribution.
+
+A simple form of variational inference is normal approximation, where the central limit theorem is used to justify the use of the normal distribution as a surrogate posterior. In this chapter we will focus on sampling methods for posterior approximation.
+
+### Sampling Methods
+
+To approximate the posterior by simulation, we need to generate random samples from the posterior. This is trivial if the posterior is a known distribution with a derived simulation method. However, this becomes interesting when the posterior **isn't** closed form. We can achieve this by making use of the unnormalized posterior density or any function $q(\theta;y)$ that is proportional to it.:
+
+$$
+p(\theta|y) \propto p(\theta)p(y|\theta) \propto q(\theta;y)
+$$
+
+and generating random samples from this to approximate the posterior.
+
+To generate the random samples, we can use **rejection sampling** or **importance sampling** for simple models. There are also many probabilistic programming tools available to automatically generate simulations.
+
+### Grid Approximation
+
+This method, also know as **direct discrete approximation**, works as follows:
+
+1.  Create an even-spaced grid $g_1 = a + i/2,…,g_m = b - i/2$ where $a$ and $b$ are the lower and upper bounds of the parameter space of the posterior and $i$ and $m$ are the grid increments and number of grid points respectively.
+
+2.  Evaluate the values of the unnormalized posterior density across the grid points $q(g_j;y)$ and normalize them by their sum to estimate the posterior values:
+
+    $$
+    \hat{p_m} = \frac{q(g_j;y)}{\sum_{i = 1}^{m}q(g_i;y)}$$
+
+3.  INCOMPLETE

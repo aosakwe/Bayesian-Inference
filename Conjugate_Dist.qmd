@@ -78,7 +78,7 @@ $$
 a <- 1
 b <- 2
 theta <- seq(0,10,length = 100)
-par(mfrow = c(3,2))
+par(mfrow = c(3,2),mar = c(5, 5, 1.5, 1.5))
 for (i in c(5,10,25,50,75,100)){
   prior <- dgamma(theta,shape = a, rate = b)
   posterior <- dgamma(theta,shape = a + sum(y[1:i]), rate = b + i)

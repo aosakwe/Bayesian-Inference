@@ -5,6 +5,8 @@ format: html
 editor: visual
 ---
 
+TODO - make a function for the 6-panel CI plots
+
 Beyond defining the posterior distribution, it is important to find a way to describe the information it provides on the plausible parameter values. The easiest way is to plot the distribution (if we have 3 or less parameter values). Alternatively, we can simulate observations from the distribution and visualize them.
 
 There are also ways to summarize the information provided by the posterior numerically. Examples of such metrics are the usual descriptive statistics such as the mean, variance, mode etc.
@@ -42,13 +44,13 @@ a <- 1
 b <- 2
 conf <- 0.05
 theta <- seq(0,10,length = 100)
-par(mfrow = c(3,2))
+par(mfrow = c(3,2),mar = c(5, 5, 1.5, 1.5))
 q_low <- qgamma(conf,a,b)
 q_high <- qgamma(1-conf,a,b)
 prior <- dgamma(theta,shape = a, rate = b)
 plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
        ylab = 'Density',
-       main = paste('n = ',i,sep = ''))
+       main = "Prior")
   abline(v = 5, lty = 2)
 polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
         c(0,prior[theta >= q_low & theta <= q_high],0),
@@ -84,7 +86,7 @@ a <- 1
 b <- 2
 conf <- 0.05
 theta <- seq(0,10,length = 100)
-par(mfrow = c(3,2))
+par(mfrow = c(3,2),mar = c(5, 5, 1.5, 1.5))
 q_low <- 0
 q_high <- qgamma(1-conf,a,b)
 prior <- dgamma(theta,shape = a, rate = b)
@@ -114,4 +116,132 @@ for (i in c(5,10,25,50,100)){
 }
 ```
 
+### Influence of the Prior
+
+We can use the prior distribution to demonstrate how its influence on the posterior changes as more data is observed. The credible interval of the prior tells us the 95% of the probability mass should lie before any data is observed (i.e. the range of values we believe to be most likely). We repeat the previous even-tailed example using larger parameter values for the prior to emphasize its influence more clearly.
+
+```{r}
+n <- 500
+true_theta <- 5
+set.seed(123)
+y <- rpois(n,true_theta)
+a <- 10
+b <- 20
+conf <- 0.05
+theta <- seq(0,10,length = 100)
+par(mfrow = c(3,2),mar = c(5, 5, 1.5, 1.5))
+q_low <- 0
+q_high <- qgamma(1-conf,a,b)
+prior <- dgamma(theta,shape = a, rate = b)
+plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  abline(v = 5, lty = 2)
+polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,prior[theta >= q_low & theta <= q_high],0),
+        col = 'orange',border = 'orange')
+legend('topright', inset = .02, legend = c('Prior'),
+         col = c('orange'), lwd = 2)
+for (i in c(5,50,100,250,500)){
+  prior <- dgamma(theta,shape = a, rate = b)
+  posterior <- dgamma(theta,shape = a + sum(y[1:i]), rate = b + i)
+  plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  lines(theta,posterior,col = 'green')
+  q_high <- qgamma(1-conf,a + sum(y[1:i]),b + i)
+  polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,posterior[theta >= q_low & theta <= q_high],0),
+        col = 'lightgreen',border = 'lightgreen')
+  abline(v = 5, lty = 2)
+  legend('topright', inset = .02, legend = c('Prior', 'Posterior'),
+         col = c('orange', 'green'), lwd = 2)
+}
+```
+
+This example shows more clearly how the addition of more samples shifts the influence on the posterior from the prior to the observed data. This is why the choice of a non-informative prior can be very useful if we are uncertain of a plausible informative prior.
+
 ### Highest Posterior Density
+
+In addition to the credible interval, we can also identify the **highest posterior density (HPD)** region. The HPD is a confidence region $I_\alpha$ in which the posterior density for every point within the set is greater than the posterior density for any point outside of the interval.
+
+$$
+f_{\Theta|Y}(\theta|y) \geq f_{\Theta|Y}(\theta'|y)
+$$
+
+where $\theta \in I_\alpha$ and $\theta' \notin I_\alpha$ . It is therefore the smallest possible credible region in the distribution. As a result, the HPD region is not necessarily an interval, and can be a union of distinct intervals on the distribution. This makes it useful for multimodal posteriors where an even-tailed or one-tailed credible interval would not be able to fully represent the information provided. We can demonstrate its value with a bimodal posterior derived from a mixture of beta distributions.
+
+```{r}
+conf <- 0.05
+a1 <- 10
+b1 <- 20
+a2 <- 20
+b2 <- 5
+
+beta_mixture <- function(x,a1,a2,b1,b2){
+  0.5*dbeta(x,a1,b1) + 0.5*dbeta(x,a2,b2)
+}
+#Generate Data
+n <- 100000
+theta1 <- rbeta(n/2,a1,b1)
+theta2 <- rbeta(n/2,a2,b2)
+theta <- sort(c(theta1,theta2))
+q_low <- theta[round(conf*n/2)]
+q_high <- theta[round((1-conf/2)*n)]
+x <- seq(0,1,length = 1000)
+y <- beta_mixture(x,a1,a2,b1,b2)
+plot(x,y,type = 'l', col = 'blue',lwd = 2,
+     xlab = expression(theta), ylab = 'Density',
+     main = "Credible Interval on Bimodal Distribution")
+polygon(c(q_low,x[x >= q_low & x <= q_high],q_high),
+        c(0,y[x >= q_low & x <= q_high],0),
+        col = 'lightblue',lwd = 2, border = 'blue')
+```
+
+As described, the plot shows how the credible interval ends up including a region of the distribution with low densities and omitting other regions with higher densities. The HPD region can therefore resolve this issue:
+
+```{r}
+densities <- density(theta)
+hpd <- HDInterval::hdi(densities,allowSplit = TRUE)
+height <- attr(hpd, 'height')
+q_low1 <- hpd[1,1]
+q_high1 <- hpd[1,2]
+q_low2 <- hpd[2,1]
+q_high2 <- hpd[2,2]
+x <- seq(0,1,length = 1000)
+y <- beta_mixture(x,a1,a2,b1,b2)
+plot(x,y,type = 'l', col = 'blue',lwd = 2,
+     xlab = expression(theta), ylab = 'Density',
+     main = "HPD Region for a Bimodal Distribution")
+polygon(c(q_low1,x[x >= q_low1 & x <= q_high1],q_high1),
+        c(0,y[x >= q_low1 & x <= q_high1],0),
+        col = 'lightblue',lwd = 2, border = 'blue')
+polygon(c(q_low2,x[x >= q_low2 & x <= q_high2],q_high2),
+        c(0,y[x >= q_low2 & x <= q_high2],0),
+        col = 'lightblue',lwd = 2, border = 'blue')
+
+```
+
+Here we can clearly see the advantage HPD regions provide for summarizing multimodal distributions. It also demonstrates why it is important to visualize the posterior distribution before summarizing it in terms of one-dimensional summary statistics such as a mean or median.
+
+### Posterior Mean
+
+The mean of the posterior distribution is referred to as a **Bayes Estimator**:
+
+$$
+\hat{\lambda}_{Bayes}(Y) = \mathbb{E}[\theta|Y]
+$$
+
+The mean for the gamma distribution is $\frac{\alpha}{\beta}$ so the Bayes estimator for the Poisson-gamma model derived in the last chapter is
+
+$$
+\mathbb{E}[\theta|Y = y] = \frac{\alpha + s_n}{\beta + n}
+$$
+
+The posterior mean can also be expressed as a convex combination of the mean of the prior distribution
+
+$$
+\mathbb{E}[\theta|Y = y] = \frac{\alpha + s_n}{\beta + n} = k\frac{\alpha}{\beta} + (1-k)\frac{s_n}{n}
+$$
+
+Where $k$ is $\frac{\beta}{\beta + n}$ and shows how the posterior mean is progressively influence by the sample mean as the sample size increases. In this case, as the sample size approaches infinity, the Bayes estimator takes the form of the maximum likelihood estimator which is the sample mean for the model. This formulation also explains how the parameterization of the prior distribution affects its influence on the posterior.
