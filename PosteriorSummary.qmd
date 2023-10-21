@@ -1,0 +1,117 @@
+---
+title: "Studying the Posterior"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+Beyond defining the posterior distribution, it is important to find a way to describe the information it provides on the plausible parameter values. The easiest way is to plot the distribution (if we have 3 or less parameter values). Alternatively, we can simulate observations from the distribution and visualize them.
+
+There are also ways to summarize the information provided by the posterior numerically. Examples of such metrics are the usual descriptive statistics such as the mean, variance, mode etc.
+
+### Credible Intervals
+
+The credible interval acts as a Bayesian version of the frequentist confidence interval. However, credible intervals provide a much more intuitive interpretation as a 95% credible interval contains the true parameter value with 95% probability. On the other hand the frequentist confidence interval says that 95% of the time, the true parameter value falls within the designated range.
+
+#### Definition
+
+In the case of a one-dimensional parameter $\Theta \in \Omega$ with a confidence level of $\alpha \in (0,1)$ there exists an interval $I_\alpha$ which contains a proportion $1 - \alpha$ of the pmf of the posterior:
+
+$$
+P(\Theta \in I_\alpha|Y = y) = 1- \alpha
+$$
+
+which is referred to as the **credible interval**. We usually assess the 95% credible interval. The region of parameter values that contain the credible interval is called the **credible region**. Applying this concept to the prior can be a useful way of selecting an informative prior, as we can find a distribution whose credible interval complements the interval found with an estimate from the observed data.
+
+### Equal-tailed and One-tailed Intervals
+
+An equal-tailed interval aims at finding the credible interval between the $\alpha/2$ and the $1-\alpha/2$ quantiles. Most credible intervals are calculated as equal-tailed. However, this is only sensible if the posterior is unimodal and symmetric. In other cases, a one-tailed ($[0,1-\alpha]$ or $[\alpha,1]$) may be more reasonable.
+
+### Examples
+
+We can explore the concept using the gamma-poisson model from the previous section.
+
+#### Equal-tailed
+
+```{r}
+n <- 100
+true_theta <- 5
+set.seed(123)
+y <- rpois(n,true_theta)
+a <- 1
+b <- 2
+conf <- 0.05
+theta <- seq(0,10,length = 100)
+par(mfrow = c(3,2))
+q_low <- qgamma(conf,a,b)
+q_high <- qgamma(1-conf,a,b)
+prior <- dgamma(theta,shape = a, rate = b)
+plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  abline(v = 5, lty = 2)
+polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,prior[theta >= q_low & theta <= q_high],0),
+        col = 'orange',border = 'orange')
+legend('topright', inset = .02, legend = c('Prior'),
+         col = c('orange'), lwd = 2)
+for (i in c(5,10,25,50,100)){
+  prior <- dgamma(theta,shape = a, rate = b)
+  posterior <- dgamma(theta,shape = a + sum(y[1:i]), rate = b + i)
+  plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  lines(theta,posterior,col = 'green')
+  q_low <- qgamma(conf,a + sum(y[1:i]),b + i)
+  q_high <- qgamma(1-conf,a + sum(y[1:i]),b + i)
+  polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,posterior[theta >= q_low & theta <= q_high],0),
+        col = 'lightgreen',border = 'lightgreen')
+  abline(v = 5, lty = 2)
+  legend('topright', inset = .02, legend = c('Prior', 'Posterior'),
+         col = c('orange', 'green'), lwd = 2)
+}
+```
+
+#### One-tailed
+
+```{r}
+n <- 100
+true_theta <- 5
+set.seed(123)
+y <- rpois(n,true_theta)
+a <- 1
+b <- 2
+conf <- 0.05
+theta <- seq(0,10,length = 100)
+par(mfrow = c(3,2))
+q_low <- 0
+q_high <- qgamma(1-conf,a,b)
+prior <- dgamma(theta,shape = a, rate = b)
+plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  abline(v = 5, lty = 2)
+polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,prior[theta >= q_low & theta <= q_high],0),
+        col = 'orange',border = 'orange')
+legend('topright', inset = .02, legend = c('Prior'),
+         col = c('orange'), lwd = 2)
+for (i in c(5,10,25,50,100)){
+  prior <- dgamma(theta,shape = a, rate = b)
+  posterior <- dgamma(theta,shape = a + sum(y[1:i]), rate = b + i)
+  plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  lines(theta,posterior,col = 'green')
+  q_high <- qgamma(1-conf,a + sum(y[1:i]),b + i)
+  polygon(c(q_low,theta[theta >= q_low & theta <= q_high],q_high),
+        c(0,posterior[theta >= q_low & theta <= q_high],0),
+        col = 'lightgreen',border = 'lightgreen')
+  abline(v = 5, lty = 2)
+  legend('topright', inset = .02, legend = c('Prior', 'Posterior'),
+         col = c('orange', 'green'), lwd = 2)
+}
+```
+
+### Highest Posterior Density
