@@ -1,0 +1,109 @@
+---
+title: "Conjugate Distributions"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+A conjugate distribution refers to a pair of sampling and prior distributions where the posterior distribution is of the same family as the prior distribution. A family of distributions implies a set of distributions which have a similar form and only differ in the values of their parameters.
+
+Conjugate distributions play a big role in Bayesian analyses as they greatly simplify model formulations. After selecting a plausible sampling distribution, selecting a conjugate prior ensures that the posterior distribution is easy to derive and is *tractable*. The only other way for the posterior to be tractable is if the explored parameter space is *finite* AND *discrete.* Posteriors that do not match these two cases have to be approximated (either by sampling processes or variational inference).
+
+In the previous document, we saw an example of a conjugate pair: the beta and binomial distributions.
+
+### One-parameter conjugate models
+
+#### Poisson-gamma model
+
+A Poisson distribution is a discrete distribution which can take all positive integer values. It is often used to model counts, such as points in a sport or the number of daily customers in a store. The distribution has the following properties:
+
+$$
+\mathbb{E}[Y] = Var[Y] = \theta
+$$
+
+```{r}
+n <- 100
+theta <- 5
+set.seed(123)
+mean_estimate <- c()
+var_estimate <- c()
+for (i in 1:n){
+  y <- rpois(i,theta)
+  mean_estimate <- c(mean_estimate,mean(y))
+var_estimate <- c(var_estimate,var(y))
+}
+par(mfrow = c(2,1))
+plot(1:n,mean_estimate,col = 'red',type = 'l',xlab = 'Sample Size',
+     ylab = 'Sample Mean')
+lines(1:n,rep(theta,n),col = 'black')
+plot(1:n,var_estimate,col = 'blue',type = "l",xlab = 'Sample Size',
+     ylab = 'Sample Variance')
+lines(1:n,rep(theta,n),col = 'black')
+```
+
+As we can see, with sufficient sample size, the mean and variance are both similar to the $\theta$ used to generate the counts.
+
+Now, we can make use of Bayesian analysis to infer this theta using the data. If we assume that each count is independently and identically distributed (which they are), we can model then as Poisson random variables.
+
+Since the rate parameter of the Poisson can take on any positive real number, the parameter should be sampled from a distribution that covers a similar range. In this case (and given that we know it is a conjugate prior for the Poisson distribution), we can use the Gamma distribution where
+
+$$
+\theta \sim Gamma(\alpha,\beta)
+$$
+
+This ensures that $\theta$ is sampled from a distribution which covers all non-negative real numbers and that allows for the derivation of a closed-form prior. We can now estimate the posterior for $\theta$ :
+
+$$
+p(\theta|Y) \approx p(Y|\theta)\pi_0(\theta)
+$$
+
+$$
+p(Y|\theta) = \prod_{i = 1}^n\theta^{y_i}\frac{e^{-\theta}}{y_i!} \propto 
+\theta^{s_n}{e^{-n\theta}}
+$$
+
+where $s_n = \sum_{i = 1}^{n}y_i$ .
+
+$$
+p(\theta|Y) \propto \theta^{s_n}{e^{-n\theta}}\theta^{\alpha-1}e^{-\beta\theta} = \theta^{\alpha + s_n -1}e^{-(\beta + n)\theta}
+$$
+
+We notice that the current formulation is similar to the gamma distribution with parameters $\alpha_n = \alpha + s_n$ and $\beta_n = \beta + n$ . Therefore, the posterior is:
+
+$$
+\Theta|Y \sim Gamma(\alpha + s_n,\beta + n )
+$$
+
+```{r}
+a <- 1
+b <- 2
+theta <- seq(0,10,length = 100)
+par(mfrow = c(3,2))
+for (i in c(5,10,25,50,75,100)){
+  prior <- dgamma(theta,shape = a, rate = b)
+  posterior <- dgamma(theta,shape = a + sum(y[1:i]), rate = b + i)
+  plot(theta,prior, type = 'l', col = 'orange', xlab = 'Theta Values',
+       ylab = 'Density',
+       main = paste('n = ',i,sep = ''))
+  lines(theta,posterior,col = 'green')
+  abline(v = 5, lty = 2)
+  legend('topright', inset = .02, legend = c('Prior', 'Posterior'),
+         col = c('orange', 'green'), lwd = 2)
+}
+```
+
+We can see that as the sample size increases, the posterior density peaks near the true $\theta$ value.
+
+#### Prediction with Poisson-Gamma Model
+
+As seen in the last document, we can the compute a posterior predictive distribution to predict the probability of the next unobserved value given the observed counts. For the sake of brevity, I will not cover it here (but all the material required is present in the beta-binomial example!).
+
+### Prior Distributions
+
+As seen in the derived posteriors, the choice of the prior not only affects our derivation of the posterior, but can also influence the posterior probability. This is particularly true when the sample size is small. It is therefore imperative to select an appropriate prior that correctly guides the posterior distribution given what we know about the data. This is known as an **informative prior** which will help make the solution more stable and accurate at small sample sizes by helping restrict the sampling of the parameters for the sampling distribution to a range of **plausible values**. For the model described above, the gamma is a suitable prior as it ensures that the $\theta$ parameter sampled for use in the Poisson distribution is always non-negative, as is required.
+
+There are many cases where we may not know enough about the data-generating process to make reliable assumptions on the prior's form. In this case, we would prefer to use a **non-informative prior B** which will not influence the downstream posterior distribution. A logical option here would be the uniform distribution which sets an equal probability for all values **within a range**. This however can lead to two key issues:
+
+-   Uniform is limited to a finite range of values. If the true parameter estimate can be any real number, we would not be able to use a proper distribution and provide each value with an equal probability. This can be resolved by using a constant for each value on a non-finite range, but the use of an improper distribution is not always desirable.
+
+-   Although the uniform distribution is non-informative, it is possible that a re-parametrization of the sampled parameters can become informative, making it impractical for certain use cases.
