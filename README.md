@@ -6,6 +6,8 @@ This project allows me to implement different Bayesian modelling techniques I ha
 The projects and notes I take will be heavily based on work I found on the following pages:
 
 -   **https://vioshyvo.github.io/Bayesian_inference/index.html**
+  
+-   https://matheusfacure.github.io/python-causality-handbook/landing-page.html
 
 -   https://www.math.mcgill.ca/dstephens/556/
 
