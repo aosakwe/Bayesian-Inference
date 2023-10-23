@@ -20,3 +20,7 @@ The projects and notes I take will be heavily based on work I found on the follo
 ### Links to Notebooks
 
 Links to the different notebooks I make will be stored here:
+
+### TODO
+1. Add citations to each topic
+2. Add section on Jeffreys Prior
