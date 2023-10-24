@@ -5,6 +5,12 @@ format: html
 editor: visual
 ---
 
+**TODO:**
+
+-    **Rejection and Importance sampling**
+
+-   **Derivation of MCMC Samplers**
+
 Previously we have looked at Bayesian models with closed form solutions for the marginal likelihood and posterior. However, in cases where more complex models are required, the marginal likelihood is often not closed form making it impossible to solve the posterior analytically.
 
 In this cases, we are required to **approximate** the posterior from which we can then compute thestatistics of interest which we saw in the previous section.
@@ -192,4 +198,184 @@ legend('topright', legend = c('Estimate','Ground Truth'), col = c('lightblue','o
 
 We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!
 
-### Monte Carlo Methods
+### Monte Carlo Methods (Incomplete)
+
+We have now seen that a sufficient number of simulations can approximate the ground truth posterior. These simulations can also be used to calculate summary statistics such as the posterior mean, variance and credible intervals!
+
+In general, computing integrals via simulations is referred to as **Monte Carlo integration** or the **Monte Carlo method**. These types of methods depend on the **strong law of large numbers (SLL)**.
+
+#### Strong law of large numbers
+
+Where we have a sequence of random variables $Y_i,…,Y_n$ that are i.i.d. with a finite expected value $\mu$ , we have that almost surely (a.s.):
+
+$$
+\lim_{n\to\infty} \frac{1}{n}\sum_{i = 1}^{n}y_i = \mu
+$$
+
+We are able to say almost surely as the above statement is said to converges to the result with a probability of one.
+
+SLL implies that the sample mean of an i.i.d sequence of random variables will always converge to the expected value of the underlying distribution with sufficient sample size. In the case of coin tosses, we would therefore expect that after enough trials, by SLL, that the expected value is 0.5 (assuming it is an unbiased coin!).
+
+#### Example: Monte Carlo Integration
+
+We can revisit our example from the beginning of the chapter where we estimate \$\\theta\$. By SLL, we expect that that average of the simulated values will converge to the true posterior mean of $\theta$ provided we simulate enough values. We can therefore approximate the posterior expectation using this mean. In this case, we know the posterior expectation of the Poisson-gamma model
+
+$$
+\mathbb{E}[\Theta|Y = y] = \frac{\alpha_n}{\beta_n} = \frac{\sum_{i = 1}^{n}Y_i +\alpha}{n + \beta}
+$$
+
+so we can validate our approximation.
+
+```{r}
+a_n <- a + sum(y)
+b_n <- b + n
+#True Expected Posterior
+a_n/b_n
+#Simulated Posterior Mean
+mean(theta_sim)
+```
+
+The same can be done to approximate the true posterior variance.
+
+```{r}
+#True Posterior variance
+a_n/(b_n^2)
+#Simulated Posterior variance
+var(theta_sim)
+```
+
+We can also approximate posterior probabilities within an interval defined by an indicator $I_{(a,b)}(x)$ where $I_{(a,b)}(x) = 1$ if $x \in (a.b)$ and $I_{(a,b)}(x) = 0$ otherwise:
+
+```{r}
+#True Posterior
+pgamma(3,a_n,b_n,lower.tail = FALSE)
+#Simulated Posterior
+mean(theta_sim > 3)
+
+```
+
+Therefore, we are also able to estimate quantiles:
+
+```{r}
+conf <- 0.05
+
+#True 95% credible interval lower bound
+qgamma(conf/2,a_n,b_n)
+#Estimated 95% credible interval lower bound
+quantile(theta_sim,conf/2)
+```
+
+```{r}
+#True 95% credible interval upper bound
+qgamma(1- conf/2,a_n,b_n)
+#Estimated 95% credible interval upper bound
+quantile(theta_sim,1- conf/2)
+```
+
+# TODO: Discuss difference between grid approx. and MC integration
+
+### Markov Chain Monte Carlo (MCMC) Methods
+
+Grid approximation worked well in our 1-dimensional example. However, this is not always the case when we begin to work with high-dimensional data. To cover the parameter space we defined in our example, we generated a grid with 2000 points. However, if we had additional dimensions each with 2000 points, we would find ourselves working with $2000^d$ grid points. This becomes quite impractical in what has been a very simple example. Clearly, grid approximation will not be viable for higher dimensions.
+
+As a result, most sampling approaches for more complex models usually make use of **Markov Chain Monte Carlo (MCMC)** methods. This family of methods focuses on iterative sampling from a markov chain for which the distribution at convergence matches the target distribution. In our case, this is the posterior distribution.
+
+#### Markov Chain
+
+A Markov chain is a sequence of random variables $X_1,X_2,…$ that have a Markov property. That is, for any discrete time point $i$ :
+
+$$P(X_{i+1} | X_i,X_{i-1},...,X_0) = P(X_{i+1} | X_i)$$
+
+That is to say, for any discrete time point \$i\$, the state of the random variable at the next time point, $X_{i+1}$ depends **only** on the current state $X_i$ . The set of all possible values or states that the random variables can take is known as the **state space** $S$.
+
+#### MCMC Sampling
+
+Simplistic sampling methods such as the ones we saw previously generate i.i.d. samples from the target distribution. However, the values we sample from the state space S (\$\\theta_1,...,\\theta_S\$) by an MCMC method experience high auto-correlation. That is, the value sampled at the next time point will be similar to the current value. Although this would be an issue for a small sample size, MCMC overcomes this by generating a large number of samples and using the full sample to approximate the posterior distribution. MCMC algorithms converge when they reach the stationary distribution. That is, the stationary distribution is a distribution $\pi(x)$ achieved at a state where for all $i \in \mathbb{Z}^+$ :
+
+$$
+P(X_i = k) = \pi(k)
+$$
+
+which implies that the next state of the random variable is the same as the current state. Once it has reached convergence, sampling from the stationary distribution will eventually lead to an approximation of the true posterior. Determining when convergence has been reached is difficult to determine. There are different diagnostics available to explore this, one of which is to running different MCMC instances with different initializations and see if they reach a similar distribution.
+
+As the first iterations of MCMC sampling do not represent the posterior yet, they are usually discarded. The number of iterations that are discarded is up to the user and is referred to as the **burn-in** period. Markov chains that were designed to estimate target posterior distributions are known as **MCMC samplers**. The two most popular examples are the **Gibbs sampler** and the **Metropolis-Hastings sampler**. The Gibbs sampler is actually a special case of the MH sampler.
+
+#### Example: Gibbs sampler
+
+The Gibbs sampler works by incrementally updating each of the components of the parameter vector \$\\theta\$. We can assumed that the parameter vector is multi-dimensional where for each component $\theta_j$ , the sampler generates a value using the conditional posterior distribution of the component given all the other components.
+
+$$
+p(\theta_j | \theta_{-j},y)
+$$
+
+Notice that the current component **is omitted** from the parameter vector being used as prior information!
+
+We can explore the concept with a two-dimensional example. We assume that we have one observation $(y_1,y_2) = (0,0)$ which comes from a two-dimensional normal distribution $N(\mu,\Sigma_0)$ , where the parameter we are interested in is the mean vector $\mu = (\mu_1,\mu_2)$ and the covariance matrix
+
+$$\Sigma_0 =
+\begin{bmatrix}
+1 & \rho \\
+\rho & 1 \\
+\end{bmatrix} $$ is assumed to be known and constant with $\rho = -0.7$ . We can also assume that we are using an improper uniform prior \$p(\\mu) \\propto 1\$. The posterior is now a two-dimensional normal distribution $N(\mu,\Sigma_0)$. Note that for now we will not consider the inference of the posterior. Normally we could generate samples from pre-existing implementations but we will look at making a rudimentary implementation of a Gibbs sampler.
+
+We have the following conditional posteriors for each mean of interest:
+
+$$
+\mu_1|\mu_2,Y \sim N(y_1 + \rho(\mu_2-y_2),1 - \rho^2)
+$$
+
+$$
+\mu_2|\mu_1,Y \sim N(y_2 + \rho(\mu_1-y_1),1 - \rho^2)
+$$
+
+```{r}
+y <- c(0,0)
+rho <- -0.7
+set.seed(111)
+mu1_sample <- function(y, rho, mu2) rnorm(1, y[1] + rho * (mu2-y[2]), sqrt(1-rho^2))
+mu2_sample <- function(y, rho, mu1) rnorm(1, y[2] + rho * (mu1-y[1]), sqrt(1-rho^2))
+
+n_sim <- 10
+mu1 <- mu2 <- numeric(n_sim)
+mu1[1] <- mu2[1] <- 2
+for (i in 2:n_sim){
+  mu1[i] <- mu1_sample(y,rho,mu2[i-1])
+  mu2[i] <- mu2_sample(y,rho,mu1[i])
+}
+
+library(ggplot2)
+library(gganimate)
+gibbs_df <- data.frame(mu1,mu2, iteration = 1:n_sim)
+gibbs_df$start <- '-'
+gibbs_df$start[1] <- "Start"
+#gibbs_df$start[n_sim] <- 'End'
+ggplot(gibbs_df,aes(mu1,mu2,shape = start)) + 
+  geom_point() + geom_path(aes(group = 'all'))
+
+ggplot(gibbs_df,aes(mu1,mu2)) + 
+  geom_point() +
+  labs(title = 'Iteration: {closest_state}') +
+  transition_states(states = iteration) 
+```
+
+We can compare our results with the true posterior to see how well we approximated the distribution.
+
+```{r}
+covar <- matrix(c(1,rho,rho,1),ncol =2)
+
+X <- MASS::mvrnorm(n_sim,y,covar)
+
+par(mfrow = c(1,2))
+ plot(mu1, mu2, pch = 16, col = 'orange',
+       xlim = c(-4,4), ylim = c(-4,4), asp = 1, xlab = expression(mu[1]), 
+       ylab = expression(mu[2]),
+      main = 'MCMC')
+  plot(X[,1], X[,2], pch = 16, col = 'orange',
+       xlim = c(-4,4), ylim = c(-4,4), asp = 1, xlab = expression(mu[1]), 
+       ylab = expression(mu[2]),
+       main = 'True Posterior')
+```
+
+As we can see, despite starting with estimates well off of the true values, the Gibbs sampler was able to reach a distribution that is quite similar to the true posterior.
+
+### Probabilistic Programming - Incomplete

@@ -24,4 +24,3 @@ Links to the different notebooks I make will be stored here:
 ### TODO
 1. Add citations to each topic
 2. Add section on Jeffreys Prior
-3. gganimate could be fun to explore for some of these topics (approximation methods in particular)
