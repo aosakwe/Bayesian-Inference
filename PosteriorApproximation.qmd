@@ -94,17 +94,15 @@ sim_idx <- sample(1:grid_n,n_sim,prob = grid_norm,replace = TRUE)
 e <- runif(n_sim,-i/2,i/2)
 theta_sim <- grid[sim_idx] + e
 
-par(mfrow = c(2,1),mar = c(4,4,2,2))
+par(mfrow = c(2,1),mar = c(4,4,1.5,1.5))
 ## Visualize with histogram
 hist(theta_sim,col = 'orange',breaks = seq(0,8,0.25), probability = TRUE,
-     main = 'Grid Approximation of Poisson-Gamma Model',
+     main = 'Grid Approximation using Poisson-Gamma Model',
      xlab = expression(theta),xlim = c(0,6))
 lines(grid,dgamma(grid,a + sum(y),b + n),col = 'lightblue',lwd = 4)
 legend('topright', legend = 'Ground Truth', col = 'lightblue',lwd = 4)
-
 ## Visualize with density estimate
 plot(grid,dgamma(grid,a + sum(y),b + n), type = 'l',col = 'lightblue',lwd = 4, ylab = 'Density',
-     main = 'Grid Approximation of Poisson-Gamma Model',
      xlab = expression(theta),xlim = c(0,6))
 lines(density(theta_sim),col = 'orange',lwd = 4)
 legend('topright', legend = c('Estimate','Ground Truth'), col = c('lightblue','orange'),lwd = 4)
@@ -114,4 +112,84 @@ Note that we needed to explore $\theta$ on a fixed interval (0,25) to be able to
 
 We can clearly see that the grid approximation has allowed us to correctly approximate the posterior without having to evaluate it analytically.
 
-#### Example #2 : Non-conjugate priors (Incomplete)
+#### Example #2 : Non-conjugate priors
+
+Let's look at an example of a non-conjugate distribution, where the normalizing constant is such that the posterior is not a known distribution and is therefore **not closed-form (intractable)**. A common example is using a log-normal prior for a Poisson likelihood. In essence, if our random variable is $X$ and is normally distributed, we can use a reparameterization of the r.v, $Y = e^X$ to get a log-normal distribution with the **mean and variance being equal to the log of the mean and variance for** $X$ .
+
+Our model therefore uses the following distributions:
+
+$$
+Y \sim Poisson(\theta) 
+$$
+
+$$
+\theta \sim Log  normal(\mu,\sigma^2)
+$$
+
+The pdf for the prior is as follows:
+
+$$
+p(\theta) = \frac{1}{\theta \sqrt{2\pi\sigma^2}}e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}},
+$$
+
+which gives the following unnormalized posterior pdf
+
+$$
+p(\theta|y) \propto p(\theta)p(y|\theta)
+$$
+
+$$
+\propto \theta^{-1}
+e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}}\theta^{\sum_{i = 1}^{n}y_i}e^{-n\theta}
+$$
+
+$$
+\propto 
+\theta^{
+{\sum_{i = 1}^{n}y_i}-1}e^{-n\theta
+- {\frac{(log\theta - \mu)^2}{2\sigma^2}}
+}$$
+
+And a marginalized joint pdf (numerator) we cannot integrate over (intractable). We can now apply grid approximation! We will be reusing the distribution we create in the last example.
+
+```{r}
+#Approximating the distribution we generated in the previous example
+q <- function(theta,y,n,mu,sigma2){
+  theta^(sum(y) - 1) * exp(-n*theta-(log(theta)-mu)^2 / (2*sigma2))
+}
+mu <- 0
+sigma2 <-1
+#Explore theta on (0,25) --> Need a fixed range 
+low_bound <- 0
+high_bound <- 20
+#Grid increment
+i <- 0.01
+grid <- seq(low_bound + i/2, high_bound - i/2,by = i)
+grid_val <- q(grid,y,n,mu,sigma2)
+grid_norm <- grid_val/sum(grid_val)
+
+## Simulate values
+sim_idx <- sample(1:grid_n,n_sim,prob = grid_norm,replace = TRUE)
+#Noise parameter
+e <- runif(n_sim,-i/2,i/2)
+theta_sim <- grid[sim_idx] + e
+
+## Visualize
+par(mfrow = c(2,1),mar = c(4,4,1.5,1.5))
+#plot 1
+hist(theta_sim,col = 'orange',breaks = seq(0,8,0.25), probability = TRUE,
+     main = 'Grid Approximation using Poisson-LogNormal',
+     xlab = expression(theta),xlim = c(0,8),ylim = c(0,0.75))
+lines(grid,dgamma(grid,a + sum(y),b + n),col = 'lightblue',lwd = 4)
+legend('topright', legend = 'Ground Truth', col = 'lightblue',lwd = 4)
+##plot 2
+plot(grid,dgamma(grid,a + sum(y),b + n), type = 'l',col = 'lightblue',lwd = 4, ylab = 'Density',
+     xlab = expression(theta),xlim = c(0,8),ylim = c(0,0.75))
+lines(density(theta_sim),col = 'orange',lwd = 4)
+legend('topright', legend = c('Estimate','Ground Truth'), col = c('lightblue','orange'),lwd = 4)
+
+```
+
+We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!
+
+### Monte Carlo Methods
