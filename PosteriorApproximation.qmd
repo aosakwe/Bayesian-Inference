@@ -7,7 +7,7 @@ editor: visual
 
 **TODO:**
 
--    **Rejection and Importance sampling**
+-   **Rejection and Importance sampling**
 
 -   **Derivation of MCMC Samplers**
 
@@ -290,7 +290,7 @@ That is to say, for any discrete time point \$i\$, the state of the random varia
 
 #### MCMC Sampling
 
-Simplistic sampling methods such as the ones we saw previously generate i.i.d. samples from the target distribution. However, the values we sample from the state space S (\$\\theta_1,...,\\theta_S\$) by an MCMC method experience high auto-correlation. That is, the value sampled at the next time point will be similar to the current value. Although this would be an issue for a small sample size, MCMC overcomes this by generating a large number of samples and using the full sample to approximate the posterior distribution. MCMC algorithms converge when they reach the stationary distribution. That is, the stationary distribution is a distribution $\pi(x)$ achieved at a state where for all $i \in \mathbb{Z}^+$ :
+Simplistic sampling methods such as the ones we saw previously generate i.i.d. samples from the target distribution. However, the values we sample from the state space S ($\theta_1,…,\theta_S$) by an MCMC method experience high auto-correlation. That is, the value sampled at the next time point will be similar to the current value. Although this would be an issue for a small sample size, MCMC overcomes this by generating a large number of samples and using the full sample to approximate the posterior distribution. MCMC algorithms converge when they reach the stationary distribution. That is, the stationary distribution is a distribution $\pi(x)$ achieved at a state where for all $i \in \mathbb{Z}^+$ :
 
 $$
 P(X_i = k) = \pi(k)
@@ -302,7 +302,7 @@ As the first iterations of MCMC sampling do not represent the posterior yet, the
 
 #### Example: Gibbs sampler
 
-The Gibbs sampler works by incrementally updating each of the components of the parameter vector \$\\theta\$. We can assumed that the parameter vector is multi-dimensional where for each component $\theta_j$ , the sampler generates a value using the conditional posterior distribution of the component given all the other components.
+The Gibbs sampler works by incrementally updating each of the components of the parameter vector $\theta$. We can assumed that the parameter vector is multi-dimensional where for each component $\theta_j$ , the sampler generates a value using the conditional posterior distribution of the component given all the other components.
 
 $$
 p(\theta_j | \theta_{-j},y)
@@ -316,7 +316,7 @@ $$\Sigma_0 =
 \begin{bmatrix}
 1 & \rho \\
 \rho & 1 \\
-\end{bmatrix} $$ is assumed to be known and constant with $\rho = -0.7$ . We can also assume that we are using an improper uniform prior \$p(\\mu) \\propto 1\$. The posterior is now a two-dimensional normal distribution $N(\mu,\Sigma_0)$. Note that for now we will not consider the inference of the posterior. Normally we could generate samples from pre-existing implementations but we will look at making a rudimentary implementation of a Gibbs sampler.
+\end{bmatrix} $$ is assumed to be known and constant with $\rho = -0.7$ . We can also assume that we are using an improper uniform prior $p(\mu) \propto 1$. The posterior is now a two-dimensional normal distribution $N(\mu,\Sigma_0)$. Note that for now we will not consider the inference of the posterior. Normally we could generate samples from pre-existing implementations but we will look at making a rudimentary implementation of a Gibbs sampler.
 
 We have the following conditional posteriors for each mean of interest:
 
@@ -335,7 +335,7 @@ set.seed(111)
 mu1_sample <- function(y, rho, mu2) rnorm(1, y[1] + rho * (mu2-y[2]), sqrt(1-rho^2))
 mu2_sample <- function(y, rho, mu1) rnorm(1, y[2] + rho * (mu1-y[1]), sqrt(1-rho^2))
 
-n_sim <- 10
+n_sim <- 100
 mu1 <- mu2 <- numeric(n_sim)
 mu1[1] <- mu2[1] <- 2
 for (i in 2:n_sim){
@@ -348,15 +348,26 @@ library(gganimate)
 gibbs_df <- data.frame(mu1,mu2, iteration = 1:n_sim)
 gibbs_df$start <- '-'
 gibbs_df$start[1] <- "Start"
-#gibbs_df$start[n_sim] <- 'End'
-ggplot(gibbs_df,aes(mu1,mu2,shape = start)) + 
-  geom_point() + geom_path(aes(group = 'all'))
 
-ggplot(gibbs_df,aes(mu1,mu2)) + 
-  geom_point() +
-  labs(title = 'Iteration: {closest_state}') +
-  transition_states(states = iteration) 
+ggplot(gibbs_df,aes(mu1,mu2,shape = start)) + 
+  geom_point() + geom_path(aes(group = 'all'))  + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+panel.background = element_blank(),
+axis.line = element_line(colour = "black"))
+
+ggplot(gibbs_df,aes(mu1,mu2,shape = start)) + 
+  geom_path( aes(group = 'all'))  + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+panel.background = element_blank(),
+axis.line = element_line(colour = "black")) +
+  labs(title = 'Iteration: {frame_along}') +
+  transition_reveal(along = iteration)
+anim_save('mcmc.gif', animation = last_animation(), path = NULL)
 ```
+
+![](mcmc.gif)
 
 We can compare our results with the true posterior to see how well we approximated the distribution.
 
