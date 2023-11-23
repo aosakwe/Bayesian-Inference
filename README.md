@@ -17,6 +17,11 @@ The notes and examples I share will be heavily based on work I found on the foll
 
 -   **https://www.math.mcgill.ca/dstephens/559/**
 
+
+### Gibbs Sampler Simulation to estimate Multivariate Normal Distribution (MCMC)
+
+![MCMC GIF](https://github.com/aosakwe/Bayesian-Inference/blob/main/mcmc.gif)
+
 ### Links to Notebooks
 
 Links to the different notebooks I make will be stored here:
