@@ -1,5 +1,5 @@
 ---
-title: "Posterior Approximation - Incomplete"
+title: "Approximation and Sampling Methods"
 author: "Adrien Osakwe"
 format: html
 editor: visual
@@ -7,13 +7,15 @@ editor: visual
 
 **TODO:**
 
--   **Rejection and Importance sampling**
+-   example for IS estimator
 
--   **Derivation of MCMC Samplers**
+-   **Optimal Importance sampling**
+
+-   **Sampling Importance Resampling**
 
 Previously we have looked at Bayesian models with closed form solutions for the marginal likelihood and posterior. However, in cases where more complex models are required, the marginal likelihood is often not closed form making it impossible to solve the posterior analytically.
 
-In this cases, we are required to **approximate** the posterior from which we can then compute thestatistics of interest which we saw in the previous section.
+In this cases, we are required to **approximate** the posterior from which we can then compute the statistics of interest which we saw in the previous section.
 
 There are two key ways to approximate the posterior:
 
@@ -138,7 +140,7 @@ $$
 p(\theta) = \frac{1}{\theta \sqrt{2\pi\sigma^2}}e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}},
 $$
 
-which gives the following unnormalized posterior pdf
+which gives the following un normalized posterior pdf
 
 $$
 p(\theta|y) \propto p(\theta)p(y|\theta)
@@ -198,7 +200,7 @@ legend('topright', legend = c('Estimate','Ground Truth'), col = c('lightblue','o
 
 We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!
 
-### Monte Carlo Methods (Incomplete)
+### Monte Carlo Methods
 
 We have now seen that a sufficient number of simulations can approximate the ground truth posterior. These simulations can also be used to calculate summary statistics such as the posterior mean, variance and credible intervals!
 
@@ -218,7 +220,7 @@ SLL implies that the sample mean of an i.i.d sequence of random variables will a
 
 #### Example: Monte Carlo Integration
 
-We can revisit our example from the beginning of the chapter where we estimate \$\\theta\$. By SLL, we expect that that average of the simulated values will converge to the true posterior mean of $\theta$ provided we simulate enough values. We can therefore approximate the posterior expectation using this mean. In this case, we know the posterior expectation of the Poisson-gamma model
+We can revisit our example from the beginning of the chapter where we estimate $\theta$. By SLL, we expect that that average of the simulated values will converge to the true posterior mean of $\theta$ provided we simulate enough values. We can therefore approximate the posterior expectation using this mean. In this case, we know the posterior expectation of the Poisson-gamma model
 
 $$
 \mathbb{E}[\Theta|Y = y] = \frac{\alpha_n}{\beta_n} = \frac{\sum_{i = 1}^{n}Y_i +\alpha}{n + \beta}
@@ -233,6 +235,11 @@ b_n <- b + n
 a_n/b_n
 #Simulated Posterior Mean
 mean(theta_sim)
+theta_est <- cumsum(theta_sim)/1:length(theta_sim)
+plot(1:length(theta_sim),theta_est,ylim = c(2.5,3.6),
+     ylab = expression(theta),
+     xlab = 'N')
+abline(h = a_n/b_n,col = 'red')
 ```
 
 The same can be done to approximate the true posterior variance.
@@ -272,7 +279,54 @@ qgamma(1- conf/2,a_n,b_n)
 quantile(theta_sim,1- conf/2)
 ```
 
-# TODO: Discuss difference between grid approx. and MC integration
+### Importance Sampling - example missing
+
+In cases where we can't generate samples from the target distribution, Monte Carlo methods allow us to generate viable samples by means of a surrogate distribution. In essence, we aim to identify a pdf $f_0$ for which sampling is possible to then estimate the features of interest of our target distribution's pdf $f$. For this to work, it is imperative that **the** **selected pdf has the support for the same domain as the target pdf**. In the case of determining an expected value we get:
+
+$$
+\int{g(x)f(x)}dx = \int{g(x)f(x)\frac{f_0(x)}{f_0(x)}}dx =  \int{\frac{g(x)f(x)}{f_0(x)}f_0(x)}dx
+$$
+
+Which gives us
+
+$$
+\mathbb{E}_f[g(X)] = \mathbb{E}_{f_0}[\frac{g(X)f(X)}{f_0(X)}]
+$$
+
+Using the SLL as discussed previously, we can then use the **estimator** $\hat{I}^{(f_0)}_N(g)$ to get the expected value over the target pdf:
+
+$$\hat{I}^{(f_0)}_N(g) = \frac{1}{N}\sum_{i=1}^{N}\frac{g(X_i)f(X_i)}{f_0(X_i)}$$
+
+In practice, $\hat{I}^{(f_0)}_N(g)$ is known as the **importance sampling** estimator. To emphasize the notion of importance, we can rearrange the equation as follows:
+
+$$\hat{I}^{(f_0)}_N(g) = \frac{1}{N}\sum_{i=1}^{N}\frac{f(X_i)}{f_0(X_i)}g(X_i) = \sum_{i=1}^{N}w_0(X_i)g(X_i)  $$
+
+Where $w_0(X_i)$ represents the **importance sampling weight**.
+
+### Optimal Importance Sampling - Incomplete
+
+### Rejection Sampling
+
+```{r}
+true_dist <- function(x){   return(dnorm(x,30,10)+ dnorm(x,80,20))  } 
+estim_dist <- function(x){   return(dnorm(x,50,30)) } 
+x <- seq(-50,150) 
+c <- max(true_dist(x)/estim_dist(x)) 
+plot(x,true_dist(x),type = 'l',ylim = c(0,0.06)) 
+lines(x,c*estim_dist(x)) 
+```
+
+```{r}
+rej_sample <- function(n,c){   
+  x <- rnorm(n,50,30)  
+  k <- runif(n)   
+  return(x[true_dist(x)/(c*estim_dist(x)) > k]) }
+rej_x <- rej_sample(100000,c) 
+hist(rej_x,freq = F, ylim = c(0,0.02)) 
+lines(x = density(x = rej_x))
+```
+
+#### Sampling Importance Resampling
 
 ### Markov Chain Monte Carlo (MCMC) Methods
 
@@ -302,7 +356,7 @@ As the first iterations of MCMC sampling do not represent the posterior yet, the
 
 #### Example: Gibbs sampler
 
-The Gibbs sampler works by incrementally updating each of the components of the parameter vector $\theta$. We can assumed that the parameter vector is multi-dimensional where for each component $\theta_j$ , the sampler generates a value using the conditional posterior distribution of the component given all the other components.
+The Gibbs sampler works by incrementally updating each of the components of the parameter vector $\theta$. We can assume that the parameter vector is multi-dimensional where for each component $\theta_j$ , the sampler generates a value using the conditional posterior distribution of the component given all the other components.
 
 $$
 p(\theta_j | \theta_{-j},y)
@@ -388,5 +442,55 @@ par(mfrow = c(1,2))
 ```
 
 As we can see, despite starting with estimates well off of the true values, the Gibbs sampler was able to reach a distribution that is quite similar to the true posterior.
+
+### Metropolis-Hastings
+
+An alternative method for MCMC sampling is the Metropolis-Hastings algorithm. In this approach, we iteratively propose a random sample of the random variable as the next state $z$ given our current state $x$. This is reffered to as a *transition kernel* $Q(z|x)$ which is often simply denoted as a normal distribution with the current state $x$ as the mean and a standard deviation equal to 1. By defining criteria that allows us to accept or reject the proposed new sample, we are able to explore the domain of possible values generated by the target distribution through what is a random walk (think Brownian motion). The criteria for acceptance is known as the *acceptance probability* and is calculated as follows:
+
+$$
+A = min(1,\frac{\pi(z)Q(x|z)}{\pi(x)Q(z|x)}
+$$
+
+In the case of a transition kernel which has a random walk behavior as the one described above, we find that $Q(z|x) = Q(x|z)$ allowing us to exclude both from the calculation of the acceptance probability.
+
+To achieve this in our multi-dimensional setting, we would make use of the following steps:
+
+1.  Initialize the state $X_1 = (\mu_1,\mu_2)$
+2.  For t steps:
+    -   sample $z$ from the transition kernel $Q(z|x)$
+    -   Compute the acceptance probability
+    -   Accept or reject the proposed state
+
+We can apply this to our previous distribution ( $\mu_1= \mu_2 =0$ ) to see how well we can replicate its sampling.
+
+```{r}
+t <- 10000
+x <- matrix(0,nrow = 2,ncol = t)
+x[,1] <- c(-2,2)
+z <- c(0,0)
+rho <- -0.7
+covar <- matrix(c(1,rho,rho,1),ncol =2)
+for (i in 2:t){
+  z[1] <- rnorm(1,x[1,i-1])
+  z[2] <- rnorm(1,x[2,i-1])
+  A <- min(1,mvtnorm::dmvnorm(z,mean = rep(0,2),sigma = covar))
+  if (runif(1) < A){
+    x[,i] <- z
+  } else {
+    x[,i] <- x[,i-1]
+  }
+}
+x <- as.data.frame(t(x))
+ggplot(x,aes(V1,V2)) + geom_point()  + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+panel.background = element_blank(),
+axis.line = element_line(colour = "black")) +
+  labs(title = 'Metropolis-Hastings Algorithm Samples',
+       x = expression(mu[1]),
+       y = expression(mu[2]))
+```
+
+Once again, we see that the MCMC sampler is generating samples in a similar fashion to the target distribution!
 
 ### Probabilistic Programming - Incomplete
