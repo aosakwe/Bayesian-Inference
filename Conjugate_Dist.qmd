@@ -106,4 +106,95 @@ There are many cases where we may not know enough about the data-generating proc
 
 -   Uniform is limited to a finite range of values. If the true parameter estimate can be any real number, we would not be able to use a proper distribution and provide each value with an equal probability. This can be resolved by using a constant for each value on a non-finite range, but the use of an improper distribution is not always desirable.
 
--   Although the uniform distribution is non-informative, it is possible that a re-parametrization of the sampled parameters can become informative, making it impractical for certain use cases.
+-   Although the uniform distribution is non-informative, it is possible that a re-parameterization of the sampled parameters can become informative, making it impractical for certain use cases.
+
+As a result, a novel form of non-informative prior can be used, which is robust to re-parameterization - **The Jeffrey's Prior**. The key advantage of this prior is that it applies to an infinite domain, and remains un-informative after changing the parameterization. We can look at the concept below.
+
+Let's assume that we are modeling observations $Y_i \sim Exponential(\theta)$ and use $Gamma(\alpha,\beta)$ as a prior. Skipping the derivation, we have the following equation for the posterior of $\theta$ :
+
+$$
+\Theta|Y \sim Gamma(\alpha + n,\beta + s_n)$$
+
+Where $s_n = \sum_{i =1}^ny_i$. We can see that for a small $n$, the posterior distribution will closely resemble the prior.
+
+```{r}
+a <- 2
+b <- 3
+theta <- sample(1:10,1)
+n <- 5
+y <- rexp(n,theta)
+sn <- sum(y)
+bign <- 250
+big_sn <- sum(rexp(bign,theta))
+theta_seq <- seq(0,10,by = 0.01)
+plot(theta_seq,dgamma(theta_seq,a + n,b + sn),type = 'l',col = 'red',
+     xlab = expression(theta),
+     ylab = 'Density',lwd = 2,ylim = c(0,5))
+lines(theta_seq,dgamma(theta_seq,a + bign,b + big_sn), col = 'orange',lwd = 2)
+lines(theta_seq,dgamma(theta_seq,a,b), col = 'blue',lwd = 2)
+abline(v = theta,lwd = 2)
+legend('topright', legend = c('Small N Post.','Big N Post.','Prior','True Theta'), col = c('red','orange','blue','black'),lwd = 2)
+
+```
+
+As we can see, the choice of the prior will influence the posterior until enough samples have been collected. If the prior distribution is not chosen correctly (as is the case here), we can see that a large number of samples are needed before we converge to the true estimate.
+
+The non-informative prior however, will help us avoid this and entirely drive the posterior distribution by the observations with no risk of selecting a misleading prior.
+
+#### Jeffrey's Prior
+
+The key issue with the uniform distribution as a prior is that in the case of reparemeterization of the target parameter $\theta$ such that $\phi = g(\theta)$ we have that
+
+$$\pi_{0,\theta}(\theta) = c  \rightarrow \pi_{0,\phi}(\phi) = c  \times J(\theta \rightarrow \phi) $$
+
+Where $J(\theta \rightarrow \phi)$ is the Jacobian of the transformation. This implies that there is no guarantee that reparameterizing the uniform prior will retain the non-informative behavior. The jeffrey's prior is defined using the following structure for the prior:\
+$$
+\pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{-\frac{1}{2}}
+$$
+
+Where $\mathcal{I}_\theta(\theta)$ is the *Fisher Information* of the pdf. The Fisher Information can be represented as the negative expectation of the second derivative of the log-pdf. In practice, for k parameters $(\theta_1,…,\theta_k)$ , the fisher Information will take the form of a $k \times k$ matrix (REVIEW). In practice, we can see that any transformation of $\theta$ will give the same value for the Jeffrey's prior.
+
+We can then apply this to our example with the Exponential pdf.
+
+$$ \mathcal{I}_\theta(\theta) = -\mathbb{E}_Y[\frac{\partial^2}{\partial^2\theta_j\theta_l}log(f_Y(y;\theta))]  $$
+
+$$ log(f_Y(y;\theta)) = log(\theta e^{-\theta y}) = log(\theta) -\theta y $$
+
+$$ \frac{\partial}{\partial\theta_j}log(f_Y(y;\theta)) = \frac{1}{\theta} - y $$
+
+$$ \frac{\partial^2}{\partial^2\theta_j\theta_l}log(f_Y(y;\theta)) = -\frac{1} {\theta^2} $$
+
+$$ \mathcal{I}_\theta(\theta) = -\mathbb{E}_Y[{-\frac{1}{\theta^2}}] $$
+
+Since $\theta$ is constant with respect to Y, we get
+
+$$ \mathcal{I}_\theta(\theta) = \frac{1}{\theta^2} $$
+
+Therefore,
+
+$$ \pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{-\frac{1}{2}} = \frac{1}{\theta} $$
+
+$$ \pi_n(\theta) \propto {\theta^n e^{-\theta s_n}} \theta^{-1} =  {\theta^{n-1} e^{-\theta s_n}} $$
+
+This form matches the gamma pdf with $\alpha_n = n$ and $\beta_n = s_n$. Leading to the following posterior:
+
+$$
+\Theta|Y \sim Gamma(n,s_n)
+$$
+
+Which depends **entirely on the observed data**. We can see how this affects our modeling below.
+
+```{r}
+n <- 25
+y <- rexp(n,theta)
+sn <- sum(y)
+theta_seq <- seq(0,10,by = 0.01)
+plot(theta_seq,dgamma(theta_seq,n,sn),type = 'l',col = 'red',
+     xlab = expression(theta),
+     ylab = 'Density',lwd = 2,ylim = c(0,2))
+lines(theta_seq,dgamma(theta_seq,a + n,b + sn), col = 'orange',lwd = 2)
+abline(v = theta,lwd = 2)
+legend('topright', legend = c('Jeffrey-Exponential','Gamma-Exponential','True Theta'), col = c('red','orange','black'),lwd = 2)
+```
+
+We can see that at a smaller sample size, the jeffrey's prior-based model is much closer to the true value than the misleading prior. We therefore see the advantage of using a non-informative prior when we are not confident in our choice of a prior. However, it is important to note that this will not outperform a well chosen prior.

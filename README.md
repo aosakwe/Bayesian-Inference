@@ -29,3 +29,10 @@ Links to the different notebooks I make will be stored here:
 ### TODO
 1. Add citations to each topic
 2. Add section on Jeffreys Prior
+
+
+## Missing topics
+- Optimal Decisions
+- Kullback-Leibler Loss 
+- Variational Inference
+- 
