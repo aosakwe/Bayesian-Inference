@@ -1,0 +1,87 @@
+---
+title: "Optimal Decision Making"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+## Decision-Making
+
+Many statistical procedures involve some form of *decision-making* where actions are taken given the observed data. Examples include
+
+-   parameter estimation
+
+-   hypothesis testing
+
+-   prediction/classification
+
+-   model selection
+
+We can denote a function $T$ which is used as an estimator of a statistic of interest from the random variable $Y$. Consider, the mean, order statistics, or the empirical cdf. We can also consider the model space $\mathbb{F}$. We can then examine a loss function $L(..)$ which will determine the accuracy with which we report $T$ when the ground truth comes from $F \in \mathbb{F}$.
+
+For example, with the cdf $F_y$ we can have that
+
+$$
+\mu = \int yF_y(dy)
+$$
+
+And define the loss function as $L(T,F_y) = (T - \mu)^2$ to represent the loss in reporting the estimator $T$ when the value of interest is $\mu$.
+
+The *optimal decision* is the decision which minimizes the expected loss with respect to the distribution $F_y$. In a parametric analysis defined by $\theta$. We have that
+
+1.  $\theta$ is considered a fixed constant and the data as random in a **frequentist** setting
+2.  The data are fixed and $\theta$ **is random** in a Bayesian setting
+
+### Frequentist calculation
+
+Back to our previous example, in a frequentist setting the optimal decision for $T$ would be
+
+$$
+argmin_{\text{T}}\mathbb{E}_{F_y}[(T- \mu)^2] = argmin_{\text{T}}\{\mathbb{E}_{F_y}[(T -\mathbb{E}_{F_y}[T])^2] + (\mathbb{E_{F_y}[T] - \mu)^2}) \}
+$$
+
+$$
+= argmin_{\text{T}}\{Var_{F_y}[T] + (\mathbb{E_{F_y}[T] - \mu)^2})\}
+$$
+
+This tells us that we need to take into account the variance of T and the squared bias to define the optimal T.
+
+### Kullback-Leibler Divergence/Loss
+
+In Bayesian settings, we usually look at the Kullback-Leibler Loss which is used to measure the difference between two distributions $F_0$ and $F_1$.
+
+$$
+KL(F_0,F_1) = \int \log\{\frac{dF_0(y)}{dF_1(y)}\}dF_0(y)
+$$
+
+This is defined when $F_1$ is absolutely continuous with respect to $F_0$. That is, the probability mass at a given point for $F_1$ is zero whenever it is zero for $F_0$. In essence, we can express the KL as an expectation:
+
+$$
+KL(f_0,f_1) = \mathbb{E}_{f_0}[log\{\frac{f_0(Y)}{f_1(Y)}\}]
+$$
+
+It is important to note that:
+
+1.  KL is always non-negative
+2.  $KL(F_0,F_1) \neq KL(F_1,F_0)$
+3.  KL can only be zero if both distributions are identical.
+
+This is applicable to both discrete and continuous distributions. In a parametric setting, we can expect to have pdf $f(y;\theta)$ where $\theta_0$ represents the optimal, data-generating model. We can then write KL as
+
+$$
+KL(\theta_0,\theta) = \int\{\frac{f(y;\theta_0)}{f(y;\theta)}\}f(y;\theta_0)dy
+$$
+
+and aim to report an estimator $\hat{\theta} = T(Y)$ for the true value $\theta_0$
+
+### Decision Theory Concepts
+
+The key parts of a decision problem are:
+
+-   a decision d, selected from a set of $D$ decisions must be made.
+
+-   there is a true state of nature, $v(\theta)$, which lies in the set $\gamma$ , that is defined bby the data generating model, $F_Y(y;\theta)$ .
+
+-   there is a loss function $L(d,v)$ for decision $d$ and state $v$ which records the loss when for a given state $v$ and decision $d$.
+
+With these components, we aim to **minimize the expected loss**.

@@ -5,10 +5,6 @@ format: html
 editor: visual
 ---
 
-**TODO:**
-
--   **Sampling Importance Resampling**
-
 Previously we have looked at Bayesian models with closed form solutions for the marginal likelihood and posterior. However, in cases where more complex models are required, the marginal likelihood is often not closed form making it impossible to solve the posterior analytically.
 
 In this cases, we are required to **approximate** the posterior from which we can then compute the statistics of interest which we saw in the previous section.
@@ -276,7 +272,7 @@ qgamma(1- conf/2,a_n,b_n)
 quantile(theta_sim,1- conf/2)
 ```
 
-### Importance Sampling 
+### Importance Sampling
 
 In cases where we can't generate samples from the target distribution, Monte Carlo methods allow us to generate viable samples by means of a surrogate distribution. In essence, we aim to identify a pdf $f_0$ for which sampling is possible to then estimate the features of interest of our target distribution's pdf $f$. For this to work, it is imperative that **the** **selected pdf has the support for the same domain as the target pdf**. In the case of determining an expected value we get:
 
@@ -364,7 +360,7 @@ abline(h = true_expec,col = 'red')
 
 As we can see, the standard MC estimator actually has a lot more uncertainty than the IS approaches. We notice that the estimators using a gamma pdf work quite well.
 
-### Optimal Importance Sampling 
+### Optimal Importance Sampling
 
 When choosing $f_0(x)$, we want to ensure that the variance is finite so that our confidence on the estimate is quantifiable. The estimator's variance is finite if and only if
 
@@ -416,7 +412,7 @@ hist(rej_x,freq = F, ylim = c(0,0.02))
 lines(x = density(x = rej_x))
 ```
 
-### Sampling Importance Resampling 
+### Sampling Importance Resampling
 
 Despite being similar, there is a key difference between importance and rejection sampling:
 
