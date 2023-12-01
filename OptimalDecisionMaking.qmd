@@ -85,3 +85,67 @@ The key parts of a decision problem are:
 -   there is a loss function $L(d,v)$ for decision $d$ and state $v$ which records the loss when for a given state $v$ and decision $d$.
 
 With these components, we aim to **minimize the expected loss**.
+
+In the case of estimation, the decision required is the estimation of the parameter $\theta$ and the true state of nature is the parameter's value, that is, $v(\theta) \equiv \theta$. If data is available, the optimal decision is usually a function of the observed data. If the decision takes the form of a statistic, we have $d(y) \equiv T(y) = t_n$ with associated loss $L(t_n,\theta)$. The corresponding random variable will be $T_n \equiv T(Y)$.
+
+**Frequentist Risk (loss):** The expected loss associated with $d(Y)$ over the distribution of $Y|\theta$.
+
+$$
+R_n(d,\theta) = \mathbb{E}_{F_Y}[L(T_n,\theta)] = \int_yL(T(y),\theta)f_Y(y;\theta)dy
+$$
+
+**Bayes Risk (average):** Is the expected risk over the **prior** distribution:
+
+$$
+R_n(d) = \mathbb{E}_{\pi_0}[R_n(d,\theta)] = \mathbb{E}_{\pi_0}[\mathbb{E}_{F_Y}[L(T_n,\theta)]]
+$$
+
+$$
+= \int_\Theta\{ \int_yL(t_n,\theta)f_Y(y;\theta)dy\}\pi_0(\theta)d\theta  
+$$
+
+where $t_n \equiv t_n(y)$.
+
+$$
+= \int_\Theta\int_yL(t_n,\theta)f_Y(y)\pi_n(\theta)dyd\theta
+$$
+
+$$
+= \int_y\{\int_\Theta L(t_n,\theta)\pi_n(\theta)d\theta\}f_Y(y)dy
+$$
+
+Following Bayes Theorem.
+
+With the prior and fixed observable data, the optimal Bayesian decision, the **Bayes rule** is
+
+$$
+\hat{d}_B = argmin_{d \in D} R_n(d(y))
+$$
+
+Interpretation:
+
+-   Bayes risk is minimized when the inner integral is minimized for fixed observations, regardless of their value
+
+-   The double integral is minimized
+
+-   or that the optimal decision should be chosen conditionally on the observed data and not averaged over all possible values.
+
+To estimate, we need to select a statistic of interest. The minimization can be reduced to the following:
+
+$$
+argmin_{t \in \Theta}\int_\Theta L(t_n,\theta)\pi_n(\theta)d\theta
+$$
+
+Given the interpretation mentioned above. In other words, the optimal decision minimizes the Bayes risk and the **posterior expected loss**.
+
+#### Squared-error loss
+
+-   Returns the posterior expectation (see proof)
+
+#### Absolute error loss
+
+-   Returns the posterior median
+
+#### Zero-one loss
+
+-   Returns the posterior mode

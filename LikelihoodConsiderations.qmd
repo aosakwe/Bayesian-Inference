@@ -1,0 +1,16 @@
+---
+title: "Likelihood Considerations"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+We previously looked at how the prior can influence the posterior distribution when few observations are made. To this end, as $n$ increases, we expect the **likelihood** to play a crucial role in defining the posterior. This can be highlighted by expression the posterior on a log scale:
+
+$$
+log\pi_n(\theta) = \sum_{i=1}^nlogf_Y(y_i;\theta) + log\pi_0(\theta) + C
+$$
+
+where the log-prior is constant with respect to $\theta$ whereas the influence of the log-likelihood will grow with an increasing sample size. This makes it imperative to explore the properties of the likelihood as $n$ increases.
+
+### Asymptotic Theory of the Likelihood
