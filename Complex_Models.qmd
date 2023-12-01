@@ -4,3 +4,13 @@ author: "Adrien Osakwe"
 format: html
 editor: visual
 ---
+
+In this section we will explore extensions of the Bayesian methods framework for other modelling:
+
+-   regression
+
+-   latent variable models
+
+-   hierarchical models
+
+# Regression Models

@@ -5,6 +5,8 @@ format: html
 editor: visual
 ---
 
+## Note: this section needs work!
+
 We previously looked at how the prior can influence the posterior distribution when few observations are made. To this end, as $n$ increases, we expect the **likelihood** to play a crucial role in defining the posterior. This can be highlighted by expression the posterior on a log scale:
 
 $$
@@ -14,3 +16,264 @@ $$
 where the log-prior is constant with respect to $\theta$ whereas the influence of the log-likelihood will grow with an increasing sample size. This makes it imperative to explore the properties of the likelihood as $n$ increases.
 
 ### Asymptotic Theory of the Likelihood
+
+The **true model** represents the situation where the data $y$ are realizations of iid random variables $Y_1,…,Y_n$ that are drawn from a distribution with pdf $f_0(y)$. In practice we aim to approximate this model by the use of a **working model,** where we represent the data with a parametric pdf $f_Y(y;\theta)$ where $\theta$ represents a d-dimensional parameter.
+
+Our analysis assumes that for a given $\theta_0$
+
+$$
+f_0(y) \equiv f_Y(y;\theta_0)
+$$
+
+such that the model is **correctly specified**. In any case where there is $f_0(y) \neq f_Y(y;\theta)$ for any $\theta$ , then the model is **incorrectly specified**. These are cases where the theory behind the model must be reconsidered.
+
+**Interpreting** $\theta_0$ **in the working model:**
+
+We define the *true value* of $\theta_0$ as
+
+$$
+\theta_0 = \underset{\theta}{argmin}KL(f_0,f_Y(y;\theta))
+$$ {#eq-1}
+
+Recall that
+
+$$
+KL(f_0,f_Y(y;\theta)) = \int logf_0(y)f_0(y)dy - \int logf_Y(y;\theta)f_0(y)dy
+$$
+
+As our goal is to minimize KL and since $logf_Y(y;\theta) = l(y;\theta)$, we can also express $\theta_0$ as
+
+$$
+\theta_0 = \underset{\theta}{argmax}\mathbb{E}_{f_0}[l(Y;\theta)]
+$$
+
+**Maximum Likelihood**
+
+We can maximize the expectation (mean) of the observed samples to acquire an estimator. The estimator for the maximization problem described above would be
+
+$$
+\hat{\theta}_n = \underset{\theta}{argmax}\frac{1}{n}\sum_{i = 1}^nl(Y_i;\theta)
+$$
+
+and thanks to the **weak law of large numbers:**
+
+$$
+\underset{n \to\infty}{lim}\frac{1}{n}\sum_{i = 1}^nl(Y_i;\theta) = \mathbb{E}_{f_0}[l(Y;\theta)]
+$$
+
+If the expectation exists. If we assume that the log density we described is at least three times differentiable wrt $\theta$, the estimate is defined as the solution to the **score equations**, a system of d equations given by
+
+$$
+\frac{\partial}{\partial\theta}\{\frac{1}{n}\sum_{i = 1}^nl(y_i;\theta)\} = O_d
+$$
+
+Or
+
+$$
+\frac{1}{n}\sum_{i = 1}^n\frac{\partial}{\partial\theta}\{l(Y_i;\theta)\} = \frac{1}{n}\sum_{i = 1}^nS(y_i;\theta) = O_d
+$$
+
+We can denote the order of the derivative with '.'
+
+**Taylor Expansion**
+
+Consider the Taylor expansion of the log-likelihood with respect to $\theta$ around $\theta_0$
+
+$$
+l(y;\theta) = l(y;\theta_0) + \dot{l}(y;\theta_0)^T(\theta - \theta_0) + 0.5(\theta -\theta_0)^T\ddot{l}(y;\theta_0)(\theta - \theta_0) + R_3(y;\theta^*)
+$$
+
+Note that $\ddot{l}(y;\theta_0)$ is (dxd) and $R_3$ is a remainder term for $\theta^*$ such that $|| \theta_0 - \theta^*|| \leq ||\theta_0 - \theta||$
+
+We can evaluate the above for all observations and sum the result
+
+$$
+l_n(\theta) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\theta - \theta_0) + 0.5(\theta -\theta_0)^T\ddot{l_n}(\theta_0)(\theta - \theta_0) + R_3
+$$
+
+At $\theta = \hat{\theta}_n$ and rearranging we have that
+
+$$l_n(\hat{\theta}_n) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3$$
+**Asymptotic behavior**
+
+We can express the above in terms of random variables, where $\hat{\theta}_n = \hat{\theta}_n(Y_{1:n})$
+
+$$l_n(\hat{\theta}_n) - l_n(\theta_0) = \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3$$
+
+We can then consider for an arbitrary $\theta$
+
+$$
+\frac{1}{n}(l_n(\hat{\theta}_n) - l_n(\theta_0)) = \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))
+$$
+
+The RHS expression can be rewritten in terms that involve the true density
+
+$$
+\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0)) = \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l_0(Y_i)) - \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta_0)-l_0(Y_i))
+$$
+
+For any $\theta$ as n approaches $\infty$ , the weak law of large numbers indicates that
+
+$$
+\underset{n \to \infty}{lim}\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l_0(Y_i)) = \mathbb{E}_{f_0}[log(\frac{f_Y(Y;\theta)}{f_0(Y)})] = -KL(f_0,f_Y(.;\theta))
+$$
+
+Given the above$$
+ \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))
+$$
+
+converges in probability to $KL(f_0,f_Y(.;\theta_0))-KL(f_0,f_Y(.;\theta))$
+
+Given our definition of $\theta_0$ as the minimizing value of the KL, we can infer that $KL(f_0,f_Y(.;\theta_0))-KL(f_0,f_Y(.;\theta)) \leq 0$
+
+hence implying that $\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))$ converges to a non-positive constant.
+
+We therefore have that
+
+$$
+Pr_{f_0}[l_n(\theta_0) \geq l_n(\theta)] \rightarrow 1
+$$
+
+As n approaches $\infty$ .That is, for increasing n and with probability tending to 1, the log-likelihood of $\theta_0$ is never less than that of any other $\theta \in \Theta$ .
+
+If an **identifiability** assumption is made, the statement can be strengthened:
+
+The model $f_Y(y;\theta)$ is **identifiable** if, for two parameter values $\theta^\dagger = \theta^\ddagger$
+
+$$
+f_Y(y;\theta^\dagger) = f_Y(y;\theta^\ddagger)
+$$
+
+for all y.
+
+$$
+Pr_{f_0}[l_n(\theta_0) >  l_n(\theta)] \rightarrow 1
+$$ where $\theta \neq \theta_0$
+
+This holds for fixed $\theta_0$ in the expression
+
+$$\frac{1}{n}(l_n(\theta)-l_n(\theta_0)$$ We also need to study $l_n\hat{\theta}_n(Y_{1:n}))$ , where the parameter at which the log-likelihood is evaluated is a random variable: the estimator $\hat{\theta}n(Y_{1:n})$.
+
+We can show that $\hat{\theta}n(Y_{1:n}) \overset{p}{\rightarrow} \theta_0$ and $\hat{\theta}n(Y_{1:n})$ is **consistent** $\theta_0$ and by "continuous mapping"
+
+$$
+|\frac{1}{n}\{l_n(\hat{\theta}_n(Y_{1:n})) - l_n(\theta_0)\} \overset{p}{\rightarrow} 0
+$$
+
+so that, as $n \to \infty$
+
+$$
+\frac{1}{n}\sum_{i = 1}^nl(Y_i;\hat{\theta}_n(Y_{1:n})) \overset{p}{\rightarrow} \mathbb{E}_{f_0}[l(Y;\theta_0)]
+$$
+
+**Asymptotic Normality**
+
+For a continuous function such as $\dot{l}_n(\theta)$ with defined second derivative $\ddot{l}_n(\theta)$ , it is guaranteed by the MVT that there exists and intermediate v alue
+
+$$
+\tilde{\theta} = c\hat{\theta}_n + (1-c)\theta_0$
+$$
+
+for some $c, 0 < c < 1$ such that for
+
+$$
+\dot{l}_n(\hat{\theta}_n) = \dot{l}_n(\theta_0) + \ddot{l}_n(\tilde{\theta})(\hat{\theta}_n - \theta_0)
+$$
+
+The LHS is zero as \$\\hat{\\theta}\_n \$ is the MLE. Provided $\ddot{l}_n(\theta)$ is non-singular, we can write, after rescaling and rearranging that
+
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) =  \{-\frac{1}{n}\ddot{l}_n(\tilde{\theta})\}^{-1}\{\sqrt{n}\dot{l}_n(\theta_0)\}
+$$
+
+In the RV form, the second term of the RHS can be expressed as
+
+$$
+\sqrt{n}(\frac{1}{n}\sum_{i=1}^{n}S(Y_i;\theta_0)
+$$
+
+In other words, it is a sample average quantity scaled by $\sqrt{n}$ . However, by definition of $\theta_0$ we have that
+
+$$
+\mathbb{E}_{f_0}[S(Y;\theta_0)] = \int \dot{l}_n(\theta_0)f_o(y)dy = O_d
+$$
+
+as by definition $\theta_0$ will minimize the KL and therefore must be a solution to the equation. As a result, by the central limit theorem, we have that
+
+$$
+\sqrt{n}(\frac{1}{n}\sum_{i=1}^nS(Y_i;\theta_0)) \overset{d}{\rightarrow} Normal_d(O_d,\mathcal{I}_{f_0}(\theta_0))
+$$
+
+where
+
+$$
+\mathcal{I}_{f_0}(\theta_0) = \mathbb{E}_{f_0}[S(Y;\theta_0)S(Y;\theta_0)^T] \equiv Var_{f_0}[S(Y;\theta_0)]
+$$
+
+is a (d x d) quantity.
+
+As $\hat{\theta}_n \overset{p}{\rightarrow} \theta_0$ we have that
+
+$$
+-\frac{1}{n}\ddot{l}_n(\tilde{\theta}) \overset{a.s.}{\rightarrow} \mathcal{J}_{f_0}(\theta_0)
+$$
+
+Therefore (see slide 195), we have
+
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) =  \{-\frac{1}{n}\ddot{l}_n(\tilde{\theta})\}\{\frac{1}{\sqrt{n}}\dot{l}_n(\theta_0)\} + o_p(1)
+$$
+
+where $o_p(1)$ is a term that converges in probability to zero. The distribution of the second term is given by (slide 196) giving us
+
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) \overset{d}{\rightarrow} Normal_d(O_d,\Sigma(\theta_0))
+$$
+
+where
+
+$$
+\Sigma(\theta_0) = \{\mathcal{J}_{f_0}(\theta_0)\}^{-1}\mathcal{I}_{f_0}(\theta_0)\{\{\mathcal{J}_{f_0}(\theta_0)\}^{-1}\}^T
+$$
+
+This follows as, for arbitrary Z, if $Var[Z] = V$ then $Var[AZ] = AVA^T$
+
+**Correct specification**
+
+Under the **correct specification**,
+
+$$
+f_0(y) \equiv f_Y(y;\theta_0)
+$$
+
+and from earlier results we know that
+
+$$
+\mathcal{I}_{\theta_0}(\theta_0) = \mathcal{J}_{\theta_0}(\theta_0)
+$$
+
+Hence allowing us to deduce that
+
+$$
+\sqrt{n}(\hat{\theta}_n - \theta_0) \overset{d}{\rightarrow} Normal_d(O_d,\{\mathcal{I}_{\theta_0}(\theta_0)\}^{-1})
+$$
+
+Using the same quadratic approximation for the likelihood at $\theta$ and $\hat{\theta}_n$ we have
+
+$$
+\ell_n(\theta) \bumpeq \ell_n\left(\hat{\theta}_n\right)+\dot{\ell}_n\left(\hat{\theta}_n\right)^{\top}\left(\hat{\theta}_n-\theta\right)+\frac{1}{2}\left(\hat{\theta}_n-\theta\right)^{\top} \ddot{\ell}_n\left(\hat{\theta}_n\right)\left(\hat{\theta}_n-\theta\right)
+$$
+
+But knowing that $\dot{l}n(\hat{\theta}n) = 0$ we have that
+
+$$
+\begin{aligned}\exp \left\{\ell_n(\theta)\right\} & \bumpeq \exp \left\{\ell_n\left(\hat{\theta}_n\right)\right\} \exp \left\{\frac{1}{2}\left(\hat{\theta}_n-\theta\right)^{\top} \ddot{\ell}_n\left(\hat{\theta}_n\right)\left(\hat{\theta}_n-\theta\right)\right\} \\& \propto \exp \left\{-\frac{1}{2}\left(\theta-\hat{\theta}_n\right)^{\top}\left\{-\ddot{\ell}_n\left(\hat{\theta}_n\right)\right\}\left(\theta-\hat{\theta}_n\right)\right\} .\end{aligned}
+$$
+
+Thus, when the regularity conditions apply, the likelihood can be approximated by one arising from a Normal distribution
+
+$$
+Normal(\hat{\theta}_n,\{-\ddot{l}_n(\hat{\theta}_n)\}^{-1})
+$$
+
+This approximation can be used in a wide variety of models.
