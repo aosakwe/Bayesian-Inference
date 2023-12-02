@@ -69,3 +69,46 @@ where for $i = 1,…,n$
 -   $\beta$ is (d x 1)
 
 -   $\epsilon_i \sim Normal(0,\sigma^2)$, independently.
+
+With this structure, we can describe the model for the partially exchangeable random variables (error terms) $\epsilon_i = Y_i - x_i\beta$, conditional on $X_i = x_i$. In this scenario, there may or may not be a need to model the distribution of $X_i$. --\> **Note: figure out why**.
+
+We can look at the vector form of the linear regression model
+
+$$
+Y = X\beta + \epsilon
+$$
+
+where the response variable and the error terms are (n x 1) vectors and the predictors are an (nxd) matrix.
+
+We can then have a conditional model
+
+$$
+f_{Y_1,...,Y_n|X_1,...,X_n}(y_1,...,y_n|x_1,...,x_n;\beta,\sigma^2) \equiv Normal_n(X\beta,\sigma^2I_n) 
+$$
+
+where $I_n$ is an identity matrix (nxn).
+
+With this structure, we know the likelihood to be
+
+$$
+\mathcal{L}_n(\beta,\sigma^2) = (\frac{1}{2\pi\sigma^2})^{n/2}exp\{\frac{1}{2\sigma^2}(y-X\beta)^T(y-X\beta)\}
+$$
+
+We can derive a joint conjugate prior
+
+$$
+\pi_0(\beta,\sigma^2) = \pi_0(\sigma^2)\pi_0(\beta|\sigma^2)
+$$
+
+where
+
+$$
+ \pi_0(\sigma^2) \equiv InvGamma(a_0/2,b_0/2)\\
+\pi_0(\beta|\sigma^2) \equiv Normal_d(m_0,\sigma^2M_0)
+$$
+
+**where** $a_0,b_0,m_0,M_0$ **are user-defined constant hyperparameters.** The joint posterior can hence be approximated with
+
+$$
+\pi_n(\beta,\sigma^2) \propto \mathcal{L}_n(\beta,\sigma^2)\pi_0(\beta,\sigma^2)
+$$
