@@ -1,6 +1,7 @@
 # For exam
 
 -   likelihood approximations
+-   linear regression (student-t distribution)
 
 -   alternate distributions
 
