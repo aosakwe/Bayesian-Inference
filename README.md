@@ -1,3 +1,11 @@
+# For exam
+
+-   likelihood approximations
+
+-   alternate distributions
+
+-   sampling procedures and purposes
+
 ## Premise
 
 This project allows me to implement different Bayesian modelling techniques I have seen through class and my own research. In addition, I hope it serves as educational material for others. I have found that the best way to learn is through practice, and so this project is expected to help me master the material I need to undertake my research projects.
@@ -31,7 +39,5 @@ Links to the different notebooks I make will be stored here:
 
 ## Missing topics
 
--   Optimal Decisions
--   Kullback-Leibler Loss
+-   Dirichlet Processes
 -   Variational Inference
--   

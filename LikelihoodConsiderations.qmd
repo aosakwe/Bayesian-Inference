@@ -93,8 +93,7 @@ $$
 
 At $\theta = \hat{\theta}_n$ and rearranging we have that
 
-$$l_n(\hat{\theta}_n) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3$$
-**Asymptotic behavior**
+$$l_n(\hat{\theta}_n) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3$$ **Asymptotic behavior**
 
 We can express the above in terms of random variables, where $\hat{\theta}_n = \hat{\theta}_n(Y_{1:n})$
 
@@ -270,10 +269,10 @@ $$
 \begin{aligned}\exp \left\{\ell_n(\theta)\right\} & \bumpeq \exp \left\{\ell_n\left(\hat{\theta}_n\right)\right\} \exp \left\{\frac{1}{2}\left(\hat{\theta}_n-\theta\right)^{\top} \ddot{\ell}_n\left(\hat{\theta}_n\right)\left(\hat{\theta}_n-\theta\right)\right\} \\& \propto \exp \left\{-\frac{1}{2}\left(\theta-\hat{\theta}_n\right)^{\top}\left\{-\ddot{\ell}_n\left(\hat{\theta}_n\right)\right\}\left(\theta-\hat{\theta}_n\right)\right\} .\end{aligned}
 $$
 
-Thus, when the regularity conditions apply, the likelihood can be approximated by one arising from a Normal distribution
+**Thus, when the regularity conditions apply, the likelihood can be approximated by one arising from a Normal distribution**
 
 $$
 Normal(\hat{\theta}_n,\{-\ddot{l}_n(\hat{\theta}_n)\}^{-1})
 $$
 
-This approximation can be used in a wide variety of models.
+**This approximation can be used in a wide variety of models.**

@@ -1,0 +1,8 @@
+---
+title: "Bayesian Non-parametrics"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+## 

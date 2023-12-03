@@ -149,7 +149,7 @@ $$\pi_{0,\theta}(\theta) = c  \rightarrow \pi_{0,\phi}(\phi) = c  \times J(\thet
 
 Where $J(\theta \rightarrow \phi)$ is the Jacobian of the transformation. This implies that there is no guarantee that reparameterizing the uniform prior will retain the non-informative behavior. The jeffrey's prior is defined using the following structure for the prior:\
 $$
-\pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{-\frac{1}{2}}
+\pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{\frac{1}{2}}
 $$
 
 Where $\mathcal{I}_\theta(\theta)$ is the *Fisher Information* of the pdf. The Fisher Information can be represented as the negative expectation of the second derivative of the log-pdf. In practice, for k parameters $(\theta_1,…,\theta_k)$ , the fisher Information will take the form of a $k \times k$ matrix (REVIEW). In practice, we can see that any transformation of $\theta$ will give the same value for the Jeffrey's prior.
@@ -172,7 +172,7 @@ $$ \mathcal{I}_\theta(\theta) = \frac{1}{\theta^2} $$
 
 Therefore,
 
-$$ \pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{-\frac{1}{2}} = \frac{1}{\theta} $$
+$$ \pi_0(\theta) \propto  |\mathcal{I}_\theta(\theta)|^{\frac{1}{2}} = \frac{1}{\theta} $$
 
 $$ \pi_n(\theta) \propto {\theta^n e^{-\theta s_n}} \theta^{-1} =  {\theta^{n-1} e^{-\theta s_n}} $$
 
