@@ -110,5 +110,105 @@ $$
 **where** $a_0,b_0,m_0,M_0$ **are user-defined constant hyperparameters.** The joint posterior can hence be approximated with
 
 $$
-\pi_n(\beta,\sigma^2) \propto \mathcal{L}_n(\beta,\sigma^2)\pi_0(\beta,\sigma^2)
+\pi_n(\beta,\sigma^2) \propto \mathcal{L}_n(\beta,\sigma^2)\pi_0(\beta,\sigma^2) \\
+\pi_0(\sigma^2) = \frac{(b_0/2)^{a_0/2}}{\Gamma(a_0/2)}(\frac{1}{\sigma^2})^{a_0/2 +1}exp\{-\frac{b_0}{2\sigma^2}\}\\
+\pi_0(\beta|\sigma^2) = (\frac{1}{2\pi\sigma^2})^{d/2}\frac{1}{|M_0|^{0.5}}exp\{\frac{1}{2\sigma^2}(\beta- m_0)^TM_0^{-1}(\beta-m_0)\}
 $$
+
+We can explore the exponents of the above posterior as a quadratic form.
+
+The expression
+
+$$
+(y - X\beta)^T(y-X\beta) + (\beta - m_0)^TM_0^{-1}(\beta-m_0) \\
+$$
+
+which equates to $(\beta - m_n)^TM_n^{-1}(\beta-m_n) + c_n$ where we need to determine the expressions for $m_n, M_n,c_n$.
+
+-   Quadratic term:
+
+    $\beta^TM_n^{-1}\beta = \beta^TX^TX\beta + \beta^T M_0^{-1}\beta$
+
+    and therefore
+
+    $M_n^{-1} = X^TX + M_0^{-1}$ --\>\> $M_n = (X^TX + M_0^{-1})^{-1}$
+
+-   Linear term:
+
+    \$\\beta\^TM_n\^{-1}m_n = \\beta\^TX\^Ty + \\beta\^TM_0\^{-1}m_0 \$
+
+    and therefore
+
+    $m_n = M_n(X^Ty + M_0^{-1}m_0)$
+
+    $= (X^TX + M_0^{-1})^{-1}(X^Ty +M_0^{-1}m_0)$
+
+-   Constant term:
+
+    $m_n^TM_n^{-1}m_n + c_n  = y^Ty + m_0^TM_0^{-1}m_0$
+
+    and therefore
+
+    $c_n  =  y^Ty + m_0^TM_0^{-1}m_0 - m_n^TM_n^{-1}m_n$
+
+Given us the joint posterior (under proportionality) as
+
+$$
+\pi_n(\beta,\sigma^2) = (\frac{1}{\sigma^2})^{\frac{(n+a_0+d)}{2}+1}\exp\{-\frac{(c_n + b_0)}{2\sigma^2}\}\exp\{\frac{1}{2\sigma^2}(\beta- m_n)^TM_n^{-1}(\beta-m_n)\}
+$$
+
+Which tells us that the conditional posterior and marginalizing the joint posterior over $\beta$ give us
+
+$$
+\pi_n(\beta|\sigma^2) \equiv Normal_d(m_n,\sigma^2M_n) \\
+\pi_n(\sigma^2) \equiv InvGamma(a_n/2,b_n/2)
+$$
+
+where $a_n = a_0 + n$ and $b_n = b_0 + c_n$.
+
+**Note:** see slides 218-221 for the marginal $\beta$ posterior where knowledge of the Inverse Gamma pdf will reveal that $\pi_n(\beta)$ is a **multivariate Student-t distribution**.
+
+Assigning prior ignorance to $\beta$ (setting $M_0^{-1}$ to 0) will lead to results that equate to what we would get from the maximum likelihood approach.
+
+$$
+m_n \rightarrow (X^TX)^{-1}X^Ty \\
+M_n \rightarrow (X^TX)^{-1}
+$$
+
+We can alternatively use a **g-prior**: with hyperparameter $\lambda > 0$.
+
+$$
+M_0 = \lambda^{-1}(X^TX)^{-1}
+$$
+
+and hence
+
+$$
+M_n = (1 + \lambda)^{-1}(X^TX)^{-1}
+$$
+
+If, for the g-prior we have
+
+$$
+m_0 = 0_d //
+M_0 = \lambda I_d
+$$
+
+then we will have
+
+$$
+m_n = (X^TX + \lambda I_d)^{-1}X^Ty \\
+M_n = (X^TX + \lambda I_d)^{-1}
+$$
+
+which gives us the procedure for **ridge regression**.
+
+Jeffrey's prior for linear regression (see slide 228 for derivation):
+
+$$
+\pi_0(\beta,\sigma^2) \propto (\frac{1}{\sigma^2})^{d/2 +1}
+$$
+
+## Non-linear Regression
+
+### Generalized Linear Models
