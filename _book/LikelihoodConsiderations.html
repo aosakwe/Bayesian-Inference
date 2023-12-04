@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrien Osakwe">
+
+<title>Bayesian Inference - 6&nbsp; Likelihood Considerations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./OptimalDecisionMaking.html" rel="next">
+<link href="./PosteriorSummary.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./LikelihoodConsiderations.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Likelihood Considerations</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Bayesian Inference</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Index</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Main.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Bayesian Inference Projects</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Binomial_Model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Conjugate_Dist.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conjugate Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PosteriorSummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Studying the Posterior</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./LikelihoodConsiderations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Likelihood Considerations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./OptimalDecisionMaking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Optimal Decision Making</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PosteriorApproximation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BayesianModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayesian Modelling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BayesianNonParametric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PracticeProblems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exercises</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#note-this-section-needs-work" id="toc-note-this-section-needs-work" class="nav-link active" data-scroll-target="#note-this-section-needs-work"><span class="header-section-number">6.1</span> Note: this section needs work!</a>
+  <ul class="collapse">
+  <li><a href="#asymptotic-theory-of-the-likelihood" id="toc-asymptotic-theory-of-the-likelihood" class="nav-link" data-scroll-target="#asymptotic-theory-of-the-likelihood"><span class="header-section-number">6.1.1</span> Asymptotic Theory of the Likelihood</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Likelihood Considerations</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Adrien Osakwe </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="note-this-section-needs-work" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="note-this-section-needs-work"><span class="header-section-number">6.1</span> Note: this section needs work!</h2>
+<p>We previously looked at how the prior can influence the posterior distribution when few observations are made. To this end, as <span class="math inline">\(n\)</span> increases, we expect the <strong>likelihood</strong> to play a crucial role in defining the posterior. This can be highlighted by expression the posterior on a log scale:</p>
+<p><span class="math display">\[
+log\pi_n(\theta) = \sum_{i=1}^nlogf_Y(y_i;\theta) + log\pi_0(\theta) + C
+\]</span></p>
+<p>where the log-prior is constant with respect to <span class="math inline">\(\theta\)</span> whereas the influence of the log-likelihood will grow with an increasing sample size. This makes it imperative to explore the properties of the likelihood as <span class="math inline">\(n\)</span> increases.</p>
+<section id="asymptotic-theory-of-the-likelihood" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="asymptotic-theory-of-the-likelihood"><span class="header-section-number">6.1.1</span> Asymptotic Theory of the Likelihood</h3>
+<p>The <strong>true model</strong> represents the situation where the data <span class="math inline">\(y\)</span> are realizations of iid random variables <span class="math inline">\(Y_1,…,Y_n\)</span> that are drawn from a distribution with pdf <span class="math inline">\(f_0(y)\)</span>. In practice we aim to approximate this model by the use of a <strong>working model,</strong> where we represent the data with a parametric pdf <span class="math inline">\(f_Y(y;\theta)\)</span> where <span class="math inline">\(\theta\)</span> represents a d-dimensional parameter.</p>
+<p>Our analysis assumes that for a given <span class="math inline">\(\theta_0\)</span></p>
+<p><span class="math display">\[
+f_0(y) \equiv f_Y(y;\theta_0)
+\]</span></p>
+<p>such that the model is <strong>correctly specified</strong>. In any case where there is <span class="math inline">\(f_0(y) \neq f_Y(y;\theta)\)</span> for any <span class="math inline">\(\theta\)</span> , then the model is <strong>incorrectly specified</strong>. These are cases where the theory behind the model must be reconsidered.</p>
+<p><strong>Interpreting</strong> <span class="math inline">\(\theta_0\)</span> <strong>in the working model:</strong></p>
+<p>We define the <em>true value</em> of <span class="math inline">\(\theta_0\)</span> as</p>
+<p><span id="eq-1"><span class="math display">\[
+\theta_0 = \underset{\theta}{argmin}KL(f_0,f_Y(y;\theta))
+\tag{6.1}\]</span></span></p>
+<p>Recall that</p>
+<p><span class="math display">\[
+KL(f_0,f_Y(y;\theta)) = \int logf_0(y)f_0(y)dy - \int logf_Y(y;\theta)f_0(y)dy
+\]</span></p>
+<p>As our goal is to minimize KL and since <span class="math inline">\(logf_Y(y;\theta) = l(y;\theta)\)</span>, we can also express <span class="math inline">\(\theta_0\)</span> as</p>
+<p><span class="math display">\[
+\theta_0 = \underset{\theta}{argmax}\mathbb{E}_{f_0}[l(Y;\theta)]
+\]</span></p>
+<p><strong>Maximum Likelihood</strong></p>
+<p>We can maximize the expectation (mean) of the observed samples to acquire an estimator. The estimator for the maximization problem described above would be</p>
+<p><span class="math display">\[
+\hat{\theta}_n = \underset{\theta}{argmax}\frac{1}{n}\sum_{i = 1}^nl(Y_i;\theta)
+\]</span></p>
+<p>and thanks to the <strong>weak law of large numbers:</strong></p>
+<p><span class="math display">\[
+\underset{n \to\infty}{lim}\frac{1}{n}\sum_{i = 1}^nl(Y_i;\theta) = \mathbb{E}_{f_0}[l(Y;\theta)]
+\]</span></p>
+<p>If the expectation exists. If we assume that the log density we described is at least three times differentiable wrt <span class="math inline">\(\theta\)</span>, the estimate is defined as the solution to the <strong>score equations</strong>, a system of d equations given by</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial\theta}\{\frac{1}{n}\sum_{i = 1}^nl(y_i;\theta)\} = O_d
+\]</span></p>
+<p>Or</p>
+<p><span class="math display">\[
+\frac{1}{n}\sum_{i = 1}^n\frac{\partial}{\partial\theta}\{l(Y_i;\theta)\} = \frac{1}{n}\sum_{i = 1}^nS(y_i;\theta) = O_d
+\]</span></p>
+<p>We can denote the order of the derivative with ‘.’</p>
+<p><strong>Taylor Expansion</strong></p>
+<p>Consider the Taylor expansion of the log-likelihood with respect to <span class="math inline">\(\theta\)</span> around <span class="math inline">\(\theta_0\)</span></p>
+<p><span class="math display">\[
+l(y;\theta) = l(y;\theta_0) + \dot{l}(y;\theta_0)^T(\theta - \theta_0) + 0.5(\theta -\theta_0)^T\ddot{l}(y;\theta_0)(\theta - \theta_0) + R_3(y;\theta^*)
+\]</span></p>
+<p>Note that <span class="math inline">\(\ddot{l}(y;\theta_0)\)</span> is (dxd) and <span class="math inline">\(R_3\)</span> is a remainder term for <span class="math inline">\(\theta^*\)</span> such that <span class="math inline">\(|| \theta_0 - \theta^*|| \leq ||\theta_0 - \theta||\)</span></p>
+<p>We can evaluate the above for all observations and sum the result</p>
+<p><span class="math display">\[
+l_n(\theta) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\theta - \theta_0) + 0.5(\theta -\theta_0)^T\ddot{l_n}(\theta_0)(\theta - \theta_0) + R_3
+\]</span></p>
+<p>At <span class="math inline">\(\theta = \hat{\theta}_n\)</span> and rearranging we have that</p>
+<p><span class="math display">\[l_n(\hat{\theta}_n) = l_n(\theta_0) + \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3\]</span> <strong>Asymptotic behavior</strong></p>
+<p>We can express the above in terms of random variables, where <span class="math inline">\(\hat{\theta}_n = \hat{\theta}_n(Y_{1:n})\)</span></p>
+<p><span class="math display">\[l_n(\hat{\theta}_n) - l_n(\theta_0) = \dot{l_n}(\theta_0)^T(\hat{\theta}_n - \theta_0) + 0.5(\hat{\theta}_n -\theta_0)^T\ddot{l_n}(\theta_0)(\hat{\theta}_n - \theta_0) + R_3\]</span></p>
+<p>We can then consider for an arbitrary <span class="math inline">\(\theta\)</span></p>
+<p><span class="math display">\[
+\frac{1}{n}(l_n(\hat{\theta}_n) - l_n(\theta_0)) = \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))
+\]</span></p>
+<p>The RHS expression can be rewritten in terms that involve the true density</p>
+<p><span class="math display">\[
+\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0)) = \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l_0(Y_i)) - \frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta_0)-l_0(Y_i))
+\]</span></p>
+<p>For any <span class="math inline">\(\theta\)</span> as n approaches <span class="math inline">\(\infty\)</span> , the weak law of large numbers indicates that</p>
+<p><span class="math display">\[
+\underset{n \to \infty}{lim}\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l_0(Y_i)) = \mathbb{E}_{f_0}[log(\frac{f_Y(Y;\theta)}{f_0(Y)})] = -KL(f_0,f_Y(.;\theta))
+\]</span></p>
+<p>Given the above<span class="math display">\[
+\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))
+\]</span></p>
+<p>converges in probability to <span class="math inline">\(KL(f_0,f_Y(.;\theta_0))-KL(f_0,f_Y(.;\theta))\)</span></p>
+<p>Given our definition of <span class="math inline">\(\theta_0\)</span> as the minimizing value of the KL, we can infer that <span class="math inline">\(KL(f_0,f_Y(.;\theta_0))-KL(f_0,f_Y(.;\theta)) \leq 0\)</span></p>
+<p>hence implying that <span class="math inline">\(\frac{1}{n}\sum_{i = 1}^{n}(l(Y_i;\theta)-l(Y_i;\theta_0))\)</span> converges to a non-positive constant.</p>
+<p>We therefore have that</p>
+<p><span class="math display">\[
+Pr_{f_0}[l_n(\theta_0) \geq l_n(\theta)] \rightarrow 1
+\]</span></p>
+<p>As n approaches <span class="math inline">\(\infty\)</span> .That is, for increasing n and with probability tending to 1, the log-likelihood of <span class="math inline">\(\theta_0\)</span> is never less than that of any other <span class="math inline">\(\theta \in \Theta\)</span> .</p>
+<p>If an <strong>identifiability</strong> assumption is made, the statement can be strengthened:</p>
+<p>The model <span class="math inline">\(f_Y(y;\theta)\)</span> is <strong>identifiable</strong> if, for two parameter values <span class="math inline">\(\theta^\dagger = \theta^\ddagger\)</span></p>
+<p><span class="math display">\[
+f_Y(y;\theta^\dagger) = f_Y(y;\theta^\ddagger)
+\]</span></p>
+<p>for all y.</p>
+<p><span class="math display">\[
+Pr_{f_0}[l_n(\theta_0) &gt;  l_n(\theta)] \rightarrow 1
+\]</span> where <span class="math inline">\(\theta \neq \theta_0\)</span></p>
+<p>This holds for fixed <span class="math inline">\(\theta_0\)</span> in the expression</p>
+<p><span class="math display">\[\frac{1}{n}(l_n(\theta)-l_n(\theta_0)\]</span> We also need to study <span class="math inline">\(l_n\hat{\theta}_n(Y_{1:n}))\)</span> , where the parameter at which the log-likelihood is evaluated is a random variable: the estimator <span class="math inline">\(\hat{\theta}n(Y_{1:n})\)</span>.</p>
+<p>We can show that <span class="math inline">\(\hat{\theta}n(Y_{1:n}) \overset{p}{\rightarrow} \theta_0\)</span> and <span class="math inline">\(\hat{\theta}n(Y_{1:n})\)</span> is <strong>consistent</strong> <span class="math inline">\(\theta_0\)</span> and by “continuous mapping”</p>
+<p><span class="math display">\[
+|\frac{1}{n}\{l_n(\hat{\theta}_n(Y_{1:n})) - l_n(\theta_0)\} \overset{p}{\rightarrow} 0
+\]</span></p>
+<p>so that, as <span class="math inline">\(n \to \infty\)</span></p>
+<p><span class="math display">\[
+\frac{1}{n}\sum_{i = 1}^nl(Y_i;\hat{\theta}_n(Y_{1:n})) \overset{p}{\rightarrow} \mathbb{E}_{f_0}[l(Y;\theta_0)]
+\]</span></p>
+<p><strong>Asymptotic Normality</strong></p>
+<p>For a continuous function such as <span class="math inline">\(\dot{l}_n(\theta)\)</span> with defined second derivative <span class="math inline">\(\ddot{l}_n(\theta)\)</span> , it is guaranteed by the MVT that there exists and intermediate v alue</p>
+<p><span class="math display">\[
+\tilde{\theta} = c\hat{\theta}_n + (1-c)\theta_0$
+\]</span></p>
+<p>for some <span class="math inline">\(c, 0 &lt; c &lt; 1\)</span> such that for</p>
+<p><span class="math display">\[
+\dot{l}_n(\hat{\theta}_n) = \dot{l}_n(\theta_0) + \ddot{l}_n(\tilde{\theta})(\hat{\theta}_n - \theta_0)
+\]</span></p>
+<p>The LHS is zero as $\hat{\theta}_n $ is the MLE. Provided <span class="math inline">\(\ddot{l}_n(\theta)\)</span> is non-singular, we can write, after rescaling and rearranging that</p>
+<p><span class="math display">\[
+\sqrt{n}(\hat{\theta}_n - \theta_0) =  \{-\frac{1}{n}\ddot{l}_n(\tilde{\theta})\}^{-1}\{\sqrt{n}\dot{l}_n(\theta_0)\}
+\]</span></p>
+<p>In the RV form, the second term of the RHS can be expressed as</p>
+<p><span class="math display">\[
+\sqrt{n}(\frac{1}{n}\sum_{i=1}^{n}S(Y_i;\theta_0)
+\]</span></p>
+<p>In other words, it is a sample average quantity scaled by <span class="math inline">\(\sqrt{n}\)</span> . However, by definition of <span class="math inline">\(\theta_0\)</span> we have that</p>
+<p><span class="math display">\[
+\mathbb{E}_{f_0}[S(Y;\theta_0)] = \int \dot{l}_n(\theta_0)f_o(y)dy = O_d
+\]</span></p>
+<p>as by definition <span class="math inline">\(\theta_0\)</span> will minimize the KL and therefore must be a solution to the equation. As a result, by the central limit theorem, we have that</p>
+<p><span class="math display">\[
+\sqrt{n}(\frac{1}{n}\sum_{i=1}^nS(Y_i;\theta_0)) \overset{d}{\rightarrow} Normal_d(O_d,\mathcal{I}_{f_0}(\theta_0))
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathcal{I}_{f_0}(\theta_0) = \mathbb{E}_{f_0}[S(Y;\theta_0)S(Y;\theta_0)^T] \equiv Var_{f_0}[S(Y;\theta_0)]
+\]</span></p>
+<p>is a (d x d) quantity.</p>
+<p>As <span class="math inline">\(\hat{\theta}_n \overset{p}{\rightarrow} \theta_0\)</span> we have that</p>
+<p><span class="math display">\[
+-\frac{1}{n}\ddot{l}_n(\tilde{\theta}) \overset{a.s.}{\rightarrow} \mathcal{J}_{f_0}(\theta_0)
+\]</span></p>
+<p>Therefore (see slide 195), we have</p>
+<p><span class="math display">\[
+\sqrt{n}(\hat{\theta}_n - \theta_0) =  \{-\frac{1}{n}\ddot{l}_n(\tilde{\theta})\}\{\frac{1}{\sqrt{n}}\dot{l}_n(\theta_0)\} + o_p(1)
+\]</span></p>
+<p>where <span class="math inline">\(o_p(1)\)</span> is a term that converges in probability to zero. The distribution of the second term is given by (slide 196) giving us</p>
+<p><span class="math display">\[
+\sqrt{n}(\hat{\theta}_n - \theta_0) \overset{d}{\rightarrow} Normal_d(O_d,\Sigma(\theta_0))
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\Sigma(\theta_0) = \{\mathcal{J}_{f_0}(\theta_0)\}^{-1}\mathcal{I}_{f_0}(\theta_0)\{\{\mathcal{J}_{f_0}(\theta_0)\}^{-1}\}^T
+\]</span></p>
+<p>This follows as, for arbitrary Z, if <span class="math inline">\(Var[Z] = V\)</span> then <span class="math inline">\(Var[AZ] = AVA^T\)</span></p>
+<p><strong>Correct specification</strong></p>
+<p>Under the <strong>correct specification</strong>,</p>
+<p><span class="math display">\[
+f_0(y) \equiv f_Y(y;\theta_0)
+\]</span></p>
+<p>and from earlier results we know that</p>
+<p><span class="math display">\[
+\mathcal{I}_{\theta_0}(\theta_0) = \mathcal{J}_{\theta_0}(\theta_0)
+\]</span></p>
+<p>Hence allowing us to deduce that</p>
+<p><span class="math display">\[
+\sqrt{n}(\hat{\theta}_n - \theta_0) \overset{d}{\rightarrow} Normal_d(O_d,\{\mathcal{I}_{\theta_0}(\theta_0)\}^{-1})
+\]</span></p>
+<p>Using the same quadratic approximation for the likelihood at <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\hat{\theta}_n\)</span> we have</p>
+<p><span class="math display">\[
+\ell_n(\theta) \bumpeq \ell_n\left(\hat{\theta}_n\right)+\dot{\ell}_n\left(\hat{\theta}_n\right)^{\top}\left(\hat{\theta}_n-\theta\right)+\frac{1}{2}\left(\hat{\theta}_n-\theta\right)^{\top} \ddot{\ell}_n\left(\hat{\theta}_n\right)\left(\hat{\theta}_n-\theta\right)
+\]</span></p>
+<p>But knowing that <span class="math inline">\(\dot{l}n(\hat{\theta}n) = 0\)</span> we have that</p>
+<p><span class="math display">\[
+\begin{aligned}\exp \left\{\ell_n(\theta)\right\} &amp; \bumpeq \exp \left\{\ell_n\left(\hat{\theta}_n\right)\right\} \exp \left\{\frac{1}{2}\left(\hat{\theta}_n-\theta\right)^{\top} \ddot{\ell}_n\left(\hat{\theta}_n\right)\left(\hat{\theta}_n-\theta\right)\right\} \\&amp; \propto \exp \left\{-\frac{1}{2}\left(\theta-\hat{\theta}_n\right)^{\top}\left\{-\ddot{\ell}_n\left(\hat{\theta}_n\right)\right\}\left(\theta-\hat{\theta}_n\right)\right\} .\end{aligned}
+\]</span></p>
+<p><strong>Thus, when the regularity conditions apply, the likelihood can be approximated by one arising from a Normal distribution</strong></p>
+<p><span class="math display">\[
+Normal(\hat{\theta}_n,\{-\ddot{l}_n(\hat{\theta}_n)\}^{-1})
+\]</span></p>
+<p><strong>This approximation can be used in a wide variety of models.</strong></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./PosteriorSummary.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Studying the Posterior</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./OptimalDecisionMaking.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Optimal Decision Making</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

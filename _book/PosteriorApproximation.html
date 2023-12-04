@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Adrien Osakwe">
+
+<title>Bayesian Inference - 8&nbsp; Approximation and Sampling Methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./BayesianModels.html" rel="next">
+<link href="./OptimalDecisionMaking.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./PosteriorApproximation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling Methods</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Bayesian Inference</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Index</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Main.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Binomial_Model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Binomial Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Conjugate_Dist.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conjugate Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PosteriorSummary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Studying the Posterior</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./LikelihoodConsiderations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Likelihood Considerations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./OptimalDecisionMaking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Optimal Decision Making</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PosteriorApproximation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BayesianModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayesian Modelling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./BayesianNonParametric.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./PracticeProblems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exercises</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sampling-methods" id="toc-sampling-methods" class="nav-link active" data-scroll-target="#sampling-methods"><span class="header-section-number">8.0.1</span> Sampling Methods</a></li>
+  <li><a href="#grid-approximation" id="toc-grid-approximation" class="nav-link" data-scroll-target="#grid-approximation"><span class="header-section-number">8.0.2</span> Grid Approximation</a></li>
+  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods"><span class="header-section-number">8.0.3</span> Monte Carlo Methods</a></li>
+  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">8.0.4</span> Importance Sampling</a></li>
+  <li><a href="#optimal-importance-sampling" id="toc-optimal-importance-sampling" class="nav-link" data-scroll-target="#optimal-importance-sampling"><span class="header-section-number">8.0.5</span> Optimal Importance Sampling</a></li>
+  <li><a href="#rejection-sampling" id="toc-rejection-sampling" class="nav-link" data-scroll-target="#rejection-sampling"><span class="header-section-number">8.0.6</span> Rejection Sampling</a></li>
+  <li><a href="#sampling-importance-resampling" id="toc-sampling-importance-resampling" class="nav-link" data-scroll-target="#sampling-importance-resampling"><span class="header-section-number">8.0.7</span> Sampling Importance Resampling</a></li>
+  <li><a href="#markov-chain-monte-carlo-mcmc-methods" id="toc-markov-chain-monte-carlo-mcmc-methods" class="nav-link" data-scroll-target="#markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.0.8</span> Markov Chain Monte Carlo (MCMC) Methods</a></li>
+  <li><a href="#metropolis-hastings" id="toc-metropolis-hastings" class="nav-link" data-scroll-target="#metropolis-hastings"><span class="header-section-number">8.0.9</span> Metropolis-Hastings</a></li>
+  <li><a href="#probabilistic-programming---incomplete" id="toc-probabilistic-programming---incomplete" class="nav-link" data-scroll-target="#probabilistic-programming---incomplete"><span class="header-section-number">8.0.10</span> Probabilistic Programming - Incomplete</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling Methods</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Adrien Osakwe </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Previously we have looked at Bayesian models with closed form solutions for the marginal likelihood and posterior. However, in cases where more complex models are required, the marginal likelihood is often not closed form making it impossible to solve the posterior analytically.</p>
+<p>In this cases, we are required to <strong>approximate</strong> the posterior from which we can then compute the statistics of interest which we saw in the previous section.</p>
+<p>There are two key ways to approximate the posterior:</p>
+<ol type="1">
+<li>Sampling/Simulation: we can generate random samples from the posterior distribution to then use the empirical results as an estimate of the posterior.</li>
+<li>Variational Inference: we can approximate the posterior by using a closed-form surrogate distribution.</li>
+</ol>
+<p>A simple form of variational inference is normal approximation, where the central limit theorem is used to justify the use of the normal distribution as a surrogate posterior. In this chapter we will focus on sampling methods for posterior approximation.</p>
+<section id="sampling-methods" class="level3" data-number="8.0.1">
+<h3 data-number="8.0.1" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">8.0.1</span> Sampling Methods</h3>
+<p>To approximate the posterior by simulation, we need to generate random samples from the posterior. This is trivial if the posterior is a known distribution with a derived simulation method. However, this becomes interesting when the posterior <strong>isn’t</strong> closed form. We can achieve this by making use of the unnormalized posterior density or any function <span class="math inline">\(q(\theta;y)\)</span> that is proportional to it.:</p>
+<p><span class="math display">\[
+p(\theta|y) \propto p(\theta)p(y|\theta) \propto q(\theta;y)
+\]</span></p>
+<p>and generating random samples from this to approximate the posterior.</p>
+<p>To generate the random samples, we can use <strong>rejection sampling</strong> or <strong>importance sampling</strong> for simple models. There are also many probabilistic programming tools available to automatically generate simulations.</p>
+</section>
+<section id="grid-approximation" class="level3" data-number="8.0.2">
+<h3 data-number="8.0.2" class="anchored" data-anchor-id="grid-approximation"><span class="header-section-number">8.0.2</span> Grid Approximation</h3>
+<p>This method, also know as <strong>direct discrete approximation</strong>, works as follows:</p>
+<ol type="1">
+<li><p>Create an even-spaced grid <span class="math inline">\(g_1 = a + i/2,…,g_m = b - i/2\)</span> where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the lower and upper bounds of the parameter space of the posterior and <span class="math inline">\(i\)</span> and <span class="math inline">\(m\)</span> are the grid increments and number of grid points respectively.</p></li>
+<li><p>Evaluate the values of the unnormalized posterior density across the grid points <span class="math inline">\(q(g_j;y)\)</span> and normalize them by their sum to estimate the posterior values:</p>
+<p><span class="math display">\[
+\hat{p_j} = \frac{q(g_j;y)}{\sum_{i = 1}^{m}q(g_i;y)}\]</span></p></li>
+<li><p>For every iteration <span class="math inline">\(s = 1,…,S:\)</span></p>
+<ol type="1">
+<li><p>Generate a sample for <span class="math inline">\(\theta_s\)</span> from a categorical distribution with <span class="math inline">\(m\)</span> outcomes ($g_1,…,g_m$) with respective probabilities <span class="math inline">\(\hat{p}_1,...,\hat{p}_m\)</span></p></li>
+<li><p>Add zero-centered uniformally distributed noise <span class="math inline">\(\epsilon\)</span> that has an interval length equal to the grid interval spacing such that:</p>
+<p><span class="math display">\[\hat{\theta}_s = \theta_s + \epsilon\]</span></p>
+<p>where <span class="math inline">\(\epsilon \sim Uniform(-i/2,i/2)\)</span></p></li>
+</ol></li>
+</ol>
+<p>This generates a process similar to numerical integration, meaning that this approximation approach is limited to a finite interval.</p>
+<p>Note: I have been strictly using <span class="math inline">\(\theta\)</span> as the symbol for parameters across the different models used to make it clear what symbol represents the distribution parameter. In practice, different distributions make use of different symbols for their parameter. Examples are <span class="math inline">\(\alpha, \beta, \lambda\)</span> some of which were used in previous sections when defining the prior distributions.</p>
+<section id="example" class="level4" data-number="8.0.2.1">
+<h4 data-number="8.0.2.1" class="anchored" data-anchor-id="example"><span class="header-section-number">8.0.2.1</span> Example</h4>
+<p>We can demonstrate the usage of grid approximation with the Poisson-gamma model we explored previously. Simulation isn’t necessary here since the posterior is closed-form, but this will at least demonstrate how grid approximation is able to approximate it.</p>
+<p>Recall that the posterior of the Poisson-Gamma model had the following form:</p>
+<p><span class="math display">\[
+\Theta|Y \sim Gamma(\alpha + s_n,\beta + n)
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>true_theta <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> b <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n,true_theta)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Un-normalized Posterior (numerator for gamma distribution)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="cf">function</span>(theta,y,n,alpha,beta){</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  theta<span class="sc">^</span>(alpha <span class="sc">+</span> <span class="fu">sum</span>(y) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(n <span class="sc">+</span> beta)<span class="sc">*</span>theta)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Explore theta on (0,25) --&gt; Need a fixed range </span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>low_bound <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>high_bound <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#Grid increment</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(low_bound <span class="sc">+</span> i<span class="sc">/</span><span class="dv">2</span>, high_bound <span class="sc">-</span> i<span class="sc">/</span><span class="dv">2</span>,<span class="at">by =</span> i)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>grid_n <span class="ot">&lt;-</span> <span class="fu">length</span>(grid)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>grid_val <span class="ot">&lt;-</span> <span class="fu">q</span>(grid,y,n,a,b)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Normalize to create a proper categorical distribution</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>grid_norm <span class="ot">&lt;-</span> grid_val<span class="sc">/</span><span class="fu">sum</span>(grid_val)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Simulate values</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>sim_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>grid_n,n_sim,<span class="at">prob =</span> grid_norm,<span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Noise parameter</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">runif</span>(n_sim,<span class="sc">-</span>i<span class="sc">/</span><span class="dv">2</span>,i<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> grid[sim_idx] <span class="sc">+</span> e</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="fl">1.5</span>,<span class="fl">1.5</span>))</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="do">## Visualize with histogram</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(theta_sim,<span class="at">col =</span> <span class="st">'orange'</span>,<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">8</span>,<span class="fl">0.25</span>), <span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">'Grid Approximation using Poisson-Gamma Model'</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>))</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(grid,<span class="fu">dgamma</span>(grid,a <span class="sc">+</span> <span class="fu">sum</span>(y),b <span class="sc">+</span> n),<span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="st">'Ground Truth'</span>, <span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Visualize with density estimate</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(grid,<span class="fu">dgamma</span>(grid,a <span class="sc">+</span> <span class="fu">sum</span>(y),b <span class="sc">+</span> n), <span class="at">type =</span> <span class="st">'l'</span>,<span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>, <span class="at">ylab =</span> <span class="st">'Density'</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(theta_sim),<span class="at">col =</span> <span class="st">'orange'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'Estimate'</span>,<span class="st">'Ground Truth'</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">'lightblue'</span>,<span class="st">'orange'</span>),<span class="at">lwd =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Note that we needed to explore <span class="math inline">\(\theta\)</span> on a fixed interval (0,25) to be able to approximate it. We can determine the plausible range of values to explore using the prior (if it is informative) or the likelihood. The key requirement is that we make sure the interval covers nearly all of the pmf for the distribution.</p>
+<p>We can clearly see that the grid approximation has allowed us to correctly approximate the posterior without having to evaluate it analytically.</p>
+</section>
+<section id="example-2-non-conjugate-priors" class="level4" data-number="8.0.2.2">
+<h4 data-number="8.0.2.2" class="anchored" data-anchor-id="example-2-non-conjugate-priors"><span class="header-section-number">8.0.2.2</span> Example #2 : Non-conjugate priors</h4>
+<p>Let’s look at an example of a non-conjugate distribution, where the normalizing constant is such that the posterior is not a known distribution and is therefore <strong>not closed-form (intractable)</strong>. A common example is using a log-normal prior for a Poisson likelihood. In essence, if our random variable is <span class="math inline">\(X\)</span> and is normally distributed, we can use a reparameterization of the r.v, <span class="math inline">\(Y = e^X\)</span> to get a log-normal distribution with the <strong>mean and variance being equal to the log of the mean and variance for</strong> <span class="math inline">\(X\)</span> .</p>
+<p>Our model therefore uses the following distributions:</p>
+<p><span class="math display">\[
+Y \sim Poisson(\theta)
+\]</span></p>
+<p><span class="math display">\[
+\theta \sim Log  normal(\mu,\sigma^2)
+\]</span></p>
+<p>The pdf for the prior is as follows:</p>
+<p><span class="math display">\[
+p(\theta) = \frac{1}{\theta \sqrt{2\pi\sigma^2}}e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}},
+\]</span></p>
+<p>which gives the following un normalized posterior pdf</p>
+<p><span class="math display">\[
+p(\theta|y) \propto p(\theta)p(y|\theta)
+\]</span></p>
+<p><span class="math display">\[
+\propto \theta^{-1}
+e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}}\theta^{\sum_{i = 1}^{n}y_i}e^{-n\theta}
+\]</span></p>
+<p><span class="math display">\[
+\propto
+\theta^{
+{\sum_{i = 1}^{n}y_i}-1}e^{-n\theta
+- {\frac{(log\theta - \mu)^2}{2\sigma^2}}
+}\]</span></p>
+<p>And a marginalized joint pdf (numerator) we cannot integrate over (intractable). We can now apply grid approximation! We will be reusing the distribution we create in the last example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Approximating the distribution we generated in the previous example</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="cf">function</span>(theta,y,n,mu,sigma2){</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  theta<span class="sc">^</span>(<span class="fu">sum</span>(y) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>n<span class="sc">*</span>theta<span class="sc">-</span>(<span class="fu">log</span>(theta)<span class="sc">-</span>mu)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (<span class="dv">2</span><span class="sc">*</span>sigma2))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Explore theta on (0,25) --&gt; Need a fixed range </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>low_bound <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>high_bound <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Grid increment</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(low_bound <span class="sc">+</span> i<span class="sc">/</span><span class="dv">2</span>, high_bound <span class="sc">-</span> i<span class="sc">/</span><span class="dv">2</span>,<span class="at">by =</span> i)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>grid_val <span class="ot">&lt;-</span> <span class="fu">q</span>(grid,y,n,mu,sigma2)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>grid_norm <span class="ot">&lt;-</span> grid_val<span class="sc">/</span><span class="fu">sum</span>(grid_val)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Simulate values</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>sim_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>grid_n,n_sim,<span class="at">prob =</span> grid_norm,<span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Noise parameter</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">runif</span>(n_sim,<span class="sc">-</span>i<span class="sc">/</span><span class="dv">2</span>,i<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>theta_sim <span class="ot">&lt;-</span> grid[sim_idx] <span class="sc">+</span> e</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Visualize</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="fl">1.5</span>,<span class="fl">1.5</span>))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#plot 1</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(theta_sim,<span class="at">col =</span> <span class="st">'orange'</span>,<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">8</span>,<span class="fl">0.25</span>), <span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">'Grid Approximation using Poisson-LogNormal'</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>),<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.75</span>))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(grid,<span class="fu">dgamma</span>(grid,a <span class="sc">+</span> <span class="fu">sum</span>(y),b <span class="sc">+</span> n),<span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="st">'Ground Truth'</span>, <span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">##plot 2</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(grid,<span class="fu">dgamma</span>(grid,a <span class="sc">+</span> <span class="fu">sum</span>(y),b <span class="sc">+</span> n), <span class="at">type =</span> <span class="st">'l'</span>,<span class="at">col =</span> <span class="st">'lightblue'</span>,<span class="at">lwd =</span> <span class="dv">4</span>, <span class="at">ylab =</span> <span class="st">'Density'</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>),<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.75</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(theta_sim),<span class="at">col =</span> <span class="st">'orange'</span>,<span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'Estimate'</span>,<span class="st">'Ground Truth'</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">'lightblue'</span>,<span class="st">'orange'</span>),<span class="at">lwd =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!</p>
+</section>
+</section>
+<section id="monte-carlo-methods" class="level3" data-number="8.0.3">
+<h3 data-number="8.0.3" class="anchored" data-anchor-id="monte-carlo-methods"><span class="header-section-number">8.0.3</span> Monte Carlo Methods</h3>
+<p>We have now seen that a sufficient number of simulations can approximate the ground truth posterior. These simulations can also be used to calculate summary statistics such as the posterior mean, variance and credible intervals!</p>
+<p>In general, computing integrals via simulations is referred to as <strong>Monte Carlo integration</strong> or the <strong>Monte Carlo method</strong>. These types of methods depend on the <strong>strong law of large numbers (SLL)</strong>.</p>
+<section id="strong-law-of-large-numbers" class="level4" data-number="8.0.3.1">
+<h4 data-number="8.0.3.1" class="anchored" data-anchor-id="strong-law-of-large-numbers"><span class="header-section-number">8.0.3.1</span> Strong law of large numbers</h4>
+<p>Where we have a sequence of random variables <span class="math inline">\(Y_i,…,Y_n\)</span> that are i.i.d. with a finite expected value <span class="math inline">\(\mu\)</span> , we have that almost surely (a.s.):</p>
+<p><span class="math display">\[
+\lim_{n\to\infty} \frac{1}{n}\sum_{i = 1}^{n}y_i = \mu
+\]</span></p>
+<p>We are able to say almost surely as the above statement is said to converges to the result with a probability of one.</p>
+<p>SLL implies that the sample mean of an i.i.d sequence of random variables will always converge to the expected value of the underlying distribution with sufficient sample size. In the case of coin tosses, we would therefore expect that after enough trials, by SLL, that the expected value is 0.5 (assuming it is an unbiased coin!).</p>
+</section>
+<section id="example-monte-carlo-integration" class="level4" data-number="8.0.3.2">
+<h4 data-number="8.0.3.2" class="anchored" data-anchor-id="example-monte-carlo-integration"><span class="header-section-number">8.0.3.2</span> Example: Monte Carlo Integration</h4>
+<p>We can revisit our example from the beginning of the chapter where we estimate <span class="math inline">\(\theta\)</span>. By SLL, we expect that that average of the simulated values will converge to the true posterior mean of <span class="math inline">\(\theta\)</span> provided we simulate enough values. We can therefore approximate the posterior expectation using this mean. In this case, we know the posterior expectation of the Poisson-gamma model</p>
+<p><span class="math display">\[
+\mathbb{E}[\Theta|Y = y] = \frac{\alpha_n}{\beta_n} = \frac{\sum_{i = 1}^{n}Y_i +\alpha}{n + \beta}
+\]</span></p>
+<p>so we can validate our approximation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a_n <span class="ot">&lt;-</span> a <span class="sc">+</span> <span class="fu">sum</span>(y)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b_n <span class="ot">&lt;-</span> b <span class="sc">+</span> n</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#True Expected Posterior</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>a_n<span class="sc">/</span>b_n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.333333</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Simulated Posterior Mean</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(theta_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.548937</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>theta_est <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(theta_sim)<span class="sc">/</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(theta_sim)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(theta_sim),theta_est,<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">2.5</span>,<span class="fl">3.6</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">expression</span>(theta),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">'N'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> a_n<span class="sc">/</span>b_n,<span class="at">col =</span> <span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The same can be done to approximate the true posterior variance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#True Posterior variance</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>a_n<span class="sc">/</span>(b_n<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5555556</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Simulated Posterior variance</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(theta_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.688096</code></pre>
+</div>
+</div>
+<p>We can also approximate posterior probabilities within an interval defined by an indicator <span class="math inline">\(I_{(a,b)}(x)\)</span> where <span class="math inline">\(I_{(a,b)}(x) = 1\)</span> if <span class="math inline">\(x \in (a.b)\)</span> and <span class="math inline">\(I_{(a,b)}(x) = 0\)</span> otherwise:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#True Posterior</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pgamma</span>(<span class="dv">3</span>,a_n,b_n,<span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6509161</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Simulated Posterior</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(theta_sim <span class="sc">&gt;</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7323</code></pre>
+</div>
+</div>
+<p>Therefore, we are also able to estimate quantiles:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>conf <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#True 95% credible interval lower bound</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(conf<span class="sc">/</span><span class="dv">2</span>,a_n,b_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.036087</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Estimated 95% credible interval lower bound</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(theta_sim,conf<span class="sc">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    2.5% 
+2.127166 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#True 95% credible interval upper bound</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qgamma</span>(<span class="dv">1</span><span class="sc">-</span> conf<span class="sc">/</span><span class="dv">2</span>,a_n,b_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.945142</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Estimated 95% credible interval upper bound</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(theta_sim,<span class="dv">1</span><span class="sc">-</span> conf<span class="sc">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   97.5% 
+5.346038 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="importance-sampling" class="level3" data-number="8.0.4">
+<h3 data-number="8.0.4" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">8.0.4</span> Importance Sampling</h3>
+<p>In cases where we can’t generate samples from the target distribution, Monte Carlo methods allow us to generate viable samples by means of a surrogate distribution. In essence, we aim to identify a pdf <span class="math inline">\(f_0\)</span> for which sampling is possible to then estimate the features of interest of our target distribution’s pdf <span class="math inline">\(f\)</span>. For this to work, it is imperative that <strong>the</strong> <strong>selected pdf has the support for the same domain as the target pdf</strong>. In the case of determining an expected value we get:</p>
+<p><span class="math display">\[
+\int{g(x)f(x)}dx = \int{g(x)f(x)\frac{f_0(x)}{f_0(x)}}dx =  \int{\frac{g(x)f(x)}{f_0(x)}f_0(x)}dx
+\]</span></p>
+<p>Which gives us</p>
+<p><span class="math display">\[
+\mathbb{E}_f[g(X)] = \mathbb{E}_{f_0}[\frac{g(X)f(X)}{f_0(X)}]
+\]</span></p>
+<p>Using the SLL as discussed previously, we can then use the <strong>estimator</strong> <span class="math inline">\(\hat{I}^{(f_0)}_N(g)\)</span> to get the expected value over the target pdf:</p>
+<p><span class="math display">\[\hat{I}^{(f_0)}_N(g) = \frac{1}{N}\sum_{i=1}^{N}\frac{g(X_i)f(X_i)}{f_0(X_i)}\]</span></p>
+<p>In practice, <span class="math inline">\(\hat{I}^{(f_0)}_N(g)\)</span> is known as the <strong>importance sampling</strong> estimator. To emphasize the notion of importance, we can rearrange the equation as follows:</p>
+<p><span class="math display">\[\hat{I}^{(f_0)}_N(g) = \frac{1}{N}\sum_{i=1}^{N}\frac{f(X_i)}{f_0(X_i)}g(X_i) = \sum_{i=1}^{N}w_0(X_i)g(X_i)  \]</span></p>
+<p>Where <span class="math inline">\(w_0(X_i)\)</span> represents the <strong>importance sampling weight</strong>. We would choose to use the importance sampler estimator over the standard estimator in cases where its variance is less than that of the standard estimator.</p>
+<p>Let’s look at an example. Let us say that we want to get the following expectation over <span class="math inline">\(f(x)\)</span></p>
+<p><span class="math display">\[
+E_f[g(x)]
+\]</span></p>
+<p>Where we know that <span class="math inline">\(f(x)\)</span> is the pdf of a Gamma distribution <span class="math inline">\(X \sim Gamma(2,3)\)</span>. We aim to compute <span class="math inline">\(\mathbb{E}[X^3]\)</span>. As we know the ground truth, we know that the expected value for the random variable of a gamma function is:</p>
+<p><span class="math display">\[\mathbb{E}[X^r] = \frac{1}{\beta^r}\frac{\Gamma(\alpha + r)}{\Gamma(\alpha)}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>true_expec <span class="ot">&lt;-</span> <span class="fu">gamma</span>(a <span class="sc">+</span> r)<span class="sc">/</span>((b<span class="sc">^</span>r) <span class="sc">*</span><span class="fu">gamma</span>(a))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x<span class="sc">^</span>r</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y<span class="sc">*</span><span class="fu">dgamma</span>(x,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">type =</span> <span class="st">'l'</span>,<span class="at">col =</span> <span class="st">'red'</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">'X'</span>,<span class="at">ylab =</span> <span class="st">''</span>,<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.2</span>))</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">dgamma</span>(x,<span class="dv">2</span>,<span class="dv">3</span>),<span class="at">col =</span> <span class="st">'blue'</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'g(x)f(x)'</span>,<span class="st">'f(x)'</span>),<span class="at">col =</span> <span class="fu">c</span>(<span class="st">'red'</span>,<span class="st">'blue'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can now evaluate importance sampling estimators that use a series of <span class="math inline">\(f_0\)</span> functions:</p>
+<ul>
+<li><p><span class="math inline">\(Gamma(2,3)\)</span> - Standard MC Estimator</p></li>
+<li><p><span class="math inline">\(Gamma(6,3)\)</span></p></li>
+<li><p><span class="math inline">\(Student(5)\)</span> centered around <span class="math inline">\(x = 2\)</span></p></li>
+<li><p><span class="math inline">\(Normal(3,2)\)</span></p></li>
+<li><p><span class="math inline">\(Gamma(2,6)\)</span></p></li>
+</ul>
+<p>Doing this for multiple runs will help us determine the variance of each estimator.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>runs <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>estimates <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> runs,<span class="at">ncol =</span> <span class="dv">5</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (run <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>runs){</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  X1 <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(samples,a,b)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  X2 <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(samples,<span class="dv">6</span>,<span class="dv">3</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  X3 <span class="ot">&lt;-</span> <span class="fu">rt</span>(samples,<span class="dv">5</span>) <span class="sc">+</span> <span class="dv">2</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  X4 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(samples,<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  X5 <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(samples,<span class="dv">5</span>,<span class="dv">2</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  Y1 <span class="ot">&lt;-</span> (X1<span class="sc">^</span>r)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  Y2 <span class="ot">&lt;-</span> (X2<span class="sc">^</span>r)<span class="sc">*</span><span class="fu">dgamma</span>(X2,a,b)<span class="sc">/</span><span class="fu">dgamma</span>(X2,<span class="dv">6</span>,<span class="dv">3</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  Y3 <span class="ot">&lt;-</span> (X3<span class="sc">^</span>r)<span class="sc">*</span><span class="fu">dgamma</span>(X3,a,b)<span class="sc">/</span><span class="fu">dt</span>(X3<span class="dv">-2</span>,<span class="dv">5</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  Y4 <span class="ot">&lt;-</span> (X4<span class="sc">^</span>r)<span class="sc">*</span><span class="fu">dgamma</span>(X4,a,b)<span class="sc">/</span><span class="fu">dnorm</span>(X4,<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  Y5 <span class="ot">&lt;-</span> (X5<span class="sc">^</span>r)<span class="sc">*</span><span class="fu">dgamma</span>(X5,a,b)<span class="sc">/</span><span class="fu">dgamma</span>(X5,<span class="dv">5</span>,<span class="dv">2</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  estimates[run,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(Y1),<span class="fu">mean</span>(Y2),</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">mean</span>(Y3),<span class="fu">mean</span>(Y4),<span class="fu">mean</span>(Y5))</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(estimates)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">'Comparison of IS Estimators over 1000 Replicates'</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> true_expec,<span class="at">col =</span> <span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see, the standard MC estimator actually has a lot more uncertainty than the IS approaches. We notice that the estimators using a gamma pdf work quite well.</p>
+</section>
+<section id="optimal-importance-sampling" class="level3" data-number="8.0.5">
+<h3 data-number="8.0.5" class="anchored" data-anchor-id="optimal-importance-sampling"><span class="header-section-number">8.0.5</span> Optimal Importance Sampling</h3>
+<p>When choosing <span class="math inline">\(f_0(x)\)</span>, we want to ensure that the variance is finite so that our confidence on the estimate is quantifiable. The estimator’s variance is finite if and only if</p>
+<p><span class="math display">\[
+\frac{g(x)f(x)}{f_0(x)}
+\]</span></p>
+<p>has finite variance. In other words, it is finite if</p>
+<p><span class="math display">\[
+\mathbb{E}_{f_0}[\{\frac{g(x)f(x)}{f_0(x)}\}^2] = \int_{-\infty}^\infty\{\frac{g(x)f(x)}{f_0(x)}\}^2f_0(x)dx
+\]</span></p>
+<p>is finite. We therefore conclude that an <strong>optimal</strong> choice for <span class="math inline">\(f_0\)</span> occurs when<span class="math inline">\(f_0(x) \propto |g(x)|f(x)\)</span></p>
+<p>When the ratio <span class="math inline">\(\frac{f(x)}{f_0(x)}\)</span> has unbounded support, the variance of our estimator will not be finite. We therefore need a way to ensure that the ratio remains bounded at the tails for <span class="math inline">\(f\)</span> with unbounded support. In practice, we find that</p>
+<p><span class="math display">\[
+\lim_{n\to\infty}\frac{1}{N}\sum_{i = 1}^N\frac{f(X_i)}{f_0(X_i)} = \int_{-\infty}^\infty\frac{f(X_i)}{f_0(x)}f_0(x)dx = 1
+\]</span></p>
+<p>allow us to derive the following estimator</p>
+<p><span class="math display">\[
+\tilde{I}_N^{(f_0)}(g) = \frac{\sum_{i=1}^{N}\frac{g(X_i)f(X_i)}{f_0(X_i)}}{\sum_{i = 1}^N\frac{f(X_i)}{f_0(X_i)}}\xrightarrow{\text{a.s.}} \mathbb{E}_f[g(X)]\]</span></p>
+<p>Which, if it exists, may have a smaller variance than the variance we saw earlier.</p>
+<p>-Note: consider adding something about harmonic mean derivation</p>
+</section>
+<section id="rejection-sampling" class="level3" data-number="8.0.6">
+<h3 data-number="8.0.6" class="anchored" data-anchor-id="rejection-sampling"><span class="header-section-number">8.0.6</span> Rejection Sampling</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>true_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x){   <span class="fu">return</span>(<span class="fu">dnorm</span>(x,<span class="dv">30</span>,<span class="dv">10</span>)<span class="sc">+</span> <span class="fu">dnorm</span>(x,<span class="dv">80</span>,<span class="dv">20</span>))  } </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>estim_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x){   <span class="fu">return</span>(<span class="fu">dnorm</span>(x,<span class="dv">50</span>,<span class="dv">30</span>)) } </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">150</span>) </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">true_dist</span>(x)<span class="sc">/</span><span class="fu">estim_dist</span>(x)) </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,<span class="fu">true_dist</span>(x),<span class="at">type =</span> <span class="st">'l'</span>,<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.06</span>)) </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,c<span class="sc">*</span><span class="fu">estim_dist</span>(x)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>rej_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(n,c){   </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,<span class="dv">50</span>,<span class="dv">30</span>)  </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)   </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x[<span class="fu">true_dist</span>(x)<span class="sc">/</span>(c<span class="sc">*</span><span class="fu">estim_dist</span>(x)) <span class="sc">&gt;</span> k]) }</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>rej_x <span class="ot">&lt;-</span> <span class="fu">rej_sample</span>(<span class="dv">100000</span>,c) </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(rej_x,<span class="at">freq =</span> F, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.02</span>)) </span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> <span class="fu">density</span>(<span class="at">x =</span> rej_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="sampling-importance-resampling" class="level3" data-number="8.0.7">
+<h3 data-number="8.0.7" class="anchored" data-anchor-id="sampling-importance-resampling"><span class="header-section-number">8.0.7</span> Sampling Importance Resampling</h3>
+<p>Despite being similar, there is a key difference between importance and rejection sampling:</p>
+<ol type="1">
+<li>Importance sampling focuses on approximating numerical integration with respect to <span class="math inline">\(f(x)\)</span></li>
+<li>Rejection sampling focuses on generating i.i.d samples from <span class="math inline">\(f(x)\)</span></li>
+</ol>
+<p>Based on these differences, we can consider <strong>Sampling Importance Resampling</strong> (SIR) which can sample from density <span class="math inline">\(f(x)\)</span> by <em>re-weighting</em> and then <em>resampling</em> samples from <span class="math inline">\(f_0(x)\)</span>:</p>
+<ol type="1">
+<li>Generate samples <span class="math inline">\(x_1,…,x_n\)</span> from <span class="math inline">\(f_0\)</span></li>
+<li>Calculate re-normalized weights <span class="math inline">\(w_1,…,w_n\)</span> <span class="math display">\[w_i = \frac{\frac{f(X_i)}{f_0(X_i)}}{\sum_{j = 1}^N\frac{f(X_j)}{f_0(X_j)}} \]</span></li>
+<li>Generate new samples (resample) from the discrete distribution of the samples <span class="math inline">\(x\)</span> using the weights <span class="math inline">\(w\)</span> as the probability masses.</li>
+</ol>
+<p>Note: make an example</p>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-methods" class="level3" data-number="8.0.8">
+<h3 data-number="8.0.8" class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.0.8</span> Markov Chain Monte Carlo (MCMC) Methods</h3>
+<p>Grid approximation worked well in our 1-dimensional example. However, this is not always the case when we begin to work with high-dimensional data. To cover the parameter space we defined in our example, we generated a grid with 2000 points. However, if we had additional dimensions each with 2000 points, we would find ourselves working with <span class="math inline">\(2000^d\)</span> grid points. This becomes quite impractical in what has been a very simple example. Clearly, grid approximation will not be viable for higher dimensions.</p>
+<p>As a result, most sampling approaches for more complex models usually make use of <strong>Markov Chain Monte Carlo (MCMC)</strong> methods. This family of methods focuses on iterative sampling from a markov chain for which the distribution at convergence matches the target distribution. In our case, this is the posterior distribution.</p>
+<section id="markov-chain" class="level4" data-number="8.0.8.1">
+<h4 data-number="8.0.8.1" class="anchored" data-anchor-id="markov-chain"><span class="header-section-number">8.0.8.1</span> Markov Chain</h4>
+<p>A Markov chain is a sequence of random variables <span class="math inline">\(X_1,X_2,…\)</span> that have a Markov property. That is, for any discrete time point <span class="math inline">\(i\)</span> :</p>
+<p><span class="math display">\[P(X_{i+1} | X_i,X_{i-1},...,X_0) = P(X_{i+1} | X_i)\]</span></p>
+<p>That is to say, for any discrete time point $i$, the state of the random variable at the next time point, <span class="math inline">\(X_{i+1}\)</span> depends <strong>only</strong> on the current state <span class="math inline">\(X_i\)</span> . The set of all possible values or states that the random variables can take is known as the <strong>state space</strong> <span class="math inline">\(S\)</span>.</p>
+</section>
+<section id="mcmc-sampling" class="level4" data-number="8.0.8.2">
+<h4 data-number="8.0.8.2" class="anchored" data-anchor-id="mcmc-sampling"><span class="header-section-number">8.0.8.2</span> MCMC Sampling</h4>
+<p>Simplistic sampling methods such as the ones we saw previously generate i.i.d. samples from the target distribution. However, the values we sample from the state space S (<span class="math inline">\(\theta_1,…,\theta_S\)</span>) by an MCMC method experience high auto-correlation. That is, the value sampled at the next time point will be similar to the current value. Although this would be an issue for a small sample size, MCMC overcomes this by generating a large number of samples and using the full sample to approximate the posterior distribution. MCMC algorithms converge when they reach the stationary distribution. That is, the stationary distribution is a distribution <span class="math inline">\(\pi(x)\)</span> achieved at a state where for all <span class="math inline">\(i \in \mathbb{Z}^+\)</span> :</p>
+<p><span class="math display">\[
+P(X_i = k) = \pi(k)
+\]</span></p>
+<p>which implies that the next state of the random variable is the same as the current state. Once it has reached convergence, sampling from the stationary distribution will eventually lead to an approximation of the true posterior. Determining when convergence has been reached is difficult to determine. There are different diagnostics available to explore this, one of which is to running different MCMC instances with different initializations and see if they reach a similar distribution.</p>
+<p>As the first iterations of MCMC sampling do not represent the posterior yet, they are usually discarded. The number of iterations that are discarded is up to the user and is referred to as the <strong>burn-in</strong> period. Markov chains that were designed to estimate target posterior distributions are known as <strong>MCMC samplers</strong>. The two most popular examples are the <strong>Gibbs sampler</strong> and the <strong>Metropolis-Hastings sampler</strong>. The Gibbs sampler is actually a special case of the MH sampler.</p>
+</section>
+<section id="example-gibbs-sampler" class="level4" data-number="8.0.8.3">
+<h4 data-number="8.0.8.3" class="anchored" data-anchor-id="example-gibbs-sampler"><span class="header-section-number">8.0.8.3</span> Example: Gibbs sampler</h4>
+<p>The Gibbs sampler works by incrementally updating each of the components of the parameter vector <span class="math inline">\(\theta\)</span>. We can assume that the parameter vector is multi-dimensional where for each component <span class="math inline">\(\theta_j\)</span> , the sampler generates a value using the conditional posterior distribution of the component given all the other components.</p>
+<p><span class="math display">\[
+p(\theta_j | \theta_{-j},y)
+\]</span></p>
+<p>Notice that the current component <strong>is omitted</strong> from the parameter vector being used as prior information!</p>
+<p>We can explore the concept with a two-dimensional example. We assume that we have one observation <span class="math inline">\((y_1,y_2) = (0,0)\)</span> which comes from a two-dimensional normal distribution <span class="math inline">\(N(\mu,\Sigma_0)\)</span> , where the parameter we are interested in is the mean vector <span class="math inline">\(\mu = (\mu_1,\mu_2)\)</span> and the covariance matrix</p>
+<p><span class="math display">\[\Sigma_0 =
+\begin{bmatrix}
+1 &amp; \rho \\
+\rho &amp; 1 \\
+\end{bmatrix} \]</span> is assumed to be known and constant with <span class="math inline">\(\rho = -0.7\)</span> . We can also assume that we are using an improper uniform prior <span class="math inline">\(p(\mu) \propto 1\)</span>. The posterior is now a two-dimensional normal distribution <span class="math inline">\(N(\mu,\Sigma_0)\)</span>. Note that for now we will not consider the inference of the posterior. Normally we could generate samples from pre-existing implementations but we will look at making a rudimentary implementation of a Gibbs sampler.</p>
+<p>We have the following conditional posteriors for each mean of interest:</p>
+<p><span class="math display">\[
+\mu_1|\mu_2,Y \sim N(y_1 + \rho(\mu_2-y_2),1 - \rho^2)
+\]</span></p>
+<p><span class="math display">\[
+\mu_2|\mu_1,Y \sim N(y_2 + \rho(\mu_1-y_1),1 - \rho^2)
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.7</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>mu1_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(y, rho, mu2) <span class="fu">rnorm</span>(<span class="dv">1</span>, y[<span class="dv">1</span>] <span class="sc">+</span> rho <span class="sc">*</span> (mu2<span class="sc">-</span>y[<span class="dv">2</span>]), <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>mu2_sample <span class="ot">&lt;-</span> <span class="cf">function</span>(y, rho, mu1) <span class="fu">rnorm</span>(<span class="dv">1</span>, y[<span class="dv">2</span>] <span class="sc">+</span> rho <span class="sc">*</span> (mu1<span class="sc">-</span>y[<span class="dv">1</span>]), <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>rho<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>n_sim <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>mu1 <span class="ot">&lt;-</span> mu2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_sim)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>mu1[<span class="dv">1</span>] <span class="ot">&lt;-</span> mu2[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n_sim){</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  mu1[i] <span class="ot">&lt;-</span> <span class="fu">mu1_sample</span>(y,rho,mu2[i<span class="dv">-1</span>])</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  mu2[i] <span class="ot">&lt;-</span> <span class="fu">mu2_sample</span>(y,rho,mu1[i])</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gganimate' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>gibbs_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(mu1,mu2, <span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span>n_sim)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>gibbs_df<span class="sc">$</span>start <span class="ot">&lt;-</span> <span class="st">'-'</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>gibbs_df<span class="sc">$</span>start[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Start"</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gibbs_df,<span class="fu">aes</span>(mu1,mu2,<span class="at">shape =</span> start)) <span class="sc">+</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="st">'all'</span>))  <span class="sc">+</span> </span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gibbs_df,<span class="fu">aes</span>(mu1,mu2,<span class="at">shape =</span> start)) <span class="sc">+</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>( <span class="fu">aes</span>(<span class="at">group =</span> <span class="st">'all'</span>))  <span class="sc">+</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Iteration: {frame_along}'</span>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_reveal</span>(<span class="at">along =</span> iteration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_path()`: Each group consists of only one observation.
+ℹ Do you need to adjust the group aesthetic?
+`geom_path()`: Each group consists of only one observation.
+ℹ Do you need to adjust the group aesthetic?</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-12-1.gif" class="img-fluid"></p>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anim_save</span>(<span class="st">'mcmc.gif'</span>, <span class="at">animation =</span> <span class="fu">last_animation</span>(), <span class="at">path =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can compare our results with the true posterior to see how well we approximated the distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,rho,rho,<span class="dv">1</span>),<span class="at">ncol =</span><span class="dv">2</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(n_sim,y,covar)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">plot</span>(mu1, mu2, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">'orange'</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(mu[<span class="dv">1</span>]), </span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="fu">expression</span>(mu[<span class="dv">2</span>]),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">'MCMC'</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(X[,<span class="dv">1</span>], X[,<span class="dv">2</span>], <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">'orange'</span>,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>), <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="fu">expression</span>(mu[<span class="dv">1</span>]), </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="fu">expression</span>(mu[<span class="dv">2</span>]),</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">'True Posterior'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see, despite starting with estimates well off of the true values, the Gibbs sampler was able to reach a distribution that is quite similar to the true posterior.</p>
+</section>
+</section>
+<section id="metropolis-hastings" class="level3" data-number="8.0.9">
+<h3 data-number="8.0.9" class="anchored" data-anchor-id="metropolis-hastings"><span class="header-section-number">8.0.9</span> Metropolis-Hastings</h3>
+<p>An alternative method for MCMC sampling is the Metropolis-Hastings algorithm. In this approach, we iteratively propose a random sample of the random variable as the next state <span class="math inline">\(z\)</span> given our current state <span class="math inline">\(x\)</span>. This is reffered to as a <em>transition kernel</em> <span class="math inline">\(Q(z|x)\)</span> which is often simply denoted as a normal distribution with the current state <span class="math inline">\(x\)</span> as the mean and a standard deviation equal to 1. By defining criteria that allows us to accept or reject the proposed new sample, we are able to explore the domain of possible values generated by the target distribution through what is a random walk (think Brownian motion). The criteria for acceptance is known as the <em>acceptance probability</em> and is calculated as follows:</p>
+<p><span class="math display">\[
+A = min(1,\frac{\pi(z)Q(x|z)}{\pi(x)Q(z|x)}
+\]</span></p>
+<p>In the case of a transition kernel which has a random walk behavior as the one described above, we find that <span class="math inline">\(Q(z|x) = Q(x|z)\)</span> allowing us to exclude both from the calculation of the acceptance probability.</p>
+<p>To achieve this in our multi-dimensional setting, we would make use of the following steps:</p>
+<ol type="1">
+<li>Initialize the state <span class="math inline">\(X_1 = (\mu_1,\mu_2)\)</span></li>
+<li>For t steps:
+<ul>
+<li>sample <span class="math inline">\(z\)</span> from the transition kernel <span class="math inline">\(Q(z|x)\)</span></li>
+<li>Compute the acceptance probability</li>
+<li>Accept or reject the proposed state</li>
+</ul></li>
+</ol>
+<p>We can apply this to our previous distribution ( <span class="math inline">\(\mu_1= \mu_2 =0\)</span> ) to see how well we can replicate its sampling.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> <span class="dv">2</span>,<span class="at">ncol =</span> t)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>x[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.7</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,rho,rho,<span class="dv">1</span>),<span class="at">ncol =</span><span class="dv">2</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>t){</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  z[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,x[<span class="dv">1</span>,i<span class="dv">-1</span>])</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  z[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,x[<span class="dv">2</span>,i<span class="dv">-1</span>])</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  A <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="dv">1</span>,mvtnorm<span class="sc">::</span><span class="fu">dmvnorm</span>(z,<span class="at">mean =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">2</span>),<span class="at">sigma =</span> covar))</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> A){</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    x[,i] <span class="ot">&lt;-</span> z</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    x[,i] <span class="ot">&lt;-</span> x[,i<span class="dv">-1</span>]</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">t</span>(x))</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x,<span class="fu">aes</span>(V1,V2)) <span class="sc">+</span> <span class="fu">geom_point</span>()  <span class="sc">+</span> </span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Metropolis-Hastings Algorithm Samples'</span>,</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">expression</span>(mu[<span class="dv">1</span>]),</span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(mu[<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Once again, we see that the MCMC sampler is generating samples in a similar fashion to the target distribution!</p>
+</section>
+<section id="probabilistic-programming---incomplete" class="level3" data-number="8.0.10">
+<h3 data-number="8.0.10" class="anchored" data-anchor-id="probabilistic-programming---incomplete"><span class="header-section-number">8.0.10</span> Probabilistic Programming - Incomplete</h3>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./OptimalDecisionMaking.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Optimal Decision Making</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./BayesianModels.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayesian Modelling</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

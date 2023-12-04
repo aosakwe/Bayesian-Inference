@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "Bayesian Inference"
+  author: "Adrien Osakwe"
+  date: "04/12/2023"
+  chapters:
+    - index.qmd
+    - Main.qmd
+    - Binomial_Model.qmd
+    - Conjugate_Dist.qmd
+    - PosteriorSummary.qmd
+    - LikelihoodConsiderations.qmd  
+    - OptimalDecisionMaking.qmd   
+    - PosteriorApproximation.qmd 
+    - BayesianModels.qmd  
+    - BayesianNonParametric.qmd
+    - PracticeProblems.qmd
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreport
+

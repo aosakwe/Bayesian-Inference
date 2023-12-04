@@ -145,11 +145,11 @@ which equates to $(\beta - m_n)^TM_n^{-1}(\beta-m_n) + c_n$ where we need to det
 
 -   Constant term:
 
-    $m_n^TM_n^{-1}m_n + c_n  = y^Ty + m_0^TM_0^{-1}m_0$
+    $m_n^TM_n^{-1}m_n + c_n = y^Ty + m_0^TM_0^{-1}m_0$
 
     and therefore
 
-    $c_n  =  y^Ty + m_0^TM_0^{-1}m_0 - m_n^TM_n^{-1}m_n$
+    $c_n = y^Ty + m_0^TM_0^{-1}m_0 - m_n^TM_n^{-1}m_n$
 
 Given us the joint posterior (under proportionality) as
 

@@ -520,8 +520,6 @@ axis.line = element_line(colour = "black")) +
 anim_save('mcmc.gif', animation = last_animation(), path = NULL)
 ```
 
-![](mcmc.gif)
-
 We can compare our results with the true posterior to see how well we approximated the distribution.
 
 ```{r}

@@ -1,5 +1,5 @@
 ---
-title: "Bayesian Inference Projects"
+title: "Introduction"
 author: "Adrien Osakwe"
 format: html
 editor: visual
@@ -20,7 +20,3 @@ The projects and notes I take will be heavily based on work I found on the follo
 -   https://www.math.mcgill.ca/yyang/comp.html
 
 -   **https://www.math.mcgill.ca/dstephens/559/**
-
-### Links to Notebooks
-
-Links to the different notebooks I make will be stored here:
