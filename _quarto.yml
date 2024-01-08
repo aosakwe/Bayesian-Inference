@@ -1,6 +1,6 @@
 project:
   type: book
-   output-dir: docs
+  output-dir: docs
 
 book:
   title: "Bayesian Inference"
@@ -14,14 +14,15 @@ book:
     - PosteriorSummary.qmd
     - LikelihoodConsiderations.qmd  
     - OptimalDecisionMaking.qmd   
-    - PosteriorApproximation.qmd 
+    - PosteriorApproximation.qmd
     - BayesianModels.qmd  
+    - MoreModels.qmd
     - BayesianNonParametric.qmd
     - PracticeProblems.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: superhero
   pdf:
     documentclass: scrreport
 

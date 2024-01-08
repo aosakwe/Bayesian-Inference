@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Adrien Osakwe">
-<meta name="dcterms.date" content="2023-04-12">
 
-<title>Bayesian Inference</title>
+<title>Bayesian Inference - 10&nbsp; More Models!</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Main.html" rel="next">
+<link href="./BayesianNonParametric.html" rel="next">
+<link href="./BayesianModels.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -63,6 +63,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -75,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Index</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MoreModels.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">More Models!</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -102,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Index</span></span></a>
   </div>
 </li>
@@ -156,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./MoreModels.html" class="sidebar-item-text sidebar-link">
+  <a href="./MoreModels.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">More Models!</span></span></a>
   </div>
 </li>
@@ -182,7 +184,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#chapters" id="toc-chapters" class="nav-link active" data-scroll-target="#chapters"><span class="header-section-number">1</span> Chapters</a></li>
+  <li><a href="#multiparameter-models" id="toc-multiparameter-models" class="nav-link active" data-scroll-target="#multiparameter-models"><span class="header-section-number">11</span> Multiparameter Models</a>
+  <ul class="collapse">
+  <li><a href="#marginal-posterior-distribution" id="toc-marginal-posterior-distribution" class="nav-link" data-scroll-target="#marginal-posterior-distribution"><span class="header-section-number">11.1</span> Marginal Posterior Distribution</a></li>
+  <li><a href="#example-1-normal-distribution-with-known-variance" id="toc-example-1-normal-distribution-with-known-variance" class="nav-link" data-scroll-target="#example-1-normal-distribution-with-known-variance"><span class="header-section-number">11.2</span> Example #1 Normal Distribution with known variance</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2"><span class="header-section-number">11.3</span> Example #2</a></li>
+  </ul></li>
+  <li><a href="#hierarchical-models" id="toc-hierarchical-models" class="nav-link" data-scroll-target="#hierarchical-models"><span class="header-section-number">12</span> Hierarchical Models</a></li>
   </ul>
 </nav>
     </div>
@@ -191,7 +199,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bayesian Inference</h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">More Models!</span></h1>
 </div>
 
 
@@ -205,12 +213,6 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 12, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -218,23 +220,35 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>This book contains my notes from topics on Bayesian Inference.</p>
-<p><strong>Note: This is a work in progress!</strong></p>
-<section id="chapters" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Chapters</h1>
-<ol type="1">
-<li><p><a href="./Main.html">Introduction</a></p></li>
-<li><p><a href="./Binomial_Model.html">Binomial Model</a></p></li>
-<li><p><a href="./Conjugate_Dist.html">Conjugate Distributions</a></p></li>
-<li><p><a href="./PosteriorSummary.html">Posterior Summary</a></p></li>
-<li><p><a href="./LikelihoodConsiderations.html">Likelihood Considerations</a></p></li>
-<li><p><a href="./OptimalDecisionMaking.html">Optimal Decision Making</a></p></li>
-<li><p><a href="./PosteriorApproximation.html">Posterior Approximation</a></p></li>
-<li><p><a href="./BayesianModels.html">Bayesian Models</a></p></li>
-<li><p><a href="./MoreModels.html">More Models!</a></p></li>
-<li><p><a href="./BayesianNonParametric.html">Bayesian Non-Parametrics</a></p></li>
-<li><p><a href="./PracticeProblems.html">Practice Problems</a></p></li>
-</ol>
+<section id="multiparameter-models" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Multiparameter Models</h1>
+<p>Most the examples we have explored have focused on modelling the posterior for <strong>single parameter models</strong>. That is, models where <span class="math inline">\(\theta\)</span> is a scalar as opposed to a vector of length <span class="math inline">\(d\)</span>. However, we know in practice that there are many phenomena which require multiple parameters . We previously saw this with the Gaussian distribution which has two parameters and in multivariate settings.</p>
+<p>Although it is necessary to formulate a multivariate generative process in terms of all of its parameters, it is not always the case that we are interested in the full posterior. Oftentimes, we may only be interested in the <strong>marginal posterior</strong> for specific parameters in the model (recall the multivariate Gaussian in <a href="./PosteriorApproximation.html">chapter 8</a> ). You can imagine a scenario where we model an observation such as the temperature in a fridge as a Gaussian but may only be interested in the posterior of the mean.</p>
+<p>We will therefore explore how <strong>marginalizing</strong> can allow us to separate our parameters of interest from <strong>nuisance parameters</strong> in our analysis of the posterior.</p>
+<section id="marginal-posterior-distribution" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="marginal-posterior-distribution"><span class="header-section-number">11.1</span> Marginal Posterior Distribution</h2>
+<p>Let’s imagine a scenario where we are building a model with parameters <span class="math inline">\(\theta = (\theta_1,\theta_2)\)</span>. We may view <span class="math inline">\(\theta_2\)</span> as a nuisance parameter and need a way of expressing the posterior solely for <span class="math inline">\(\theta_1\)</span> , that is, <span class="math inline">\(p(\theta_1|y)\)</span>. This can be achieves by integrating out <span class="math inline">\(\theta_2\)</span> as follows:</p>
+<p><span class="math display">\[
+p(\theta_1|y) = \int p(\theta|y)d\theta_2
+\]</span></p>
+<p>Which can be expanded as:</p>
+<p><span class="math display">\[
+p(\theta_1|y) = \int p(\theta_1,\theta_2|y)d\theta_2 \\
+\int p(\theta_1|\theta_2,y)p(\theta_2|y)d\theta_2
+\]</span></p>
+<p>Where <span class="math inline">\(p(\theta_1|\theta_2,y)\)</span> is the <strong>conditional posterior distribution</strong> of <span class="math inline">\(\theta_1\)</span> given <span class="math inline">\(\theta_2\)</span> and <span class="math inline">\(y\)</span>.</p>
+</section>
+<section id="example-1-normal-distribution-with-known-variance" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="example-1-normal-distribution-with-known-variance"><span class="header-section-number">11.2</span> Example #1 Normal Distribution with known variance</h2>
+<p>The normal distribution is a great example of a situation where a marginalized posterior may be of interest. In many cases, we may see the variance parameter in the normal distribution as a nuisance parameter, and may only be interested in the posterior distribution for the mean. We can therefore use it as a practical way of learning how to derive a marginal posterior.</p>
+<p>We can start with a simpler setting where the variance is assumed to be known. We did something similar in a (________________) previous chapter where the mean was known and the variance unknown. These models provide a simple approach for deriving the conditional posteriors in cases where neither parameter is known.</p>
+</section>
+<section id="example-2" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="example-2"><span class="header-section-number">11.3</span> Example #2</h2>
+</section>
+</section>
+<section id="hierarchical-models" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Hierarchical Models</h1>
 
 
 </section>
@@ -475,10 +489,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./BayesianModels.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Bayesian Modelling</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Main.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./BayesianNonParametric.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,41 @@
+---
+title: "More Models!"
+author: "Adrien Osakwe"
+format: html
+editor: visual
+---
+
+# Multiparameter Models
+
+Most the examples we have explored have focused on modelling the posterior for **single parameter models**. That is, models where $\theta$ is a scalar as opposed to a vector of length $d$. However, we know in practice that there are many phenomena which require multiple parameters . We previously saw this with the Gaussian distribution which has two parameters and in multivariate settings.
+
+Although it is necessary to formulate a multivariate generative process in terms of all of its parameters, it is not always the case that we are interested in the full posterior. Oftentimes, we may only be interested in the **marginal posterior** for specific parameters in the model (recall the multivariate Gaussian in [chapter 8](./PosteriorApproximation.qmd) ). You can imagine a scenario where we model an observation such as the temperature in a fridge as a Gaussian but may only be interested in the posterior of the mean.
+
+We will therefore explore how **marginalizing** can allow us to separate our parameters of interest from **nuisance parameters** in our analysis of the posterior.
+
+## Marginal Posterior Distribution
+
+Let's imagine a scenario where we are building a model with parameters $\theta = (\theta_1,\theta_2)$. We may view $\theta_2$ as a nuisance parameter and need a way of expressing the posterior solely for $\theta_1$ , that is, $p(\theta_1|y)$. This can be achieves by integrating out $\theta_2$ as follows:
+
+$$
+p(\theta_1|y) = \int p(\theta|y)d\theta_2
+$$
+
+Which can be expanded as:
+
+$$
+p(\theta_1|y) = \int p(\theta_1,\theta_2|y)d\theta_2 \\
+\int p(\theta_1|\theta_2,y)p(\theta_2|y)d\theta_2 
+$$
+
+Where $p(\theta_1|\theta_2,y)$ is the **conditional posterior distribution** of $\theta_1$ given $\theta_2$ and $y$.
+
+## Example #1 Normal Distribution with known variance
+
+The normal distribution is a great example of a situation where a marginalized posterior may be of interest. In many cases, we may see the variance parameter in the normal distribution as a nuisance parameter, and may only be interested in the posterior distribution for the mean. We can therefore use it as a practical way of learning how to derive a marginal posterior.
+
+We can start with a simpler setting where the variance is assumed to be known. We did something similar in a (\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_) previous chapter where the mean was known and the variance unknown. These models provide a simple approach for deriving the conditional posteriors in cases where neither parameter is known.
+
+## Example #2
+
+# Hierarchical Models

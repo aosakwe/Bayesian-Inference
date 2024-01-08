@@ -16,7 +16,7 @@ There are two key ways to approximate the posterior:
 
 A simple form of variational inference is normal approximation, where the central limit theorem is used to justify the use of the normal distribution as a surrogate posterior. In this chapter we will focus on sampling methods for posterior approximation.
 
-### Sampling Methods
+## Sampling Methods
 
 To approximate the posterior by simulation, we need to generate random samples from the posterior. This is trivial if the posterior is a known distribution with a derived simulation method. However, this becomes interesting when the posterior **isn't** closed form. We can achieve this by making use of the unnormalized posterior density or any function $q(\theta;y)$ that is proportional to it.:
 
@@ -193,7 +193,7 @@ legend('topright', legend = c('Estimate','Ground Truth'), col = c('lightblue','o
 
 We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!
 
-### Monte Carlo Methods
+## Monte Carlo Methods
 
 We have now seen that a sufficient number of simulations can approximate the ground truth posterior. These simulations can also be used to calculate summary statistics such as the posterior mean, variance and credible intervals!
 
@@ -427,7 +427,7 @@ Based on these differences, we can consider **Sampling Importance Resampling** (
 
 Note: make an example
 
-### Markov Chain Monte Carlo (MCMC) Methods
+## Markov Chain Monte Carlo (MCMC) Methods
 
 Grid approximation worked well in our 1-dimensional example. However, this is not always the case when we begin to work with high-dimensional data. To cover the parameter space we defined in our example, we generated a grid with 2000 points. However, if we had additional dimensions each with 2000 points, we would find ourselves working with $2000^d$ grid points. This becomes quite impractical in what has been a very simple example. Clearly, grid approximation will not be viable for higher dimensions.
 
@@ -591,3 +591,62 @@ axis.line = element_line(colour = "black")) +
 Once again, we see that the MCMC sampler is generating samples in a similar fashion to the target distribution!
 
 ### Probabilistic Programming - Incomplete
+
+## Sampling from the Posterior Predictive Distribution - NEEDS REVISION
+
+Once we have determined the posterior distribution, sampling from the posterior predictive distribution ([recall chapter 3](./Binomial_Model.qmd)) becomes simple.
+
+Assume we wan to predict probabilities for new the observation $Y'$ from the generative process derived from the original observations $Y$ . We can assumed we generated $s$ parameter values $\theta_1,...,\theta_s$ from the posterior distribution $p(\theta|y)$. With these sampled values we can then sample $Y'$ from as follows:
+
+1.  For all $s = 1,..,S$:
+
+    -   Sample $Y'_s \sim p(y'|\theta_s)$
+
+We therefore sample a new observation for each sampled parameter value. The empirical distribution of this sampling procedure can be used to approximate the posterior predictive distribution.
+
+$$
+p(y'|y) = \int p(y'|\theta)p(\theta|y)d\theta
+$$
+
+### Example #1
+
+Let's create a simple example using a beta-binomial model used in chapter 3. Recall that the beta-binomial conjugacy meant that the sum of all observation of $Y$, $s_n$ was all that was needed to calculate the joint likelihood and the resulting posterior.
+
+```{r}
+a <- 1
+b <- 3
+theta <- 0.25
+n <- 250
+sn  <- theta*n
+theta_seq <- seq(0,1,by = 0.01)
+plot(theta_seq,dbeta(theta_seq,a + sn,n-sn+b), type = 'l',
+     col = 'red',
+     xlab = expression(theta),
+     ylab = 'Density',
+     main = 'Posterior Distribution for Beta-Binomial Model')
+```
+
+Again, we see that the posterior heavily favors the true parameter value. Let us now use this to sample the posterior predictive. We can do this in two ways:
+
+1.  Plot the individual y values after sampling $S$ times.
+2.  Plot the distribution of the summary statistics after sampling $S$ observations $x$ times.
+
+Because the binomial distribution is discrete, we can plot the posterior predictive distribution in terms of the sufficient statistics to get more interpretable results.
+
+```{r}
+#Sample groups of observations
+trials <- 500
+s <- 100
+sn_post <- rep(0,trials)
+true_post <- dbinom(1:s,s,theta)
+for (i in 1:trials){
+  sn_post[i] <- rbinom(1,s,rbeta(s,a +sn,n-sn+b))
+}
+#Normaliz
+hist(sn_post,
+     xlab = expression(s_n),
+     main = 'Posterior Predictive Distribution')
+abline(v = theta*s,
+     col = 'red')
+which.max(true_post)/s
+```

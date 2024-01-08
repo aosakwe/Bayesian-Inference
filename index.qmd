@@ -27,6 +27,8 @@ This book contains my notes from topics on Bayesian Inference.
 
 8.  [Bayesian Models](BayesianModels.qmd)
 
-9.  [Bayesian Non-Parametrics](BayesianNonParametric.qmd)
+9.  [More Models!](./MoreModels.qmd)
 
-10. [Practice Problems](PracticeProblems.qmd)
+10. [Bayesian Non-Parametrics](BayesianNonParametric.qmd)
+
+11. [Practice Problems](PracticeProblems.qmd)

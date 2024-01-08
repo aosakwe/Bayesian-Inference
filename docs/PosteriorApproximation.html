@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,10 +72,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -192,14 +192,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./MoreModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">More Models!</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./BayesianNonParametric.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./PracticeProblems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exercises</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exercises</span></span></a>
   </div>
 </li>
     </ul>
@@ -212,16 +218,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sampling-methods" id="toc-sampling-methods" class="nav-link active" data-scroll-target="#sampling-methods"><span class="header-section-number">8.0.1</span> Sampling Methods</a></li>
-  <li><a href="#grid-approximation" id="toc-grid-approximation" class="nav-link" data-scroll-target="#grid-approximation"><span class="header-section-number">8.0.2</span> Grid Approximation</a></li>
-  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods"><span class="header-section-number">8.0.3</span> Monte Carlo Methods</a></li>
-  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">8.0.4</span> Importance Sampling</a></li>
-  <li><a href="#optimal-importance-sampling" id="toc-optimal-importance-sampling" class="nav-link" data-scroll-target="#optimal-importance-sampling"><span class="header-section-number">8.0.5</span> Optimal Importance Sampling</a></li>
-  <li><a href="#rejection-sampling" id="toc-rejection-sampling" class="nav-link" data-scroll-target="#rejection-sampling"><span class="header-section-number">8.0.6</span> Rejection Sampling</a></li>
-  <li><a href="#sampling-importance-resampling" id="toc-sampling-importance-resampling" class="nav-link" data-scroll-target="#sampling-importance-resampling"><span class="header-section-number">8.0.7</span> Sampling Importance Resampling</a></li>
-  <li><a href="#markov-chain-monte-carlo-mcmc-methods" id="toc-markov-chain-monte-carlo-mcmc-methods" class="nav-link" data-scroll-target="#markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.0.8</span> Markov Chain Monte Carlo (MCMC) Methods</a></li>
-  <li><a href="#metropolis-hastings" id="toc-metropolis-hastings" class="nav-link" data-scroll-target="#metropolis-hastings"><span class="header-section-number">8.0.9</span> Metropolis-Hastings</a></li>
-  <li><a href="#probabilistic-programming---incomplete" id="toc-probabilistic-programming---incomplete" class="nav-link" data-scroll-target="#probabilistic-programming---incomplete"><span class="header-section-number">8.0.10</span> Probabilistic Programming - Incomplete</a></li>
+  <li><a href="#sampling-methods" id="toc-sampling-methods" class="nav-link active" data-scroll-target="#sampling-methods"><span class="header-section-number">8.1</span> Sampling Methods</a>
+  <ul class="collapse">
+  <li><a href="#grid-approximation" id="toc-grid-approximation" class="nav-link" data-scroll-target="#grid-approximation"><span class="header-section-number">8.1.1</span> Grid Approximation</a></li>
+  </ul></li>
+  <li><a href="#monte-carlo-methods" id="toc-monte-carlo-methods" class="nav-link" data-scroll-target="#monte-carlo-methods"><span class="header-section-number">8.2</span> Monte Carlo Methods</a>
+  <ul class="collapse">
+  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">8.2.1</span> Importance Sampling</a></li>
+  <li><a href="#optimal-importance-sampling" id="toc-optimal-importance-sampling" class="nav-link" data-scroll-target="#optimal-importance-sampling"><span class="header-section-number">8.2.2</span> Optimal Importance Sampling</a></li>
+  <li><a href="#rejection-sampling" id="toc-rejection-sampling" class="nav-link" data-scroll-target="#rejection-sampling"><span class="header-section-number">8.2.3</span> Rejection Sampling</a></li>
+  <li><a href="#sampling-importance-resampling" id="toc-sampling-importance-resampling" class="nav-link" data-scroll-target="#sampling-importance-resampling"><span class="header-section-number">8.2.4</span> Sampling Importance Resampling</a></li>
+  </ul></li>
+  <li><a href="#markov-chain-monte-carlo-mcmc-methods" id="toc-markov-chain-monte-carlo-mcmc-methods" class="nav-link" data-scroll-target="#markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.3</span> Markov Chain Monte Carlo (MCMC) Methods</a>
+  <ul class="collapse">
+  <li><a href="#metropolis-hastings" id="toc-metropolis-hastings" class="nav-link" data-scroll-target="#metropolis-hastings"><span class="header-section-number">8.3.1</span> Metropolis-Hastings</a></li>
+  <li><a href="#probabilistic-programming---incomplete" id="toc-probabilistic-programming---incomplete" class="nav-link" data-scroll-target="#probabilistic-programming---incomplete"><span class="header-section-number">8.3.2</span> Probabilistic Programming - Incomplete</a></li>
+  </ul></li>
+  <li><a href="#sampling-from-the-posterior-predictive-distribution---needs-revision" id="toc-sampling-from-the-posterior-predictive-distribution---needs-revision" class="nav-link" data-scroll-target="#sampling-from-the-posterior-predictive-distribution---needs-revision"><span class="header-section-number">8.4</span> Sampling from the Posterior Predictive Distribution - NEEDS REVISION</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1"><span class="header-section-number">8.4.1</span> Example #1</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -259,17 +275,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Variational Inference: we can approximate the posterior by using a closed-form surrogate distribution.</li>
 </ol>
 <p>A simple form of variational inference is normal approximation, where the central limit theorem is used to justify the use of the normal distribution as a surrogate posterior. In this chapter we will focus on sampling methods for posterior approximation.</p>
-<section id="sampling-methods" class="level3" data-number="8.0.1">
-<h3 data-number="8.0.1" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">8.0.1</span> Sampling Methods</h3>
+<section id="sampling-methods" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">8.1</span> Sampling Methods</h2>
 <p>To approximate the posterior by simulation, we need to generate random samples from the posterior. This is trivial if the posterior is a known distribution with a derived simulation method. However, this becomes interesting when the posterior <strong>isn’t</strong> closed form. We can achieve this by making use of the unnormalized posterior density or any function <span class="math inline">\(q(\theta;y)\)</span> that is proportional to it.:</p>
 <p><span class="math display">\[
 p(\theta|y) \propto p(\theta)p(y|\theta) \propto q(\theta;y)
 \]</span></p>
 <p>and generating random samples from this to approximate the posterior.</p>
 <p>To generate the random samples, we can use <strong>rejection sampling</strong> or <strong>importance sampling</strong> for simple models. There are also many probabilistic programming tools available to automatically generate simulations.</p>
-</section>
-<section id="grid-approximation" class="level3" data-number="8.0.2">
-<h3 data-number="8.0.2" class="anchored" data-anchor-id="grid-approximation"><span class="header-section-number">8.0.2</span> Grid Approximation</h3>
+<section id="grid-approximation" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="grid-approximation"><span class="header-section-number">8.1.1</span> Grid Approximation</h3>
 <p>This method, also know as <strong>direct discrete approximation</strong>, works as follows:</p>
 <ol type="1">
 <li><p>Create an even-spaced grid <span class="math inline">\(g_1 = a + i/2,…,g_m = b - i/2\)</span> where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the lower and upper bounds of the parameter space of the posterior and <span class="math inline">\(i\)</span> and <span class="math inline">\(m\)</span> are the grid increments and number of grid points respectively.</p></li>
@@ -286,8 +301,8 @@ p(\theta|y) \propto p(\theta)p(y|\theta) \propto q(\theta;y)
 </ol>
 <p>This generates a process similar to numerical integration, meaning that this approximation approach is limited to a finite interval.</p>
 <p>Note: I have been strictly using <span class="math inline">\(\theta\)</span> as the symbol for parameters across the different models used to make it clear what symbol represents the distribution parameter. In practice, different distributions make use of different symbols for their parameter. Examples are <span class="math inline">\(\alpha, \beta, \lambda\)</span> some of which were used in previous sections when defining the prior distributions.</p>
-<section id="example" class="level4" data-number="8.0.2.1">
-<h4 data-number="8.0.2.1" class="anchored" data-anchor-id="example"><span class="header-section-number">8.0.2.1</span> Example</h4>
+<section id="example" class="level4" data-number="8.1.1.1">
+<h4 data-number="8.1.1.1" class="anchored" data-anchor-id="example"><span class="header-section-number">8.1.1.1</span> Example</h4>
 <p>We can demonstrate the usage of grid approximation with the Poisson-gamma model we explored previously. Simulation isn’t necessary here since the posterior is closed-form, but this will at least demonstrate how grid approximation is able to approximate it.</p>
 <p>Recall that the posterior of the Poisson-Gamma model had the following form:</p>
 <p><span class="math display">\[
@@ -346,8 +361,8 @@ p(\theta|y) \propto p(\theta)p(y|\theta) \propto q(\theta;y)
 <p>Note that we needed to explore <span class="math inline">\(\theta\)</span> on a fixed interval (0,25) to be able to approximate it. We can determine the plausible range of values to explore using the prior (if it is informative) or the likelihood. The key requirement is that we make sure the interval covers nearly all of the pmf for the distribution.</p>
 <p>We can clearly see that the grid approximation has allowed us to correctly approximate the posterior without having to evaluate it analytically.</p>
 </section>
-<section id="example-2-non-conjugate-priors" class="level4" data-number="8.0.2.2">
-<h4 data-number="8.0.2.2" class="anchored" data-anchor-id="example-2-non-conjugate-priors"><span class="header-section-number">8.0.2.2</span> Example #2 : Non-conjugate priors</h4>
+<section id="example-2-non-conjugate-priors" class="level4" data-number="8.1.1.2">
+<h4 data-number="8.1.1.2" class="anchored" data-anchor-id="example-2-non-conjugate-priors"><span class="header-section-number">8.1.1.2</span> Example #2 : Non-conjugate priors</h4>
 <p>Let’s look at an example of a non-conjugate distribution, where the normalizing constant is such that the posterior is not a known distribution and is therefore <strong>not closed-form (intractable)</strong>. A common example is using a log-normal prior for a Poisson likelihood. In essence, if our random variable is <span class="math inline">\(X\)</span> and is normally distributed, we can use a reparameterization of the r.v, <span class="math inline">\(Y = e^X\)</span> to get a log-normal distribution with the <strong>mean and variance being equal to the log of the mean and variance for</strong> <span class="math inline">\(X\)</span> .</p>
 <p>Our model therefore uses the following distributions:</p>
 <p><span class="math display">\[
@@ -421,12 +436,13 @@ e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}}\theta^{\sum_{i = 1}^{n}y_i}e^{-n\thet
 <p>We can see that our approximation is close to the ground truth, but is slightly off. This could be seen as an indication that the selected prior may not be the best option (see result with gamma prior above)!</p>
 </section>
 </section>
-<section id="monte-carlo-methods" class="level3" data-number="8.0.3">
-<h3 data-number="8.0.3" class="anchored" data-anchor-id="monte-carlo-methods"><span class="header-section-number">8.0.3</span> Monte Carlo Methods</h3>
+</section>
+<section id="monte-carlo-methods" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="monte-carlo-methods"><span class="header-section-number">8.2</span> Monte Carlo Methods</h2>
 <p>We have now seen that a sufficient number of simulations can approximate the ground truth posterior. These simulations can also be used to calculate summary statistics such as the posterior mean, variance and credible intervals!</p>
 <p>In general, computing integrals via simulations is referred to as <strong>Monte Carlo integration</strong> or the <strong>Monte Carlo method</strong>. These types of methods depend on the <strong>strong law of large numbers (SLL)</strong>.</p>
-<section id="strong-law-of-large-numbers" class="level4" data-number="8.0.3.1">
-<h4 data-number="8.0.3.1" class="anchored" data-anchor-id="strong-law-of-large-numbers"><span class="header-section-number">8.0.3.1</span> Strong law of large numbers</h4>
+<section id="strong-law-of-large-numbers" class="level4" data-number="8.2.0.1">
+<h4 data-number="8.2.0.1" class="anchored" data-anchor-id="strong-law-of-large-numbers"><span class="header-section-number">8.2.0.1</span> Strong law of large numbers</h4>
 <p>Where we have a sequence of random variables <span class="math inline">\(Y_i,…,Y_n\)</span> that are i.i.d. with a finite expected value <span class="math inline">\(\mu\)</span> , we have that almost surely (a.s.):</p>
 <p><span class="math display">\[
 \lim_{n\to\infty} \frac{1}{n}\sum_{i = 1}^{n}y_i = \mu
@@ -434,8 +450,8 @@ e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}}\theta^{\sum_{i = 1}^{n}y_i}e^{-n\thet
 <p>We are able to say almost surely as the above statement is said to converges to the result with a probability of one.</p>
 <p>SLL implies that the sample mean of an i.i.d sequence of random variables will always converge to the expected value of the underlying distribution with sufficient sample size. In the case of coin tosses, we would therefore expect that after enough trials, by SLL, that the expected value is 0.5 (assuming it is an unbiased coin!).</p>
 </section>
-<section id="example-monte-carlo-integration" class="level4" data-number="8.0.3.2">
-<h4 data-number="8.0.3.2" class="anchored" data-anchor-id="example-monte-carlo-integration"><span class="header-section-number">8.0.3.2</span> Example: Monte Carlo Integration</h4>
+<section id="example-monte-carlo-integration" class="level4" data-number="8.2.0.2">
+<h4 data-number="8.2.0.2" class="anchored" data-anchor-id="example-monte-carlo-integration"><span class="header-section-number">8.2.0.2</span> Example: Monte Carlo Integration</h4>
 <p>We can revisit our example from the beginning of the chapter where we estimate <span class="math inline">\(\theta\)</span>. By SLL, we expect that that average of the simulated values will converge to the true posterior mean of <span class="math inline">\(\theta\)</span> provided we simulate enough values. We can therefore approximate the posterior expectation using this mean. In this case, we know the posterior expectation of the Poisson-gamma model</p>
 <p><span class="math display">\[
 \mathbb{E}[\Theta|Y = y] = \frac{\alpha_n}{\beta_n} = \frac{\sum_{i = 1}^{n}Y_i +\alpha}{n + \beta}
@@ -519,9 +535,8 @@ e^{-\frac{(log\theta - \mu)^2}{2\sigma^2}}\theta^{\sum_{i = 1}^{n}y_i}e^{-n\thet
 </div>
 </div>
 </section>
-</section>
-<section id="importance-sampling" class="level3" data-number="8.0.4">
-<h3 data-number="8.0.4" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">8.0.4</span> Importance Sampling</h3>
+<section id="importance-sampling" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">8.2.1</span> Importance Sampling</h3>
 <p>In cases where we can’t generate samples from the target distribution, Monte Carlo methods allow us to generate viable samples by means of a surrogate distribution. In essence, we aim to identify a pdf <span class="math inline">\(f_0\)</span> for which sampling is possible to then estimate the features of interest of our target distribution’s pdf <span class="math inline">\(f\)</span>. For this to work, it is imperative that <strong>the</strong> <strong>selected pdf has the support for the same domain as the target pdf</strong>. In the case of determining an expected value we get:</p>
 <p><span class="math display">\[
 \int{g(x)f(x)}dx = \int{g(x)f(x)\frac{f_0(x)}{f_0(x)}}dx =  \int{\frac{g(x)f(x)}{f_0(x)}f_0(x)}dx
@@ -594,8 +609,8 @@ E_f[g(x)]
 </div>
 <p>As we can see, the standard MC estimator actually has a lot more uncertainty than the IS approaches. We notice that the estimators using a gamma pdf work quite well.</p>
 </section>
-<section id="optimal-importance-sampling" class="level3" data-number="8.0.5">
-<h3 data-number="8.0.5" class="anchored" data-anchor-id="optimal-importance-sampling"><span class="header-section-number">8.0.5</span> Optimal Importance Sampling</h3>
+<section id="optimal-importance-sampling" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="optimal-importance-sampling"><span class="header-section-number">8.2.2</span> Optimal Importance Sampling</h3>
 <p>When choosing <span class="math inline">\(f_0(x)\)</span>, we want to ensure that the variance is finite so that our confidence on the estimate is quantifiable. The estimator’s variance is finite if and only if</p>
 <p><span class="math display">\[
 \frac{g(x)f(x)}{f_0(x)}
@@ -615,8 +630,8 @@ E_f[g(x)]
 <p>Which, if it exists, may have a smaller variance than the variance we saw earlier.</p>
 <p>-Note: consider adding something about harmonic mean derivation</p>
 </section>
-<section id="rejection-sampling" class="level3" data-number="8.0.6">
-<h3 data-number="8.0.6" class="anchored" data-anchor-id="rejection-sampling"><span class="header-section-number">8.0.6</span> Rejection Sampling</h3>
+<section id="rejection-sampling" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="rejection-sampling"><span class="header-section-number">8.2.3</span> Rejection Sampling</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>true_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x){   <span class="fu">return</span>(<span class="fu">dnorm</span>(x,<span class="dv">30</span>,<span class="dv">10</span>)<span class="sc">+</span> <span class="fu">dnorm</span>(x,<span class="dv">80</span>,<span class="dv">20</span>))  } </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>estim_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x){   <span class="fu">return</span>(<span class="fu">dnorm</span>(x,<span class="dv">50</span>,<span class="dv">30</span>)) } </span>
@@ -641,8 +656,8 @@ E_f[g(x)]
 </div>
 </div>
 </section>
-<section id="sampling-importance-resampling" class="level3" data-number="8.0.7">
-<h3 data-number="8.0.7" class="anchored" data-anchor-id="sampling-importance-resampling"><span class="header-section-number">8.0.7</span> Sampling Importance Resampling</h3>
+<section id="sampling-importance-resampling" class="level3" data-number="8.2.4">
+<h3 data-number="8.2.4" class="anchored" data-anchor-id="sampling-importance-resampling"><span class="header-section-number">8.2.4</span> Sampling Importance Resampling</h3>
 <p>Despite being similar, there is a key difference between importance and rejection sampling:</p>
 <ol type="1">
 <li>Importance sampling focuses on approximating numerical integration with respect to <span class="math inline">\(f(x)\)</span></li>
@@ -656,18 +671,19 @@ E_f[g(x)]
 </ol>
 <p>Note: make an example</p>
 </section>
-<section id="markov-chain-monte-carlo-mcmc-methods" class="level3" data-number="8.0.8">
-<h3 data-number="8.0.8" class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.0.8</span> Markov Chain Monte Carlo (MCMC) Methods</h3>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-methods" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc-methods"><span class="header-section-number">8.3</span> Markov Chain Monte Carlo (MCMC) Methods</h2>
 <p>Grid approximation worked well in our 1-dimensional example. However, this is not always the case when we begin to work with high-dimensional data. To cover the parameter space we defined in our example, we generated a grid with 2000 points. However, if we had additional dimensions each with 2000 points, we would find ourselves working with <span class="math inline">\(2000^d\)</span> grid points. This becomes quite impractical in what has been a very simple example. Clearly, grid approximation will not be viable for higher dimensions.</p>
 <p>As a result, most sampling approaches for more complex models usually make use of <strong>Markov Chain Monte Carlo (MCMC)</strong> methods. This family of methods focuses on iterative sampling from a markov chain for which the distribution at convergence matches the target distribution. In our case, this is the posterior distribution.</p>
-<section id="markov-chain" class="level4" data-number="8.0.8.1">
-<h4 data-number="8.0.8.1" class="anchored" data-anchor-id="markov-chain"><span class="header-section-number">8.0.8.1</span> Markov Chain</h4>
+<section id="markov-chain" class="level4" data-number="8.3.0.1">
+<h4 data-number="8.3.0.1" class="anchored" data-anchor-id="markov-chain"><span class="header-section-number">8.3.0.1</span> Markov Chain</h4>
 <p>A Markov chain is a sequence of random variables <span class="math inline">\(X_1,X_2,…\)</span> that have a Markov property. That is, for any discrete time point <span class="math inline">\(i\)</span> :</p>
 <p><span class="math display">\[P(X_{i+1} | X_i,X_{i-1},...,X_0) = P(X_{i+1} | X_i)\]</span></p>
 <p>That is to say, for any discrete time point $i$, the state of the random variable at the next time point, <span class="math inline">\(X_{i+1}\)</span> depends <strong>only</strong> on the current state <span class="math inline">\(X_i\)</span> . The set of all possible values or states that the random variables can take is known as the <strong>state space</strong> <span class="math inline">\(S\)</span>.</p>
 </section>
-<section id="mcmc-sampling" class="level4" data-number="8.0.8.2">
-<h4 data-number="8.0.8.2" class="anchored" data-anchor-id="mcmc-sampling"><span class="header-section-number">8.0.8.2</span> MCMC Sampling</h4>
+<section id="mcmc-sampling" class="level4" data-number="8.3.0.2">
+<h4 data-number="8.3.0.2" class="anchored" data-anchor-id="mcmc-sampling"><span class="header-section-number">8.3.0.2</span> MCMC Sampling</h4>
 <p>Simplistic sampling methods such as the ones we saw previously generate i.i.d. samples from the target distribution. However, the values we sample from the state space S (<span class="math inline">\(\theta_1,…,\theta_S\)</span>) by an MCMC method experience high auto-correlation. That is, the value sampled at the next time point will be similar to the current value. Although this would be an issue for a small sample size, MCMC overcomes this by generating a large number of samples and using the full sample to approximate the posterior distribution. MCMC algorithms converge when they reach the stationary distribution. That is, the stationary distribution is a distribution <span class="math inline">\(\pi(x)\)</span> achieved at a state where for all <span class="math inline">\(i \in \mathbb{Z}^+\)</span> :</p>
 <p><span class="math display">\[
 P(X_i = k) = \pi(k)
@@ -675,8 +691,8 @@ P(X_i = k) = \pi(k)
 <p>which implies that the next state of the random variable is the same as the current state. Once it has reached convergence, sampling from the stationary distribution will eventually lead to an approximation of the true posterior. Determining when convergence has been reached is difficult to determine. There are different diagnostics available to explore this, one of which is to running different MCMC instances with different initializations and see if they reach a similar distribution.</p>
 <p>As the first iterations of MCMC sampling do not represent the posterior yet, they are usually discarded. The number of iterations that are discarded is up to the user and is referred to as the <strong>burn-in</strong> period. Markov chains that were designed to estimate target posterior distributions are known as <strong>MCMC samplers</strong>. The two most popular examples are the <strong>Gibbs sampler</strong> and the <strong>Metropolis-Hastings sampler</strong>. The Gibbs sampler is actually a special case of the MH sampler.</p>
 </section>
-<section id="example-gibbs-sampler" class="level4" data-number="8.0.8.3">
-<h4 data-number="8.0.8.3" class="anchored" data-anchor-id="example-gibbs-sampler"><span class="header-section-number">8.0.8.3</span> Example: Gibbs sampler</h4>
+<section id="example-gibbs-sampler" class="level4" data-number="8.3.0.3">
+<h4 data-number="8.3.0.3" class="anchored" data-anchor-id="example-gibbs-sampler"><span class="header-section-number">8.3.0.3</span> Example: Gibbs sampler</h4>
 <p>The Gibbs sampler works by incrementally updating each of the components of the parameter vector <span class="math inline">\(\theta\)</span>. We can assume that the parameter vector is multi-dimensional where for each component <span class="math inline">\(\theta_j\)</span> , the sampler generates a value using the conditional posterior distribution of the component given all the other components.</p>
 <p><span class="math display">\[
 p(\theta_j | \theta_{-j},y)
@@ -771,9 +787,8 @@ p(\theta_j | \theta_{-j},y)
 </div>
 <p>As we can see, despite starting with estimates well off of the true values, the Gibbs sampler was able to reach a distribution that is quite similar to the true posterior.</p>
 </section>
-</section>
-<section id="metropolis-hastings" class="level3" data-number="8.0.9">
-<h3 data-number="8.0.9" class="anchored" data-anchor-id="metropolis-hastings"><span class="header-section-number">8.0.9</span> Metropolis-Hastings</h3>
+<section id="metropolis-hastings" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="metropolis-hastings"><span class="header-section-number">8.3.1</span> Metropolis-Hastings</h3>
 <p>An alternative method for MCMC sampling is the Metropolis-Hastings algorithm. In this approach, we iteratively propose a random sample of the random variable as the next state <span class="math inline">\(z\)</span> given our current state <span class="math inline">\(x\)</span>. This is reffered to as a <em>transition kernel</em> <span class="math inline">\(Q(z|x)\)</span> which is often simply denoted as a normal distribution with the current state <span class="math inline">\(x\)</span> as the mean and a standard deviation equal to 1. By defining criteria that allows us to accept or reject the proposed new sample, we are able to explore the domain of possible values generated by the target distribution through what is a random walk (think Brownian motion). The criteria for acceptance is known as the <em>acceptance probability</em> and is calculated as follows:</p>
 <p><span class="math display">\[
 A = min(1,\frac{\pi(z)Q(x|z)}{\pi(x)Q(z|x)}
@@ -822,10 +837,75 @@ A = min(1,\frac{\pi(z)Q(x|z)}{\pi(x)Q(z|x)}
 </div>
 <p>Once again, we see that the MCMC sampler is generating samples in a similar fashion to the target distribution!</p>
 </section>
-<section id="probabilistic-programming---incomplete" class="level3" data-number="8.0.10">
-<h3 data-number="8.0.10" class="anchored" data-anchor-id="probabilistic-programming---incomplete"><span class="header-section-number">8.0.10</span> Probabilistic Programming - Incomplete</h3>
+<section id="probabilistic-programming---incomplete" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="probabilistic-programming---incomplete"><span class="header-section-number">8.3.2</span> Probabilistic Programming - Incomplete</h3>
+</section>
+</section>
+<section id="sampling-from-the-posterior-predictive-distribution---needs-revision" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sampling-from-the-posterior-predictive-distribution---needs-revision"><span class="header-section-number">8.4</span> Sampling from the Posterior Predictive Distribution - NEEDS REVISION</h2>
+<p>Once we have determined the posterior distribution, sampling from the posterior predictive distribution (<a href="./Binomial_Model.html">recall chapter 3</a>) becomes simple.</p>
+<p>Assume we wan to predict probabilities for new the observation <span class="math inline">\(Y'\)</span> from the generative process derived from the original observations <span class="math inline">\(Y\)</span> . We can assumed we generated <span class="math inline">\(s\)</span> parameter values <span class="math inline">\(\theta_1,...,\theta_s\)</span> from the posterior distribution <span class="math inline">\(p(\theta|y)\)</span>. With these sampled values we can then sample <span class="math inline">\(Y'\)</span> from as follows:</p>
+<ol type="1">
+<li><p>For all <span class="math inline">\(s = 1,..,S\)</span>:</p>
+<ul>
+<li>Sample <span class="math inline">\(Y'_s \sim p(y'|\theta_s)\)</span></li>
+</ul></li>
+</ol>
+<p>We therefore sample a new observation for each sampled parameter value. The empirical distribution of this sampling procedure can be used to approximate the posterior predictive distribution.</p>
+<p><span class="math display">\[
+p(y'|y) = \int p(y'|\theta)p(\theta|y)d\theta
+\]</span></p>
+<section id="example-1" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="example-1"><span class="header-section-number">8.4.1</span> Example #1</h3>
+<p>Let’s create a simple example using a beta-binomial model used in chapter 3. Recall that the beta-binomial conjugacy meant that the sum of all observation of <span class="math inline">\(Y\)</span>, <span class="math inline">\(s_n\)</span> was all that was needed to calculate the joint likelihood and the resulting posterior.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>sn  <span class="ot">&lt;-</span> theta<span class="sc">*</span>n</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>theta_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(theta_seq,<span class="fu">dbeta</span>(theta_seq,a <span class="sc">+</span> sn,n<span class="sc">-</span>sn<span class="sc">+</span>b), <span class="at">type =</span> <span class="st">'l'</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">'red'</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(theta),</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">'Density'</span>,</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">'Posterior Distribution for Beta-Binomial Model'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Again, we see that the posterior heavily favors the true parameter value. Let us now use this to sample the posterior predictive. We can do this in two ways:</p>
+<ol type="1">
+<li>Plot the individual y values after sampling <span class="math inline">\(S\)</span> times.</li>
+<li>Plot the distribution of the summary statistics after sampling <span class="math inline">\(S\)</span> observations <span class="math inline">\(x\)</span> times.</li>
+</ol>
+<p>Because the binomial distribution is discrete, we can plot the posterior predictive distribution in terms of the sufficient statistics to get more interpretable results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sample groups of observations</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>sn_post <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,trials)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>true_post <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">1</span><span class="sc">:</span>s,s,theta)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>trials){</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  sn_post[i] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>,s,<span class="fu">rbeta</span>(s,a <span class="sc">+</span>sn,n<span class="sc">-</span>sn<span class="sc">+</span>b))</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Normaliz</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sn_post,</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(s_n),</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">'Posterior Predictive Distribution'</span>)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> theta<span class="sc">*</span>s,</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">'red'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PosteriorApproximation_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(true_post)<span class="sc">/</span>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.25</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
