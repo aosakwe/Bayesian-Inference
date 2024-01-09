@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-# Multiparameter Models
+## Multiparameter Models - INCOMPLETE
 
 Most the examples we have explored have focused on modelling the posterior for **single parameter models**. That is, models where $\theta$ is a scalar as opposed to a vector of length $d$. However, we know in practice that there are many phenomena which require multiple parameters . We previously saw this with the Gaussian distribution which has two parameters and in multivariate settings.
 
@@ -13,7 +13,7 @@ Although it is necessary to formulate a multivariate generative process in terms
 
 We will therefore explore how **marginalizing** can allow us to separate our parameters of interest from **nuisance parameters** in our analysis of the posterior.
 
-## Marginal Posterior Distribution
+### Marginal Posterior Distribution
 
 Let's imagine a scenario where we are building a model with parameters $\theta = (\theta_1,\theta_2)$. We may view $\theta_2$ as a nuisance parameter and need a way of expressing the posterior solely for $\theta_1$ , that is, $p(\theta_1|y)$. This can be achieves by integrating out $\theta_2$ as follows:
 
@@ -30,12 +30,62 @@ $$
 
 Where $p(\theta_1|\theta_2,y)$ is the **conditional posterior distribution** of $\theta_1$ given $\theta_2$ and $y$.
 
-## Example #1 Normal Distribution with known variance
+### Example #1 Normal Distribution with known variance
 
 The normal distribution is a great example of a situation where a marginalized posterior may be of interest. In many cases, we may see the variance parameter in the normal distribution as a nuisance parameter, and may only be interested in the posterior distribution for the mean. We can therefore use it as a practical way of learning how to derive a marginal posterior.
 
 We can start with a simpler setting where the variance is assumed to be known. We did something similar in a (\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_) previous chapter where the mean was known and the variance unknown. These models provide a simple approach for deriving the conditional posteriors in cases where neither parameter is known.
 
-## Example #2
+#### One observation
 
-# Hierarchical Models
+In a setting with one observation $Y$ coming from a normal distribution with known variance $\sigma_0^2 > 0$ and unknown mean $\theta$. The conjugate prior in this setting is another normal:
+
+$$
+Y \sim Normal(\theta,\sigma_0^2) \\
+\theta \sim Normal(\mu_0,\tau_0^2)
+$$
+
+With this formulation we have the following likelihood and prior pdfs:
+
+$$
+p(y|\theta) = \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}\right) \propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}\right) \\
+$$
+
+$$
+p(\theta)  = \frac{1}{\sqrt{2\pi\tau_0^2}} \exp\left(-\frac{(\theta - \mu_0)^2}{2\tau_0^2}\right) \propto \exp\left(-\frac{(\theta - \mu_0)^2}{2\tau_0^2}\right)
+$$
+
+with the unnormalized posterior being:
+
+$$
+p(\theta|y)\propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}-\frac{(\theta - \mu_0)^2}{2\tau_0^2} \right) \\
+\propto \exp\left(-\frac{\tau_0^2(y - \theta)^2 + \sigma_0^2(\theta - \mu_0)^2}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(\frac{\tau_0^2(\theta^2-2y\theta) + \sigma_0^2(\theta^2 -2\mu_0\theta)}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(-\frac{(\sigma_0^2 + \tau_0^2)\theta^2 -2(\sigma_0^2\mu_0 + \tau_0^2y)\theta}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(-\frac{\theta^2 -2\mu_1\theta}{2\tau_1^2}\right)
+$$
+
+Where
+
+$$
+\mu_1 = \frac{(\sigma_0^2\mu_0 + \tau_0^2y)}{(\sigma_0^2 + \tau_0^2)} \\
+\tau_1 = \frac{\tau_0^2\sigma_0^2}{(\sigma_0^2 + \tau_0^2)}
+$$
+
+Which returns a posterior in the form of a normal distribution with mean $\mu_1$ and variance $\tau_1^2$. It is also possible to write the parameters of the posterior in terms of **precision**. Precision is the inverse of the posterior variance, and can be expressed as the sum of the prior and sampling precision.
+
+Similarly, the posterior mean can be expressed as a **convex combination (**sum of prior and sampling means weighted by the proportion of their proportional precision) of the prior mean and the observed data.
+
+#### Many observations
+
+Making the derivation for multiple observations works in a similar fashion, except that we now use a joint-likelihood:
+
+$$
+ p(y|\theta) = \prod_{i = 1}^np(y_i|\theta)
+$$
+
+### **NOTE: INCOMPLETE - NEEDS COMPLETE THE SQUARE DERIVATION HERE**
+
+### Example #2 Non-informative prior
+
+## Hierarchical Models

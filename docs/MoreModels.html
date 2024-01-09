@@ -38,16 +38,16 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -68,10 +68,55 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Bayesian Inference</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Main.html" rel="" target="">
+ <span class="menu-text">Reference</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+    <a href="https://github.com/aosakwe/Bayesian-Inference" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -87,14 +132,9 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Bayesian Inference</a> 
-    </div>
-      </div>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -147,7 +187,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./PosteriorApproximation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling Methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -184,15 +224,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#multiparameter-models" id="toc-multiparameter-models" class="nav-link active" data-scroll-target="#multiparameter-models"><span class="header-section-number">11</span> Multiparameter Models</a>
+  <li><a href="#multiparameter-models---incomplete" id="toc-multiparameter-models---incomplete" class="nav-link active" data-scroll-target="#multiparameter-models---incomplete"><span class="header-section-number">10.1</span> Multiparameter Models - INCOMPLETE</a>
   <ul class="collapse">
-  <li><a href="#marginal-posterior-distribution" id="toc-marginal-posterior-distribution" class="nav-link" data-scroll-target="#marginal-posterior-distribution"><span class="header-section-number">11.1</span> Marginal Posterior Distribution</a></li>
-  <li><a href="#example-1-normal-distribution-with-known-variance" id="toc-example-1-normal-distribution-with-known-variance" class="nav-link" data-scroll-target="#example-1-normal-distribution-with-known-variance"><span class="header-section-number">11.2</span> Example #1 Normal Distribution with known variance</a></li>
-  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2"><span class="header-section-number">11.3</span> Example #2</a></li>
+  <li><a href="#marginal-posterior-distribution" id="toc-marginal-posterior-distribution" class="nav-link" data-scroll-target="#marginal-posterior-distribution"><span class="header-section-number">10.1.1</span> Marginal Posterior Distribution</a></li>
+  <li><a href="#example-1-normal-distribution-with-known-variance" id="toc-example-1-normal-distribution-with-known-variance" class="nav-link" data-scroll-target="#example-1-normal-distribution-with-known-variance"><span class="header-section-number">10.1.2</span> Example #1 Normal Distribution with known variance</a></li>
+  <li><a href="#note-incomplete---needs-complete-the-square-derivation-here" id="toc-note-incomplete---needs-complete-the-square-derivation-here" class="nav-link" data-scroll-target="#note-incomplete---needs-complete-the-square-derivation-here"><span class="header-section-number">10.1.3</span> <strong>NOTE: INCOMPLETE - NEEDS COMPLETE THE SQUARE DERIVATION HERE</strong></a></li>
+  <li><a href="#example-2-non-informative-prior" id="toc-example-2-non-informative-prior" class="nav-link" data-scroll-target="#example-2-non-informative-prior"><span class="header-section-number">10.1.4</span> Example #2 Non-informative prior</a></li>
   </ul></li>
-  <li><a href="#hierarchical-models" id="toc-hierarchical-models" class="nav-link" data-scroll-target="#hierarchical-models"><span class="header-section-number">12</span> Hierarchical Models</a></li>
+  <li><a href="#hierarchical-models" id="toc-hierarchical-models" class="nav-link" data-scroll-target="#hierarchical-models"><span class="header-section-number">10.2</span> Hierarchical Models</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aosakwe/Bayesian-Inference/edit/main/MoreModels.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -220,13 +261,13 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="multiparameter-models" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Multiparameter Models</h1>
+<section id="multiparameter-models---incomplete" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="multiparameter-models---incomplete"><span class="header-section-number">10.1</span> Multiparameter Models - INCOMPLETE</h2>
 <p>Most the examples we have explored have focused on modelling the posterior for <strong>single parameter models</strong>. That is, models where <span class="math inline">\(\theta\)</span> is a scalar as opposed to a vector of length <span class="math inline">\(d\)</span>. However, we know in practice that there are many phenomena which require multiple parameters . We previously saw this with the Gaussian distribution which has two parameters and in multivariate settings.</p>
 <p>Although it is necessary to formulate a multivariate generative process in terms of all of its parameters, it is not always the case that we are interested in the full posterior. Oftentimes, we may only be interested in the <strong>marginal posterior</strong> for specific parameters in the model (recall the multivariate Gaussian in <a href="./PosteriorApproximation.html">chapter 8</a> ). You can imagine a scenario where we model an observation such as the temperature in a fridge as a Gaussian but may only be interested in the posterior of the mean.</p>
 <p>We will therefore explore how <strong>marginalizing</strong> can allow us to separate our parameters of interest from <strong>nuisance parameters</strong> in our analysis of the posterior.</p>
-<section id="marginal-posterior-distribution" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="marginal-posterior-distribution"><span class="header-section-number">11.1</span> Marginal Posterior Distribution</h2>
+<section id="marginal-posterior-distribution" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="marginal-posterior-distribution"><span class="header-section-number">10.1.1</span> Marginal Posterior Distribution</h3>
 <p>Let’s imagine a scenario where we are building a model with parameters <span class="math inline">\(\theta = (\theta_1,\theta_2)\)</span>. We may view <span class="math inline">\(\theta_2\)</span> as a nuisance parameter and need a way of expressing the posterior solely for <span class="math inline">\(\theta_1\)</span> , that is, <span class="math inline">\(p(\theta_1|y)\)</span>. This can be achieves by integrating out <span class="math inline">\(\theta_2\)</span> as follows:</p>
 <p><span class="math display">\[
 p(\theta_1|y) = \int p(\theta|y)d\theta_2
@@ -238,17 +279,57 @@ p(\theta_1|y) = \int p(\theta_1,\theta_2|y)d\theta_2 \\
 \]</span></p>
 <p>Where <span class="math inline">\(p(\theta_1|\theta_2,y)\)</span> is the <strong>conditional posterior distribution</strong> of <span class="math inline">\(\theta_1\)</span> given <span class="math inline">\(\theta_2\)</span> and <span class="math inline">\(y\)</span>.</p>
 </section>
-<section id="example-1-normal-distribution-with-known-variance" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="example-1-normal-distribution-with-known-variance"><span class="header-section-number">11.2</span> Example #1 Normal Distribution with known variance</h2>
+<section id="example-1-normal-distribution-with-known-variance" class="level3" data-number="10.1.2">
+<h3 data-number="10.1.2" class="anchored" data-anchor-id="example-1-normal-distribution-with-known-variance"><span class="header-section-number">10.1.2</span> Example #1 Normal Distribution with known variance</h3>
 <p>The normal distribution is a great example of a situation where a marginalized posterior may be of interest. In many cases, we may see the variance parameter in the normal distribution as a nuisance parameter, and may only be interested in the posterior distribution for the mean. We can therefore use it as a practical way of learning how to derive a marginal posterior.</p>
 <p>We can start with a simpler setting where the variance is assumed to be known. We did something similar in a (________________) previous chapter where the mean was known and the variance unknown. These models provide a simple approach for deriving the conditional posteriors in cases where neither parameter is known.</p>
+<section id="one-observation" class="level4" data-number="10.1.2.1">
+<h4 data-number="10.1.2.1" class="anchored" data-anchor-id="one-observation"><span class="header-section-number">10.1.2.1</span> One observation</h4>
+<p>In a setting with one observation <span class="math inline">\(Y\)</span> coming from a normal distribution with known variance <span class="math inline">\(\sigma_0^2 &gt; 0\)</span> and unknown mean <span class="math inline">\(\theta\)</span>. The conjugate prior in this setting is another normal:</p>
+<p><span class="math display">\[
+Y \sim Normal(\theta,\sigma_0^2) \\
+\theta \sim Normal(\mu_0,\tau_0^2)
+\]</span></p>
+<p>With this formulation we have the following likelihood and prior pdfs:</p>
+<p><span class="math display">\[
+p(y|\theta) = \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}\right) \propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}\right) \\
+\]</span></p>
+<p><span class="math display">\[
+p(\theta)  = \frac{1}{\sqrt{2\pi\tau_0^2}} \exp\left(-\frac{(\theta - \mu_0)^2}{2\tau_0^2}\right) \propto \exp\left(-\frac{(\theta - \mu_0)^2}{2\tau_0^2}\right)
+\]</span></p>
+<p>with the unnormalized posterior being:</p>
+<p><span class="math display">\[
+p(\theta|y)\propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}-\frac{(\theta - \mu_0)^2}{2\tau_0^2} \right) \\
+\propto \exp\left(-\frac{\tau_0^2(y - \theta)^2 + \sigma_0^2(\theta - \mu_0)^2}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(\frac{\tau_0^2(\theta^2-2y\theta) + \sigma_0^2(\theta^2 -2\mu_0\theta)}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(-\frac{(\sigma_0^2 + \tau_0^2)\theta^2 -2(\sigma_0^2\mu_0 + \tau_0^2y)\theta}{2\tau_0^2\sigma_0^2}\right) \\
+\propto \exp\left(-\frac{\theta^2 -2\mu_1\theta}{2\tau_1^2}\right)
+\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[
+\mu_1 = \frac{(\sigma_0^2\mu_0 + \tau_0^2y)}{(\sigma_0^2 + \tau_0^2)} \\
+\tau_1 = \frac{\tau_0^2\sigma_0^2}{(\sigma_0^2 + \tau_0^2)}
+\]</span></p>
+<p>Which returns a posterior in the form of a normal distribution with mean <span class="math inline">\(\mu_1\)</span> and variance <span class="math inline">\(\tau_1^2\)</span>. It is also possible to write the parameters of the posterior in terms of <strong>precision</strong>. Precision is the inverse of the posterior variance, and can be expressed as the sum of the prior and sampling precision.</p>
+<p>Similarly, the posterior mean can be expressed as a <strong>convex combination (</strong>sum of prior and sampling means weighted by the proportion of their proportional precision) of the prior mean and the observed data.</p>
 </section>
-<section id="example-2" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="example-2"><span class="header-section-number">11.3</span> Example #2</h2>
+<section id="many-observations" class="level4" data-number="10.1.2.2">
+<h4 data-number="10.1.2.2" class="anchored" data-anchor-id="many-observations"><span class="header-section-number">10.1.2.2</span> Many observations</h4>
+<p>Making the derivation for multiple observations works in a similar fashion, except that we now use a joint-likelihood:</p>
+<p><span class="math display">\[
+p(y|\theta) = \prod_{i = 1}^np(y_i|\theta)
+\]</span></p>
 </section>
 </section>
-<section id="hierarchical-models" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> Hierarchical Models</h1>
+<section id="note-incomplete---needs-complete-the-square-derivation-here" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="note-incomplete---needs-complete-the-square-derivation-here"><span class="header-section-number">10.1.3</span> <strong>NOTE: INCOMPLETE - NEEDS COMPLETE THE SQUARE DERIVATION HERE</strong></h3>
+</section>
+<section id="example-2-non-informative-prior" class="level3" data-number="10.1.4">
+<h3 data-number="10.1.4" class="anchored" data-anchor-id="example-2-non-informative-prior"><span class="header-section-number">10.1.4</span> Example #2 Non-informative prior</h3>
+</section>
+</section>
+<section id="hierarchical-models" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="hierarchical-models"><span class="header-section-number">10.2</span> Hierarchical Models</h2>
 
 
 </section>
