@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-## Premise 
+## Premise
 
 This project allows me to implement different Bayesian modelling techniques I have seen through class and my own research. In addition, I hope it serves as educational material for others. I have found that the best way to learn is through practice, and so this project is expected to help me master the material I need to undertake my research projects.
 
