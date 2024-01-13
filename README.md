@@ -1,12 +1,3 @@
-# For exam
-
--   likelihood approximations
--   linear regression (student-t distribution)
-
--   alternate distributions
-
--   sampling procedures and purposes
-
 ## Premise
 
 This project allows me to implement different Bayesian modelling techniques I have seen through class and my own research. In addition, I hope it serves as educational material for others. I have found that the best way to learn is through practice, and so this project is expected to help me master the material I need to undertake my research projects.
@@ -36,9 +27,9 @@ Links to the different notebooks I make will be stored here:
 ### TODO
 
 1.  Add citations to each topic
-2.  Add section on Jeffreys Prior
 
 ## Missing topics
 
 -   Dirichlet Processes
 -   Variational Inference
+-   GLMs
