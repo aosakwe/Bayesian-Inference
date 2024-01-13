@@ -220,13 +220,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#regression-models" id="toc-regression-models" class="nav-link active" data-scroll-target="#regression-models"><span class="header-section-number">10</span> Regression Models</a>
+  <li><a href="#regression-models" id="toc-regression-models" class="nav-link active" data-scroll-target="#regression-models"><span class="header-section-number">9.1</span> Regression Models</a></li>
+  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression"><span class="header-section-number">9.2</span> Linear Regression</a></li>
+  <li><a href="#non-linear-regression" id="toc-non-linear-regression" class="nav-link" data-scroll-target="#non-linear-regression"><span class="header-section-number">9.3</span> Non-linear Regression</a>
   <ul class="collapse">
-  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression"><span class="header-section-number">10.1</span> Linear Regression</a></li>
-  <li><a href="#non-linear-regression" id="toc-non-linear-regression" class="nav-link" data-scroll-target="#non-linear-regression"><span class="header-section-number">10.2</span> Non-linear Regression</a>
-  <ul class="collapse">
-  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models"><span class="header-section-number">10.2.1</span> Generalized Linear Models</a></li>
-  </ul></li>
+  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models"><span class="header-section-number">9.3.1</span> Generalized Linear Models</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aosakwe/Bayesian-Inference/edit/main/BayesianModels.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -263,8 +261,8 @@ ul.task-list li input[type="checkbox"] {
 <li><p>latent variable models</p></li>
 <li><p>hierarchical models</p></li>
 </ul>
-<section id="regression-models" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Regression Models</h1>
+<section id="regression-models" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="regression-models"><span class="header-section-number">9.1</span> Regression Models</h2>
 <p>We can consider an infinite sequence <span class="math inline">\(\{ (X_n,Y_n), n = 1,2,…\}\)</span> such that for any <span class="math inline">\(n \geq 1\)</span></p>
 <p><span class="math display">\[
 f_{X_1,...,X_n,Y_1,...,Y_n}(x_1,...,x_n,y_1,...,y_n)
@@ -291,8 +289,9 @@ f_{Y_{n+1}|X_{1:n},Y_{1:n}}(y_{n+1}|x_{1:n},y_{1:n}) \\
 = \int f_{X_{n+1},Y_{n+1}|X_{1:n},Y_{1:n}}(x_{n+1},y_{n+1}|x_{1:n},y_{1:n})dx_{n+1} \\
 = \int f_{Y_{n+1}|X_{1:n},X_{n+1},Y_{1:n}}(y_{n+1}|x_{1:n},x_{n+1},y_{1:n})f_{X_{n+1}|X_{1:n},Y_{1:n}}(x_{n+1}|x_{1:n},y_{1:n})dx_{n+1}
 \]</span></p>
-<section id="linear-regression" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="linear-regression"><span class="header-section-number">10.1</span> Linear Regression</h2>
+</section>
+<section id="linear-regression" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="linear-regression"><span class="header-section-number">9.2</span> Linear Regression</h2>
 <p>We can start with the following linear regression model</p>
 <p><span class="math display">\[
 Y_i = x_i\beta + \epsilon_i
@@ -395,13 +394,12 @@ M_n = (X^TX + \lambda I_d)^{-1}
 \pi_0(\beta,\sigma^2) \propto (\frac{1}{\sigma^2})^{d/2 +1}
 \]</span></p>
 </section>
-<section id="non-linear-regression" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="non-linear-regression"><span class="header-section-number">10.2</span> Non-linear Regression</h2>
-<section id="generalized-linear-models" class="level3" data-number="10.2.1">
-<h3 data-number="10.2.1" class="anchored" data-anchor-id="generalized-linear-models"><span class="header-section-number">10.2.1</span> Generalized Linear Models</h3>
+<section id="non-linear-regression" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="non-linear-regression"><span class="header-section-number">9.3</span> Non-linear Regression</h2>
+<section id="generalized-linear-models" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="generalized-linear-models"><span class="header-section-number">9.3.1</span> Generalized Linear Models</h3>
 
 
-</section>
 </section>
 </section>
 

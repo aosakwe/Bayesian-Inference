@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -224,8 +258,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#marginal-posterior-distribution" id="toc-marginal-posterior-distribution" class="nav-link" data-scroll-target="#marginal-posterior-distribution"><span class="header-section-number">10.1.1</span> Marginal Posterior Distribution</a></li>
   <li><a href="#example-1-normal-distribution-with-known-variance" id="toc-example-1-normal-distribution-with-known-variance" class="nav-link" data-scroll-target="#example-1-normal-distribution-with-known-variance"><span class="header-section-number">10.1.2</span> Example #1 Normal Distribution with known variance</a></li>
-  <li><a href="#note-incomplete---needs-complete-the-square-derivation-here" id="toc-note-incomplete---needs-complete-the-square-derivation-here" class="nav-link" data-scroll-target="#note-incomplete---needs-complete-the-square-derivation-here"><span class="header-section-number">10.1.3</span> <strong>NOTE: INCOMPLETE - NEEDS COMPLETE THE SQUARE DERIVATION HERE</strong></a></li>
-  <li><a href="#example-2-non-informative-prior" id="toc-example-2-non-informative-prior" class="nav-link" data-scroll-target="#example-2-non-informative-prior"><span class="header-section-number">10.1.4</span> Example #2 Non-informative prior</a></li>
+  <li><a href="#example-2-non-informative-prior" id="toc-example-2-non-informative-prior" class="nav-link" data-scroll-target="#example-2-non-informative-prior"><span class="header-section-number">10.1.3</span> Example #2 Non-informative prior</a></li>
   </ul></li>
   <li><a href="#hierarchical-models" id="toc-hierarchical-models" class="nav-link" data-scroll-target="#hierarchical-models"><span class="header-section-number">10.2</span> Hierarchical Models</a></li>
   </ul>
@@ -307,7 +340,13 @@ p(\theta|y)\propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}-\frac{(\theta -
 \tau_1 = \frac{\tau_0^2\sigma_0^2}{(\sigma_0^2 + \tau_0^2)}
 \]</span></p>
 <p>Which returns a posterior in the form of a normal distribution with mean <span class="math inline">\(\mu_1\)</span> and variance <span class="math inline">\(\tau_1^2\)</span>. It is also possible to write the parameters of the posterior in terms of <strong>precision</strong>. Precision is the inverse of the posterior variance, and can be expressed as the sum of the prior and sampling precision.</p>
+<p><span class="math display">\[
+\frac{1}{\tau_1^2} = \frac{1}{\tau_0^2} + \frac{1}{\sigma_0^2}
+\]</span></p>
 <p>Similarly, the posterior mean can be expressed as a <strong>convex combination (</strong>sum of prior and sampling means weighted by the proportion of their proportional precision) of the prior mean and the observed data.</p>
+<p><span class="math display">\[
+\mu_1 = \frac{\frac{1}{\tau_0^2}\mu_0 + \frac{1}{\sigma_0^2}y}{\frac{1}{\tau_0^2} + \frac{1}{\sigma_0^2}}
+\]</span></p>
 </section>
 <section id="many-observations" class="level4" data-number="10.1.2.2">
 <h4 data-number="10.1.2.2" class="anchored" data-anchor-id="many-observations"><span class="header-section-number">10.1.2.2</span> Many observations</h4>
@@ -315,13 +354,160 @@ p(\theta|y)\propto \exp\left(-\frac{(y - \theta)^2}{2\sigma_0^2}-\frac{(\theta -
 <p><span class="math display">\[
 p(y|\theta) = \prod_{i = 1}^np(y_i|\theta)
 \]</span></p>
+<p>To make the calculation simple, we can take advantage of the fact that the mean of the normally distributed variables follows a normal distribution too:</p>
+<p><span class="math display">\[
+\overline{Y} \sim Normal(\theta,\sigma^2/n)
+\]</span></p>
+<p>We can then use the solution for the single observation example (and now you see why we started with that :) ) to derive the posterior parameters as:</p>
+<p><span class="math display">\[
+\mu_n = \frac{\frac{1}{\tau_0^2}\mu_0 + \frac{n}{\sigma_0^2}\overline{y}}{\frac{1}{\tau_0^2} + \frac{n}{\sigma_0^2}}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{1}{\tau_n^2} = \frac{1}{\tau_0^2} + \frac{n}{\sigma_0^2}
+\]</span></p>
+<p>Now if we had not derive the single observation posterior first, we could have also done this the hard way. But since you’re already here, I say why not both?</p>
+<p>We start with expanding the joint likelihood:</p>
+<p><span class="math display">\[
+p(y|\theta) = \prod_{i = 1}^np(y_i|\theta) = \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n\exp\left(\frac{\sum_{i=1}^n(y_i - \theta)^2}{2\sigma^2}\right)
+\]</span></p>
+<p><span class="math display">\[
+\propto  \exp\left(-\frac{\sum_{i=1}^n(y_i - \theta)^2}{2\sigma^2}\right)
+\]</span></p>
+<p>At first glance it may look daunting to find a closed form solution to our problem and identifying a sufficient statistic seems unlikely. However, we can rely on the achievements of our predecessors to get through this. Here, we can use <strong>sum of squares decomposition:</strong></p>
+<p><span class="math display">\[\sum_{i=1}^n(y_i - \theta)^2 = n(\overline{y} - \theta)^2 + \sum_{i=1}^n(y_i - \overline{y})^2\]</span></p>
+<p>Where <span class="math inline">\(\overline{y}\)</span> is the mean of the observed values. We now have the following:</p>
+<p><span class="math display">\[
+p(y|\theta)\propto  \exp\left(-\frac{n(\overline{y} - \theta)^2 + \sum_{i=1}^n(y_i - \overline{y})^2}{2\sigma^2}\right)
+\]</span></p>
+<p><span class="math display">\[
+\propto  \exp\left(-\frac{n(\overline{y} - \theta)^2}{2\sigma^2}\right)
+\]</span></p>
+<p>As the second component does not depend on <span class="math inline">\(\theta\)</span>. All of a sudden we now have a pdf that depends only on a sufficient statistic! We can now multiply this by the prior and see that it matches the form of the posterior we saw earlier:</p>
+<p><span class="math display">\[
+p(\theta|y) \propto  \exp\left(\frac{n(\overline{y} - \theta)^2}{2\sigma^2}\right)\exp\left(-\frac{(\theta - \mu_0)^2}{2\tau_0^2}\right)
+\]</span></p>
+<p><span class="math display">\[
+= \exp\left(-\frac{n\tau_0^2(\overline{y} - \theta)^2 + \sigma_0^2(\theta - \mu_0)^2}{2\tau_0^2\sigma_0^2}\right)
+\]</span></p>
+<p>From here we can notice the similar form of the posterior from the single observation example, with the only exception being that there is also the variable <span class="math inline">\(n\)</span>.</p>
 </section>
 </section>
-<section id="note-incomplete---needs-complete-the-square-derivation-here" class="level3" data-number="10.1.3">
-<h3 data-number="10.1.3" class="anchored" data-anchor-id="note-incomplete---needs-complete-the-square-derivation-here"><span class="header-section-number">10.1.3</span> <strong>NOTE: INCOMPLETE - NEEDS COMPLETE THE SQUARE DERIVATION HERE</strong></h3>
-</section>
-<section id="example-2-non-informative-prior" class="level3" data-number="10.1.4">
-<h3 data-number="10.1.4" class="anchored" data-anchor-id="example-2-non-informative-prior"><span class="header-section-number">10.1.4</span> Example #2 Non-informative prior</h3>
+<section id="example-2-non-informative-prior" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="example-2-non-informative-prior"><span class="header-section-number">10.1.3</span> Example #2 Non-informative prior</h3>
+<p>We assumed that the mean followed a normal distribution but what if this is not the case? Recall that in <a href="./Conjugate_Dist.html">chapter 2</a> we looked at different choices of priors. In particular, we considered the non-informative prior for cases where we don’t have intuition on the shape of the prior.</p>
+<p>Imagine a situation where both the mean <strong>and</strong> variance are unknown. Determining the joint prior may be more difficult, so the use of a non-informative prior may be a better choice.</p>
+<p>Let’s use the following improper prior:</p>
+<p><span class="math display">\[
+p(\theta,\sigma^2) \propto \frac{1}{\sigma^2}
+\]</span></p>
+<p>As the variance is unknown, our likelihood from example 1 will look as follows:</p>
+<p><span class="math display">\[
+p(y|\theta,\sigma^2) \propto \frac{1}{\sigma^n}\exp\left(-\frac{n(\overline{y} - \theta)^2 + \sum_{i=1}^n(y_i - \overline{y})^2}{2\sigma^2}\right)
+\]</span></p>
+<p><span class="math display">\[
+= \frac{1}{\sigma^n}\exp\left(-\frac{(n-1)s^2 +n(\overline{y} - \theta)^2}{2\sigma^2}\right)
+\]</span></p>
+<p>Notice again that we have to retain terms with <span class="math inline">\(\sigma\)</span> as they are no longer constant. Here, we had to retain the sum of square error between the sample mean and observations, but can express it as another sufficient statistic, <span class="math inline">\(s^2\)</span> which represents the <strong>sample variance</strong>.</p>
+<p><span class="math display">\[
+s^2 = \frac{\sum_{i=1}^n(y_i - \overline{y})^2}{n-1}
+\]</span></p>
+<p>This then gives us the following un-normalized posterior:</p>
+<p><span class="math display">\[
+p(\theta,\sigma^2|y) \propto \frac{1}{\sigma^{(n+2)}}\exp\left(-\frac{(n-1)s^2 + n(\overline{y} - \theta)^2}{2\sigma^2}\right)
+\]</span></p>
+<p>That can be entirely expressed in terms of two sufficient statistics!</p>
+<p>We can now generate some samples from a normal distribution and see if this posterior can help us recover the true estimates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,mu,sigma)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mu_range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="at">length =</span> <span class="dv">50</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>s_range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.001</span>,<span class="dv">5</span>,<span class="at">length =</span> <span class="dv">30</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>post_approx <span class="ot">&lt;-</span> <span class="cf">function</span>(y,n,mu_range,s_range){</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  mu_y <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  s_y <span class="ot">&lt;-</span> <span class="fu">var</span>(y)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  post <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> <span class="fu">length</span>(mu_range),<span class="at">ncol =</span> <span class="fu">length</span>(s_range))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(mu_range)){</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s_range)){</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      post[i,j] <span class="ot">&lt;-</span> (s_range[j]<span class="sc">^</span>(<span class="sc">-</span>(n<span class="sc">+</span><span class="dv">2</span>)))<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>((n<span class="dv">-1</span>)<span class="sc">*</span>s_y<span class="sc">+</span>n<span class="sc">*</span>(mu_y<span class="sc">-</span>mu_range[i])<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                                             <span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>s_range[j]<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(post)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fields)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'fields' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: spam</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'spam' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Spam version 2.10-0 (2023-10-23) is loaded.
+Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+and overview of this package.
+Help for individual functions is also obtained by adding the
+suffix '.spam' to the function name, e.g. 'help( chol.spam)'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'spam'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    backsolve, forwardsolve</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: viridisLite</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'viridisLite' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Try help(fields) to get started.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(n1 <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">5</span>,n,<span class="at">by =</span>  <span class="dv">15</span>)){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  estimates <span class="ot">&lt;-</span> <span class="fu">post_approx</span>(y[<span class="dv">1</span><span class="sc">:</span>n1],n1,mu_range,s_range)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Normalize Posteriors as densities are quite small</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  estimates <span class="ot">&lt;-</span> estimates<span class="sc">/</span><span class="fu">sum</span>(estimates)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image.plot</span>(mu_range,s_range,estimates,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">xlab=</span><span class="fu">expression</span>(theta),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylab=</span><span class="fu">expression</span>(sigma),</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">main =</span> <span class="fu">paste</span>(n1,<span class="st">" Samples"</span>))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#contour(mu_range,s_range,estimates,add=T)</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="MoreModels_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="MoreModels_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="MoreModels_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="MoreModels_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can see that our posterior does a reasonable job of picking up the true parameters from the data when using an improper prior once enough samples are included.</p>
+<p>We can now marginalize the posterior to be able to get the marginal posteriors for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\sigma^2\)</span>. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter.</p>
+<p><span class="math display">\[
+p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2
+\]</span></p>
 </section>
 </section>
 <section id="hierarchical-models" class="level2" data-number="10.2">

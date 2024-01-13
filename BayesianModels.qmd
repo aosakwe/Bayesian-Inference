@@ -13,7 +13,7 @@ In this section we will explore extensions of the Bayesian methods framework for
 
 -   hierarchical models
 
-# Regression Models
+## Regression Models
 
 We can consider an infinite sequence $\{ (X_n,Y_n), n = 1,2,…\}$ such that for any $n \geq 1$
 

@@ -115,14 +115,14 @@ Now if we had not derive the single observation posterior first, we could have a
 We start with expanding the joint likelihood:
 
 $$
- p(y|\theta) = \prod_{i = 1}^np(y_i|\theta) = \left(\frac{1}{\sqrt{2\pi}\sigma^2}\right)^n\exp\left(\frac{\sum_{i=1}^n(y_i - \theta)^2}{2\sigma^2}\right)
+ p(y|\theta) = \prod_{i = 1}^np(y_i|\theta) = \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n\exp\left(\frac{\sum_{i=1}^n(y_i - \theta)^2}{2\sigma^2}\right)
 $$
 
 $$
 \propto  \exp\left(-\frac{\sum_{i=1}^n(y_i - \theta)^2}{2\sigma^2}\right)
 $$
 
-At first glance it may look daunting to find a closed form solution to our problem and identifying a sufficient statistic seems unlikely. However, we can rely on the achievements of our predecessors to get through this. We start with the **sum of squares decomposition:**
+At first glance it may look daunting to find a closed form solution to our problem and identifying a sufficient statistic seems unlikely. However, we can rely on the achievements of our predecessors to get through this. Here, we can use **sum of squares decomposition:**
 
 $$\sum_{i=1}^n(y_i - \theta)^2 = n(\overline{y} - \theta)^2 + \sum_{i=1}^n(y_i - \overline{y})^2$$
 
@@ -158,6 +158,83 @@ Let's use the following improper prior:
 
 $$
 p(\theta,\sigma^2) \propto \frac{1}{\sigma^2}
+$$
+
+As the variance is unknown, our likelihood from example 1 will look as follows:
+
+$$
+p(y|\theta,\sigma^2) \propto \frac{1}{\sigma^n}\exp\left(-\frac{n(\overline{y} - \theta)^2 + \sum_{i=1}^n(y_i - \overline{y})^2}{2\sigma^2}\right)
+$$
+
+$$
+= \frac{1}{\sigma^n}\exp\left(-\frac{(n-1)s^2 +n(\overline{y} - \theta)^2}{2\sigma^2}\right)
+$$
+
+Notice again that we have to retain terms with $\sigma$ as they are no longer constant. Here, we had to retain the sum of square error between the sample mean and observations, but can express it as another sufficient statistic, $s^2$ which represents the **sample variance**.
+
+$$
+s^2 = \frac{\sum_{i=1}^n(y_i - \overline{y})^2}{n-1}
+$$
+
+This then gives us the following un-normalized posterior:
+
+$$
+p(\theta,\sigma^2|y) \propto \frac{1}{\sigma^{(n+2)}}\exp\left(-\frac{(n-1)s^2 + n(\overline{y} - \theta)^2}{2\sigma^2}\right)
+$$
+
+That can be entirely expressed in terms of two sufficient statistics!
+
+We can now generate some samples from a normal distribution and see if this posterior can help us recover the true estimates.
+
+```{r}
+mu <- 0
+sigma <- 3
+n <- 50
+y <- rnorm(n,mu,sigma)
+mu_range <- seq(-5,5,length = 50)
+s_range <- seq(0.001,5,length = 30)
+post_approx <- function(y,n,mu_range,s_range){
+  mu_y <- mean(y)
+  s_y <- var(y)
+  post <- matrix(0,nrow = length(mu_range),ncol = length(s_range))
+  for( i in 1:length(mu_range)){
+    for(j in 1:length(s_range)){
+      post[i,j] <- (s_range[j]^(-(n+2)))*exp(-((n-1)*s_y+n*(mu_y-mu_range[i])^2)
+                                             /(2*s_range[j]^2))
+    }
+  }
+  return(post)
+}
+
+
+
+
+
+library(fields)
+
+for(n1 in seq(5,n,by =  15)){
+  estimates <- post_approx(y[1:n1],n1,mu_range,s_range)
+  #Normalize Posteriors as densities are quite small
+  estimates <- estimates/sum(estimates)
+
+
+  image.plot(mu_range,s_range,estimates,
+           xlab=expression(theta),
+           ylab=expression(sigma),
+           main = paste(n1," Samples"))
+  #contour(mu_range,s_range,estimates,add=T)
+}
+
+  
+
+```
+
+We can see that our posterior does a reasonable job of picking up the true parameters from the data when using an improper prior once enough samples are included.
+
+We can now marginalize the posterior to be able to get the marginal posteriors for $\theta$ and $\sigma^2$. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter.
+
+$$
+p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2
 $$
 
 ## Hierarchical Models
