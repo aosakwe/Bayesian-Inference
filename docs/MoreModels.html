@@ -144,9 +144,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             </a>
           </li>
           <li>
-            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
-              <i class="bi bi-bi-facebook pe-1"></i>
-            Facebook
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
             </a>
           </li>
       </ul>
@@ -163,6 +163,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MoreModels.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">More Models!</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
   </nav>
 </header>
@@ -170,6 +173,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -217,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./PosteriorApproximation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximation and Sampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Approximations</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -235,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./BayesianNonParametric.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Non-parametrics</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -504,10 +512,37 @@ Try help(fields) to get started.</code></pre>
 </div>
 </div>
 <p>We can see that our posterior does a reasonable job of picking up the true parameters from the data when using an improper prior once enough samples are included.</p>
-<p>We can now marginalize the posterior to be able to get the marginal posteriors for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\sigma^2\)</span>. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter.</p>
+<section id="example-3-marginal-posterior-distribution---mean" class="level4" data-number="10.1.3.1">
+<h4 data-number="10.1.3.1" class="anchored" data-anchor-id="example-3-marginal-posterior-distribution---mean"><span class="header-section-number">10.1.3.1</span> Example #3 Marginal Posterior Distribution - Mean</h4>
+<p>We can now marginalize the posterior to be able to get the marginal posteriors for <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\sigma^2\)</span>. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter (in this case, <span class="math inline">\(\sigma^2\)</span>.</p>
 <p><span class="math display">\[
 p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2
 \]</span></p>
+<p><span class="math display">\[
+= \int_0^\infty p(y|\theta,\sigma^2)p(\theta,\sigma^2)d\sigma^2
+\]</span></p>
+<p>In this setting, we define the joint prior as follows:</p>
+<p><span class="math display">\[
+p(\theta,\sigma^2) = p(\theta |\sigma^2)p(\sigma^2)
+\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[
+p(\theta |\sigma^2) \sim Normal(\mu,\sigma^2/\lambda) = \frac{1}{\sqrt{2\pi \frac{\sigma^2}{\lambda}}} \exp\left(-\frac{(\theta - \mu)^2}{2 \frac{\sigma^2}{\lambda}}\right)
+\]</span></p>
+<p><span class="math display">\[
+p(\sigma^2) \sim InvGamma(\alpha,\beta) = \frac{\beta^\alpha}{\Gamma(\alpha)} (\sigma^2)^{-(\alpha + 1)} exp\left({-\frac{\beta}{\sigma^2}}\right)
+\]</span></p>
+<p><span class="math display">\[
+p(\theta,\sigma^2)  \propto
+\]</span></p>
+<p>The full posterior is therefore</p>
+<p><span class="math display">\[
+p(\theta,\sigma^2 | y) \propto  
+\]</span></p>
+<p><span class="math display">\[
+p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2 \propto \int_0^\infty
+\]</span></p>
+</section>
 </section>
 </section>
 <section id="hierarchical-models" class="level2" data-number="10.2">
@@ -758,7 +793,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./BayesianNonParametric.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Bayesian Non-parametrics</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Non-parametrics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

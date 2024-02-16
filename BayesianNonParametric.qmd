@@ -1,8 +1,12 @@
 ---
-title: "Bayesian Non-parametrics"
+title: "Non-parametrics"
 author: "Adrien Osakwe"
 format: html
 editor: visual
 ---
 
 ## 
+
+::: {.callout-note}
+Did not get this far yet. Sorry!
+:::

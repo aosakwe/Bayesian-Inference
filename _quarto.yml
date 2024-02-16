@@ -5,16 +5,18 @@ project:
 book:
   title: "Bayesian Inference"
   author: "Adrien Osakwe"
-  date: "01/09/2023"
+  date: "01/02/2024"
   repo-url: https://github.com/aosakwe/Bayesian-Inference
   repo-actions: [edit]
-  sharing: [twitter, facebook]
+  sharing: [twitter, linkedin]
+
   sidebar:
-    search: false
-    style: docked
+    logo: cover.png
+    style: "docked"
     background: secondary
     foreground: light
     border: true
+    alignment: left
   navbar:
     background: primary
     left: 
@@ -24,7 +26,12 @@ book:
         file: PracticeProblems.qmd
       - text: "Reference"
         file: Main.qmd
-     
+  page-footer:
+    center: 
+      - text: "Adrien Osakwe || 2024"
+        url: "https://github.com/aosakwe"
+    background: primary
+
       
  
     

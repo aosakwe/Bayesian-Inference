@@ -7,7 +7,9 @@ editor: visual
 
 This book contains my notes from topics on Bayesian Inference.
 
-**Note: This is a work in progress!**
+::: {.callout-warning}
+This webpage is still incomplete. If you see mistakes or missing material, feel free to contact me or make a pull request!
+:::
 
 # Chapters
 
@@ -29,6 +31,6 @@ This book contains my notes from topics on Bayesian Inference.
 
 9.  [More Models!](./MoreModels.qmd)
 
-10. [Bayesian Non-Parametrics](BayesianNonParametric.qmd)
+10. [Non-Parametrics](BayesianNonParametric.qmd)
 
 11. [Practice Problems](PracticeProblems.qmd)

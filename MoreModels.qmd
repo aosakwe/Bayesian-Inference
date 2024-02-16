@@ -231,10 +231,46 @@ for(n1 in seq(5,n,by =  15)){
 
 We can see that our posterior does a reasonable job of picking up the true parameters from the data when using an improper prior once enough samples are included.
 
-We can now marginalize the posterior to be able to get the marginal posteriors for $\theta$ and $\sigma^2$. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter.
+#### Example #3 Marginal Posterior Distribution - Mean
+
+We can now marginalize the posterior to be able to get the marginal posteriors for $\theta$ and $\sigma^2$. In practice this is quite simple (usually). All that is required is to integrate the full posterior over the parameter space of the nuisance parameter (in this case, $\sigma^2$.
 
 $$
 p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2
+$$
+
+$$
+= \int_0^\infty p(y|\theta,\sigma^2)p(\theta,\sigma^2)d\sigma^2 
+$$
+
+In this setting, we define the joint prior as follows:
+
+$$
+p(\theta,\sigma^2) = p(\theta |\sigma^2)p(\sigma^2)
+$$
+
+Where
+
+$$
+p(\theta |\sigma^2) \sim Normal(\mu,\sigma^2/\lambda) = \frac{1}{\sqrt{2\pi \frac{\sigma^2}{\lambda}}} \exp\left(-\frac{(\theta - \mu)^2}{2 \frac{\sigma^2}{\lambda}}\right)
+$$
+
+$$
+p(\sigma^2) \sim InvGamma(\alpha,\beta) = \frac{\beta^\alpha}{\Gamma(\alpha)} (\sigma^2)^{-(\alpha + 1)} exp\left({-\frac{\beta}{\sigma^2}}\right)
+$$
+
+$$
+p(\theta,\sigma^2)  \propto 
+$$
+
+The full posterior is therefore
+
+$$
+p(\theta,\sigma^2 | y) \propto  
+$$
+
+$$
+p(\theta|y) = \int_0^\infty p(\theta,\sigma^2|y)d\sigma^2 \propto \int_0^\infty
 $$
 
 ## Hierarchical Models
